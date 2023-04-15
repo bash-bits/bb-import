@@ -25,6 +25,9 @@ The Bash Bits Core Module
 - [Project Overview](#-project-overview)
 - [What's Included?](#-whats-included)
 - [Installation](#-installation)
+  - [AUTOMAGIC-INSTALL](#automagic-install)
+  - [AUTOMAGIC DOWNLOAD](#automagic-download)
+  - [CLONE THE REPO](#clone-the-repo)
 - [Author/Maintainer](#-author--maintainer)
 - [Security](#-security)
 - [Available Support](#-available-support)
@@ -44,13 +47,26 @@ The Bash Bits Core Module - contains everything required to use the rest of the 
 
 ## ❓ [What's Included?](#toc)
 
-
+- ✅ bb-import
 
 [`^ Top`](#toc)
 
 ## 📂 [Installation](#toc)
 
+#### [AUTOMAGIC-INSTALL](#toc)
 
+The easiest way to install Bash Bits is using the "**SUPER-AWESOME AUTOMAGIC INSTALL**".  
+
+All you need to do is run the following snippet from your terminal:
+
+```shell
+sudo su -c "bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-core/master/install.sh)" root
+```
+
+#### [AUTOMAGIC-DOWNLOAD](#toc)
+
+
+#### [CLONE THE REPO](#toc)
 
 [`^ Top`](#toc)
 
