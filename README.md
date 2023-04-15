@@ -2,21 +2,22 @@
 
 <img src="https://user-images.githubusercontent.com/6827931/226166354-a7cfea07-00c0-4167-bf0a-adf323d9d125.png" alt="Bash Bits Modular Bash Library" />
 
-[BB-Core v-1.0.0](https://github.com/bash-bits/bb-core/releases/tag/v-1.0.0)
+[BB-Import v-1.0.0](https://github.com/bash-bits/bb-import/releases/tag/v-1.0.0)
 
 </h1>
 
 <h3 align="center"><em>
-The Bash Bits Core Module
+The Bash Bits Import Module<br />
+The most important and magical part of Bash Bits!
 </em></h3>
 
 
 <h3 align="center">
-<a href="https://github.com/bash-bits/bb-core/issues" target="_blank">Issues</a>
+<a href="https://github.com/bash-bits/bb-import/issues" target="_blank">Issues</a>
 🔹
-<a href="https://bash-bits.github.io/bb-core" target="_blank">Documentation</a>
+<a href="https://bash-bits.github.io/bb-import" target="_blank">Documentation</a>
 🔹
-<a href="https://github.com/bash-bits/bb-core/releases" target="_blank">Releases</a>
+<a href="https://github.com/bash-bits/bb-import/releases" target="_blank">Releases</a>
 </h3>
 
 <details>
@@ -41,13 +42,14 @@ The Bash Bits Core Module
 
 ## ⭐ [Project Overview](#toc)
 
-The Bash Bits Core Module - contains everything required to use the rest of the library.
+The Bash Bits Import Module - The most important and magical part of Bash Bits!
 
 [`^ Top`](#toc)
 
 ## ❓ [What's Included?](#toc)
 
 - ✅ bb-import
+- ✅ bb-import.ini
 
 [`^ Top`](#toc)
 
@@ -60,7 +62,7 @@ The easiest way to install Bash Bits is using the "**SUPER-AWESOME AUTOMAGIC INS
 All you need to do is run the following snippet from your terminal:
 
 ```shell
-sudo su -c "bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-core/master/install.sh)" root
+sudo su -c "bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/install.sh)" root
 ```
 
 #### [AUTOMAGIC-DOWNLOAD](#toc)
@@ -98,9 +100,9 @@ If you discover any issue regarding the security of this project, please disclos
 
 <a href="https://github.com/bash-bits/.github/blob/master/.github/SUPPORT.md" target="_blank">Read the Community Support Document</a>
 
-<a href="https://github.com/bash-bits/bb-core/issues" target="_blank">Issues Register</a>
+<a href="https://github.com/bash-bits/bb-import/issues" target="_blank">Issues Register</a>
 🔸
-<a href="https://bash-bits.github.io/bb-core" target="_blank">Documentation</a>
+<a href="https://bash-bits.github.io/bb-import" target="_blank">Documentation</a>
 
 <a href="https://discord.gg/54PkrM7TKq" target="_blank">Join the Discord Server</a>
 
@@ -126,7 +128,7 @@ Connect with my Social Channels
 ## 💎 [Contributors](#toc)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/github/all-contributors/bash-bits/bb-core?color=ee8449&style=for-the-badge)](CONTRIBUTORS.md)
+[![All Contributors](https://img.shields.io/github/all-contributors/bash-bits/bb-import?color=ee8449&style=for-the-badge)](CONTRIBUTORS.md)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 If you'd like to make a contribution, then please see the [**Bash Bits Contributor's Guide**][contributing]
@@ -218,7 +220,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ⭐ Star This Repo
 
-<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/bash-bits/bb-core?style=social">
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/bash-bits/bb-import?style=social">
 
 <br /><br />
 
@@ -240,9 +242,9 @@ Find out more on my [**Sponsor's Page**][sponsors]
 [`^ Top`](#toc)
 
 
-[advisory]: https://github.com/bash-bits/bb-core/security/advisories/new
+[advisory]: https://github.com/bash-bits/bb-import/security/advisories/new
 [all-contributors]: https://allcontributors.org
 [contributing]: https://github.com/bash-bits/.github/blob/master/.github/CONTRIBUTING.md
-[issues]: https://github.com/bash-bits/bb-core/issues
-[security]: https://github.com/bash-bits/bb-core/security/policy
+[issues]: https://github.com/bash-bits/bb-import/issues
+[security]: https://github.com/bash-bits/bb-import/security/policy
 [sponsors]: https://github.com/sponsors/Ragdata

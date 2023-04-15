@@ -5,7 +5,7 @@
 
 cff-version: 1.2.0
 
-title: Bash Bits Core Module
+title: Bash Bits Import Module
 
 message: >-
   If you use this software, please cite using the
@@ -20,11 +20,11 @@ authors:
     orcid: 'https://orcid.org/0000-0001-8986-2886'
     affiliation: Redeyed Software
 
-repository-code: 'https://github.com/bash-bits/bb-core'
+repository-code: 'https://github.com/bash-bits/bb-import'
 
 url: 'https://bash-bits.github.io/'
 
 abstract: >-
-  The most basic elements of Bash Bits - required to use the rest of the library
+  The most critical and most magical part of Bash Bits.
 
 license: MIT

@@ -1,4 +1,4 @@
-Bash Bits Common Module v-1.0.0
+Bash Bits Import Module v-1.0.0
 
 Copyright © 2022-2023 Darren (Ragdata) Poulton
 
@@ -11,22 +11,6 @@ talented individuals:
 
 	- importpw/import
 	  Copyright © 2018-2020 the Import authors
-	  MIT Licensed
-
-	- niieani/bash-oo-framework
-	  Copyright © 2015 Bazyli Brzóska @ https://invent.life/
-	  MIT Licensed
-
-	- bpm-rocks/bpm
-	  Copyright © 2017 Tyler Akins
-	  MIT Licensed
-
-	- bpkg/bpkg
-	  Copyright © 2014-2022 bpkg
-	  MIT Licensed
-
-	- labbots/bash-utility
-	  Copyright © 2020 labbots
 	  MIT Licensed
 
 ====================================================================
