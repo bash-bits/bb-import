@@ -187,11 +187,11 @@ install::install()
 	echoGold "  =================================================================="
     echo
 
-    local user scriptDir repoPath installPath cacheDir cache type
+    local user scriptDir repoPath installPath cacheDir cache
     local url urlPath cachePath locFile dir linkDir hash hashFile
     local location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import"
 
-    [[ "$SUDO_USER" ]] && user="root" || user="$(whoami)"
+#    [[ "$SUDO_USER" ]] && user="root" || user="$(whoami)"
 
     scriptDir="$(dirname "$(scriptPath)")"
 
@@ -286,8 +286,8 @@ install::install()
 	echo
 
     case "$1" in
-        1) install::shebang "$cache" "$cachePath" "$relative";;
-        2) install::source "$cache" "$cachePath" "$relative";;
+        1) install::shebang "$cache" "$cachePath" "$relative" "$writePath";;
+        2) install::source "$cache" "$cachePath" "$relative" "$writePath";;
     esac
 }
 # ------------------------------------------------------------------
