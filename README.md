@@ -180,15 +180,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ### Attributed Projects
 - [**importpw/import**](https://github.com/importpw/import)
-- [**niieani/bash-oo-framework**](https://github.com/niieani/bash-oo-framework)
-- [**bpkg/bpkg**](https://github.com/bpkg/bpkg)
-- [**bpm-rocks/bpm**](https://github.com/bpm-rocks/bpm)
-- [**labbots/bash-utility**](https://github.com/labbots/bash-utility)
 
-### Used by Bash Bits
+[//]: # (- [**niieani/bash-oo-framework**]&#40;https://github.com/niieani/bash-oo-framework&#41;)
 
-- [**reconquest/shdoc**](https://github.com/reconquest/shdoc)
-- [**reconquest/tests.sh**](https://github.com/reconquest/tests.sh)
+[//]: # (- [**bpkg/bpkg**]&#40;https://github.com/bpkg/bpkg&#41;)
+
+[//]: # (- [**bpm-rocks/bpm**]&#40;https://github.com/bpm-rocks/bpm&#41;)
+
+[//]: # (- [**labbots/bash-utility**]&#40;https://github.com/labbots/bash-utility&#41;)
+
+[//]: # ()
+[//]: # (### Used by Bash Bits)
+
+[//]: # ()
+[//]: # (- [**reconquest/shdoc**]&#40;https://github.com/reconquest/shdoc&#41;)
+
+[//]: # (- [**reconquest/tests.sh**]&#40;https://github.com/reconquest/tests.sh&#41;)
 
 [`^ Top`](#toc)
 
