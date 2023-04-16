@@ -157,26 +157,6 @@ This project incorporates ideas and / or code crafted by the following talented 
   MIT Licensed
 
 
-* [**niieani/bash-oo-framework**](https://github.com/niieani/bash-oo-framework)<br />
-  Copyright © 2015 Bazyli Brzóska @ https://invent.life/ <br />
-  MIT Licensed
-
-
-* [**bpm-rocks/bpm**](https://github.com/bpm-rocks/bpm)<br />
-  Copyright © 2017 Tyler Akins<br />
-  MIT Licensed
-
-
-* [**bpkg/bpkg**](https://github.com/bpkg/bpkg)<br />
-  Copyright © 2014-2022 bpkg<br />
-  MIT Licensed
-
-
-* [**labbots/bash-utility**](https://github.com/labbots/bash-utility)<br />
-  Copyright © 2020 Labbots<br />
-  MIT Licensed
-
-
 
 > "We see much further, and reach much higher,<br>only because we stand upon the shoulders of giants"
 

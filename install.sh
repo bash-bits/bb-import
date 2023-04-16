@@ -279,7 +279,7 @@ install::install()
         if sudo cp "$cacheDir/bb-path.sh" /etc/profile.d/bb-path.sh; then echo "DONE"; writePath=1; else echo "FAIL"; writePath=0; fi
     fi
 
-    # TODO ::
+    # TODO :: Read / Write config variables
 
     echoGold "  INSTALLATION COMPLETE!"
 	echoGold "  =================================================================="
