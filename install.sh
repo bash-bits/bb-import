@@ -165,9 +165,9 @@ install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb
 install::install()
 {
     clear
-	echoGold "  =================================================================="
-	echoGold "  INSTALLING BB-CORE MODULE"
-	echoGold "  =================================================================="
+	echoGold "=================================================================="
+	echoGold "INSTALLING BB-IMPORT MODULE"
+	echoGold "=================================================================="
     echo
 
     local scriptDir repoPath installPath cacheDir cache
@@ -191,10 +191,10 @@ install::install()
     dir="$(dirname "$urlPath")"
     linkDir="$cache/links/$dir"
 
-    echo "  Creating directories:"
-    echo "      $linkDir"
-    echo "      $cache/data"
-    echo "      $cache/locations/$dir"
+    echo "Creating directories:"
+    echo "    $linkDir"
+    echo "    $cache/data"
+    echo "    $cache/locations/$dir"
     echo
 
     mkdir -p "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || errorReturn "Could Not Create Directory '$cacheDir'" 2
@@ -206,27 +206,27 @@ install::install()
 
     # install bb-import
     if [[ -f "$scriptDir/src/bb-import" ]]; then
-        echo "  Installing from local repository ... "
+        echo "Installing from local repository ... "
         # install from local repository
         repoPath="$scriptDir/src/bb-import"
         mv "$repoPath" "$installPath" || errorReturn "Installation Failed!" 2
     else
-        echo "  Downloading from '$location' ..."
+        echo "Downloading from '$location' ..."
         # download & install
         curl -sfLS "$location" > "$installPath" || errorReturn "Download Failed! Try again later" 2
-        echo "  SUCCESS!"
+        echo "SUCCESS!"
     fi
     chmod +x "$installPath"
 
     echo "$location" > "$locFile"
 
-    echo "  Calculating file hash ..."
+    echo "Calculating file hash ..."
 
     # calculate the hash of the downloaded file
     hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return
-    echo "  FILE HASH: '$hash'"
+    echo "FILE HASH: '$hash'"
     hashFile="$cache/data/$hash"
-    echo "  HASH FILE: '$hashFile'"
+    echo "HASH FILE: '$hashFile'"
     echo
 
     # if the hashed file doesn't exist, move it into place,
@@ -237,7 +237,7 @@ install::install()
         mv "$tmpFile" "$hashFile" || return
     fi
 
-    echo "  Creating symlink pointing to hashed file ..."
+    echo "Creating symlink pointing to hashed file ..."
 
     # create a relative symlink for this import pointing to the hashed file
     local relative cacheStart
@@ -247,10 +247,10 @@ install::install()
     [ -n "${IMPORT_DEBUG-}" ] && importDebug "import :: Creating symlink"
     ln -fs${IMPORT_DEBUG:+v} "$relative" "$cachePath" >&2 || return
 
-    echo "  SYMLINK: '$relative' -> '$cachePath'"
+    echo "SYMLINK: '$relative' -> '$cachePath'"
     echo
 
-    echo "  Creating path file ... "
+    echo "Creating path file ... "
     echo
 
     # prepend cacheDir to $PATH
@@ -264,8 +264,8 @@ install::install()
 
     # TODO :: Read / Write config variables
 
-    echoGold "  INSTALLATION COMPLETE!"
-	echoGold "  =================================================================="
+    echoGold "INSTALLATION COMPLETE!"
+	echoGold "=================================================================="
 	echo
 
     case "$1" in
@@ -279,7 +279,7 @@ install::install()
 install::uninstall()
 {
     echo
-    echo "  Uninstalling ... " -n
+    echo "Uninstalling ... " -n
     rm -Rf "$HOME/.bb"
     echoSuccess "DONE!"
     echo
@@ -290,7 +290,7 @@ install::uninstall()
 install::quit()
 {
     echo
-    echoGold "  Program terminated at user request"
+    echoGold "Program terminated at user request"
     echo
 
     return 0
@@ -329,33 +329,33 @@ install::shebang()
     local cachePath="$2"
     local relative="$3"
 
-	echoGold "  =================================================================="
-	echoGold "  USAGE :: SHEBANG INSTALL"
-	echoGold "  =================================================================="
+	echoGold "=================================================================="
+	echoGold "USAGE :: SHEBANG INSTALL"
+	echoGold "=================================================================="
     echo
-    echoRed "  NOTE: YOU ARE GOING TO WANT TO WRITE SOME OF THIS DOWN SOMEWHERE!"
+    echoRed "NOTE: YOU ARE GOING TO WANT TO WRITE SOME OF THIS DOWN SOMEWHERE!"
     echo
-    echo "  Include the following shebang at the top of every file you want to"
-    echo "  use BB-Import in:"
+    echo "Include the following shebang at the top of every file you want to"
+    echo "use BB-Import in:"
     echo
-    echo "  #!/usr/bin/env bb-import"
+    echo "#!/usr/bin/env bb-import"
     echo
-    echo "  And import files like so:"
+    echo "And import files like so:"
     echo
-    echo "  bb::import bb-ansi                      # IMPLICIT IMPORT of Bash-Bits Module"
-    echo "  bb::import bb-ansi@1.1.0                # IMPLICIT IMPORT of specific version"
-    echo "  bb::import github-org/repo              # FOREIGN IMPORT of a GitHub Repository"
-    echo "  bb::import https://example.com/project  # EXPLICIT IMPORT"
-    echo "  bb::import ../../myfile.sh              # RELATIVE IMPORT"
+    echo "bb::import bb-ansi                      # IMPLICIT IMPORT of Bash-Bits Module"
+    echo "bb::import bb-ansi@1.1.0                # IMPLICIT IMPORT of specific version"
+    echo "bb::import github-org/repo              # FOREIGN IMPORT of a GitHub Repository"
+    echo "bb::import https://example.com/project  # EXPLICIT IMPORT"
+    echo "bb::import ../../myfile.sh              # RELATIVE IMPORT"
     echo
-    echo "  And that's really all there is to it."
+    echo "And that's really all there is to it."
     echo
-    echo "  Important Locations:"
-    echo "      - Cache Directory: '$cacheDir'"
-    echo "      - Cache Path: '$cachePath'"
-    echo "      - Symlink: '$relative'"
+    echo "Important Locations:"
+    echo "  - Cache Directory: '$cacheDir'"
+    echo "  - Cache Path: '$cachePath'"
+    echo "  - Symlink: '$relative'"
     echo
-	echoGold "  =================================================================="
+	echoGold "=================================================================="
 }
 # ------------------------------------------------------------------
 # install::source
@@ -366,11 +366,11 @@ install::source()
     local cachePath="$2"
     local relative="$3"
 
-	echoGold "  =================================================================="
-	echoGold "  USAGE :: SOURCE INSTALL"
-	echoGold "  =================================================================="
+	echoGold "=================================================================="
+	echoGold "USAGE :: SOURCE INSTALL"
+	echoGold "=================================================================="
     echo
-    echoRed "  NOTE: YOU ARE GOING TO WANT TO WRITE SOME OF THIS DOWN SOMEWHERE!"
+    echoRed "NOTE: YOU ARE GOING TO WANT TO WRITE SOME OF THIS DOWN SOMEWHERE!"
     echo
 }
 # ------------------------------------------------------------------
@@ -380,18 +380,18 @@ install::menu()
 {
     clear
     echo
-	echoGold "  =================================================================="
-	echoGold "  BASH-BITS CORE INSTALLER MENU"
-	echoGold "  =================================================================="
+	echoGold "=================================================================="
+	echoGold "BASH-BITS CORE INSTALLER MENU"
+	echoGold "=================================================================="
 	echo
-	echo "  Install Type:"
-	echo "      1) Shebang"
-	echo "      2) Source"
-	echo "  Other Options:"
-	echo "      3) Uninstall"
-	echo "      Q) Quit"
+	echo "Install Type:"
+	echo "  1) Shebang"
+	echo "  2) Source"
+	echo "Other Options:"
+	echo "  3) Uninstall"
+	echo "  Q) Quit"
 	echo
-	echoSuccess "  Type your selection: (${GOLD}1${RESET}/2/3/Q) " -n
+	echoSuccess "Type your selection: (${GOLD}1${RESET}/2/3/Q) " -n
 	while [[ ! "$INST" =~ [123Qq] ]]
 	do
 	    read -r -n 1 INST
