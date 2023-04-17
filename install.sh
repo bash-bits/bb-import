@@ -389,7 +389,7 @@ install::menu()
 	echo "      3) Uninstall"
 	echo "      Q) Quit"
 	echo
-	echo "  Type your selection: (${GOLD}1${RESET}/2/3/Q) " -n
+	echoSuccess "  Type your selection: (${GOLD}1${RESET}/2/3/Q) " -n
 	echo
 	while [[ ! "$INST" =~ [123Qq] ]]
 	do
