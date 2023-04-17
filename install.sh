@@ -64,6 +64,9 @@ install::echoAlias()
     local STREAM=1
     local -a OUTARGS
 
+    echo "$msg"
+    exit
+
     shift
 
     [[ -z "$msg" ]] && { echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
