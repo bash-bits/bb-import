@@ -292,6 +292,8 @@ install::quit()
     echo
     echoGold "  Program terminated at user request"
     echo
+
+    return 0
 }
 # ------------------------------------------------------------------
 # install::returnQuit
