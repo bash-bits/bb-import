@@ -275,7 +275,7 @@ install::install()
 install::uninstall()
 {
     echo
-    echo "Uninstalling ... " -n
+    echoSuccess "Uninstalling ... " -n
     rm -Rf "$HOME/.bb"
     echoSuccess "DONE!"
     echo
