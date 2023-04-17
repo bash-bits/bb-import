@@ -59,47 +59,62 @@ SYMBOL_SUCCESS="[+]"
 # ------------------------------------------------------------------
 install::echoAlias()
 {
-	local msg="${1:-}"
-	local COLOR OUTPUT PREFIX SUFFIX
-	local STREAM="1"
+    local msg="${1:-}"
+    local COLOR OUTPUT PREFIX SUFFIX _0
+    local STREAM=1
+    local -a OUTARGS
 
-	local OUTARGS=()
+    [[ -n "$COLOR" ]] && _0="${RESET}" || _0=""
 
-	[[ -z "$msg" ]] && { echo "${RED}ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
+    OUTPUT="${COLOR}${PREFIX}${msg}${SUFFIX}${_0}"
 
-	shift
-
-    while getopts ":c:p:s:eEn" char
-    do
-        case "$char" in
-            c)                              # color
-                COLOR="${OPTARG}";;
-            p)                              # prefix
-                PREFIX="${OPTARG}";;
-            s)                              # suffix
-                SUFFIX="${OPTARG}";;
-            e)                              # error
-                STREAM=2;;
-            E)                              # escape
-                OUTARGS+=("-e");;
-            n)                              # noline
-                OUTARGS+=("-n");;
-            :)
-                echo "${GOLD}WARNING :: install::echoAlias :: Unexpected Argument!${RESET}" >&2
-                ;;
-            *)
-                echo "${RED}ERROR :: install::echoAlias :: Invalid Argument!${RESET}" >&2
-                return 3
-                ;;
-        esac
-    done
-
-	OUTPUT="${COLOR}${PREFIX}$msg${SUFFIX}${RESET}"
-
-	[[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "$OUTPUT" >&2 || echo "${OUTARGS[@]}" "$OUTPUT"
-
-	return 0
+    [[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
 }
+
+
+#install::echoAlias()
+#{
+#	local msg="${1:-}"
+#	local COLOR OUTPUT PREFIX SUFFIX
+#	local STREAM="1"
+#
+#	local OUTARGS=()
+#
+#	[[ -z "$msg" ]] && { echo "${RED}ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
+#
+#	shift
+#
+#    while getopts ":c:p:s:eEn" char
+#    do
+#        case "$char" in
+#            c)                              # color
+#                COLOR="${OPTARG}";;
+#            p)                              # prefix
+#                PREFIX="${OPTARG}";;
+#            s)                              # suffix
+#                SUFFIX="${OPTARG}";;
+#            e)                              # error
+#                STREAM=2;;
+#            E)                              # escape
+#                OUTARGS+=("-e");;
+#            n)                              # noline
+#                OUTARGS+=("-n");;
+#            :)
+#                echo "${GOLD}WARNING :: install::echoAlias :: Unexpected Argument!${RESET}" >&2
+#                ;;
+#            *)
+#                echo "${RED}ERROR :: install::echoAlias :: Invalid Argument!${RESET}" >&2
+#                return 3
+#                ;;
+#        esac
+#    done
+#
+#	OUTPUT="${COLOR}${PREFIX}$msg${SUFFIX}${RESET}"
+#
+#	[[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "$OUTPUT" >&2 || echo "${OUTARGS[@]}" "$OUTPUT"
+#
+#	return 0
+#}
 #
 # COLOUR ALIASES
 #
