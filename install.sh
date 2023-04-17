@@ -97,7 +97,7 @@ install::echoAlias()
 
     #[[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
 
-    echo "${msg}"
+    echo "${COLOR}${msg}${_0}"
 
     return 0
 }
