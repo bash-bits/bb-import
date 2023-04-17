@@ -405,7 +405,13 @@ install::menu()
 
 	install::returnQuit
 }
+
+install::test()
+{
+    clear
+    echoRed "HERE"
+}
 # ==================================================================
 # MAIN
 # ==================================================================
-install::menu
+install::test
