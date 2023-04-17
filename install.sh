@@ -11,13 +11,6 @@
 # License:      MIT License
 # Copyright:    Copyright © 2023 Darren (Ragdata) Poulton
 # ==================================================================
-# PREFLIGHT
-# ==================================================================
-# set debug mode = false
-declare -gx DEBUG=false
-# if script is called with 'debug' as an argument, then set debug mode
-if [[ "$DEBUG" ]]; then set -axeET; else set -aeET; fi
-# ==================================================================
 # VARIABLES
 # ==================================================================
 #
