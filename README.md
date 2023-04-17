@@ -28,6 +28,7 @@ The most important and magical part of Bash Bits!
 - [Installation](#-installation)
   - [AUTOMAGIC-INSTALL](#automagic-install)
   - [CLONE THE REPO](#clone-the-repo)
+  - [PACKAGE DOWNLOAD](#package-download)
 - [Author/Maintainer](#-author--maintainer)
 - [Security](#-security)
 - [Available Support](#-available-support)
@@ -41,44 +42,31 @@ The most important and magical part of Bash Bits!
 
 ## ⭐ [Project Overview](#toc)
 
-**The Bash Bits Import Module - The most important and magical part of Bash Bits!**
+**The Bash Bits Import Module - The most important and magical part of `Bash-Bits`!**
 
 BB-Import is THE library you are going to end up using in EVERY file of EVERY Bash script you write from now on.
 
 It's obviously a utility which imports external code / libraries into your scripts ... it's HOW BB-Import does it which is special.
 
-There are essentially 4 different "types" of BB-Import can do for you:
-
-1 - An **IMPLICIT** import - which is where you're importing one of the official Bash-Bits modules, and you only need to use the name of the module as your argument, like so:
+Not just for installing `Bash-Bits` modules, you can use `BB-Import` to retrieve ANY compatible module from GitHub or any other server, or locally-stored files like so:
 
 ```shell
-bb::import bb-ansi
+#!/usr/bin/env bb-import                        # SHEBANG INSTALL - Requires modification of your system $PATH
+
+source ~/.bb/bb-import                          # SOURCE INSTALL - Simple and effective
+
+bb::import bb-ansi                              # IMPLICIT IMPORT - Import official Bash-Bits module
+bb::import myaccount/myrepo                     # NAMESPACED IMPORT - Import ANY properly-formatted module from GitHub
+bb::import https://myserver.com/project         # EXPLICIT IMPORT - Import properly-formatted modules from ANY server
+bb::import ../../myfile.sh                      # RELATIVE IMPORT - Import ANY file from your local environment
 ```
 
-2 - A **NAMESPACED** import - this is where you're importing code from ANY GitHub repository which is formatted in the way BB-Import expects it to be (more on that later) - like so:
+You can also specify specific versions of modules for import:
 
 ```shell
-bb::import myorg/myrepo
-```
-
-3 - An **EXPLICIT** import - allows you to import code from ANY SERVER ON THE PLANET ... as long as it's formatted the way BB-Import expects to find it:
-
-```shell
-bb::import https://example.com/myproject
-```
-
-4 - A **RELATIVE** import - means that you can even import code from local directories:
-
-```shell
-bb::import ../../myfile.sh
-```
-
-... and in ANY of the top 3 types of import, you can even import a specific git tag or branch:
-
-```shell
-bb::import bb-ansi@1.1.0
-bb::import myorg/myrepo@2.1.3
-bb::import https://example.com/myproject@1.3.2
+bb::import bb-ansi@1.1.3
+bb::import myaccount/myrepo@mybranch
+bb::import https://myserver.com/project@1.2.3
 ```
 
 But that's not even the best bit ...
@@ -89,7 +77,7 @@ AND THE NEXT VERSION WILL EVEN KEEP TRACK OF THE LATEST VERSIONS OF ALL IMPORTS 
 
 > I have to admit that this wasn't my idea.  I've modeled BB-Import after the _INCREDIBLE_ [`importpw/import`](https://github.com/importpw/import) project by Nathan Rajlich, and decided to make a modified version of it a CORE feature of my Bash-Bits project the very moment I laid eyes on it.
 > 
-> As always ... I've only been able to do what I do, because I've stood upon the shoulders of giants to do it.
+> **As always ... I've only been able to do what I do, because I've stood upon the shoulders of giants to do it.**
 
 [`^ Top`](#toc)
 
@@ -126,8 +114,13 @@ cd your/path
 bash install.sh
 ```
 
-Of course, you're probably only going to want to execute that last line after you've had a good sticky-beak at the options available in the accompanying bb-import.ini configuration file.  I'm sure you won't be disappointed - there's PLENTY of options in BB-Import that you can customize to your own liking.
+Of course, you're probably only going to want to execute that last line after you've had a good sticky-beak at the options available in the accompanying [bb-import.ini](src/bb-import.ini) configuration file.  I'm sure you won't be disappointed - there's PLENTY of options in BB-Import that you can customize to your own liking.
 
+#### [PACKAGE DOWNLOAD](#toc)
+
+And if you're one of those people who are absolutely _determined_ to do things the hard way, you can download the latest release package from GitHub so that you can install it manually to your own specifications.
+
+[**GET THE LATEST PACKAGE HERE**](https://github.com/bash-bits/bb-import/releases/latest)
 
 [`^ Top`](#toc)
 
@@ -238,23 +231,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ## 📖 [Resources](#toc)
 
 ### Attributed Projects
-- [**importpw/import**](https://github.com/importpw/import)
-
-[//]: # (- [**niieani/bash-oo-framework**]&#40;https://github.com/niieani/bash-oo-framework&#41;)
-
-[//]: # (- [**bpkg/bpkg**]&#40;https://github.com/bpkg/bpkg&#41;)
-
-[//]: # (- [**bpm-rocks/bpm**]&#40;https://github.com/bpm-rocks/bpm&#41;)
-
-[//]: # (- [**labbots/bash-utility**]&#40;https://github.com/labbots/bash-utility&#41;)
-
-[//]: # ()
-[//]: # (### Used by Bash Bits)
-
-[//]: # ()
-[//]: # (- [**reconquest/shdoc**]&#40;https://github.com/reconquest/shdoc&#41;)
-
-[//]: # (- [**reconquest/tests.sh**]&#40;https://github.com/reconquest/tests.sh&#41;)
+- [**importpw/import**](https://github.com/importpw/import) by Nathan Rajlich
 
 [`^ Top`](#toc)
 
