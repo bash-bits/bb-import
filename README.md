@@ -116,7 +116,7 @@ This script will automagically install BB-Import on your local machine in `SHEBA
 
 #### [CLONE THE REPO](#toc)
 
-If you want to get fussy and set all your own options for everything (one of *THOSE* people), then you're going to want to clone a copy of the repo to your local machine and install it manually.
+If you want to get fussy and set all your own options for everything, then you're going to want to clone a copy of the repo to your local machine and install it manually.
 
 First step, is to clone the repo:
 
@@ -126,7 +126,7 @@ cd your/path
 bash install.sh
 ```
 
-Of course, because you're one of *THOSE* people, you're probably only going to want to execute that last line after you've had a good sticky-beak at the options available in the accompanying bb-import.ini configuration file.  I'm sure you won't be disappointed - there's PLENTY of options in BB-Import that you can customize to your own liking.
+Of course, you're probably only going to want to execute that last line after you've had a good sticky-beak at the options available in the accompanying bb-import.ini configuration file.  I'm sure you won't be disappointed - there's PLENTY of options in BB-Import that you can customize to your own liking.
 
 
 [`^ Top`](#toc)
