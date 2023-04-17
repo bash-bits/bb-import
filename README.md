@@ -1,6 +1,8 @@
 <h1 align="center">
 
 <img src="https://user-images.githubusercontent.com/6827931/226166354-a7cfea07-00c0-4167-bf0a-adf323d9d125.png" alt="Bash Bits Modular Bash Library" />
+<br />
+<img src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/bash_logo-128x128.png" alt="Bourne Again Shell" />
 
 [BB-Import v-1.0.0](https://github.com/bash-bits/bb-import/releases/tag/v-1.0.0)
 
