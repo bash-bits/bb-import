@@ -87,7 +87,7 @@ Once BB-Import has downloaded that project / repo / script to your local machine
 
 AND THE NEXT VERSION WILL EVEN KEEP TRACK OF THE LATEST VERSIONS OF ALL IMPORTS ... which means you're ALWAYS going to have the absolute latest versions of all of your dependencies FOREVERMORE (or, until you decide for some reason that you don't want to use BB-Import anymore)
 
-> I have to admit that this wasn't my idea.  I've modeled BB-Import after the _INCREDIBLE_ `<a href="https://">importpw/import</a>` project by Nathan Rajlich, and decided to make a modified version of it a CORE feature of my Bash-Bits project the very moment I laid eyes on it.
+> I have to admit that this wasn't my idea.  I've modeled BB-Import after the _INCREDIBLE_ `[importpw/import](https://github.com/importpw/import)` project by Nathan Rajlich, and decided to make a modified version of it a CORE feature of my Bash-Bits project the very moment I laid eyes on it.
 > 
 > As always ... I've only been able to do what I do, because I've stood upon the shoulders of giants to do it.
 
