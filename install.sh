@@ -16,22 +16,20 @@
 #
 # ENVIRONMENT VARIABLES
 #
-declare -gx IMPORT_DEBUG=1
+declare IMPORT_DEBUG=1
 #
 # ANSI VARIABLES
 #
-[[ -z "$ANSI_ESC" ]] && declare ANSI_ESC=$'\033'
-[[ -z "$ANSI_CSI" ]] && declare ANSI_CSI="${ANSI_ESC}["
-[[ -z "$ANSI_OSC" ]] && declare ANSI_OSC="${ANSI_ESC}]"
-[[ -z "$ANSI_ST" ]] && declare ANSI_ST="${ANSI_ESC}\\"
+declare ANSI_ESC=$'\033'
+declare ANSI_CSI="${ANSI_ESC}["
 #
 # COLOR VARIABLES
 #
-[[ -z "$RED" ]] && declare RED="$(printf '%s31m' "$ANSI_CSI";)"
-[[ -z "$BLUE" ]] && declare BLUE="$(printf '%s94m' "$ANSI_CSI";)"
-[[ -z "$GREEN" ]] && declare GREEN="$(printf '%s32m' "$ANSI_CSI";)"
-[[ -z "$GOLD" ]] && declare GOLD="$(printf '%s33m' "$ANSI_CSI";)"
-[[ -z "$RESET" ]] && declare RESET="$(printf '%s0m' "$ANSI_CSI";)"
+declare RED="$(printf '%s31m' "$ANSI_CSI";)"
+declare BLUE="$(printf '%s94m' "$ANSI_CSI";)"
+declare GREEN="$(printf '%s32m' "$ANSI_CSI";)"
+declare GOLD="$(printf '%s33m' "$ANSI_CSI";)"
+declare RESET="$(printf '%s0m' "$ANSI_CSI";)"
 #
 # LOCAL CONFIG VARIABLES
 #
@@ -56,13 +54,13 @@ SYMBOL_SUCCESS="[+]"
 #
 # @exitcode     0   Success
 # @exitcode     1   Failure
+# @exitcode     2   ERROR - Requires Argument
+# @exitcode     3   ERROR - Invalid Argument
 # ------------------------------------------------------------------
 install::echoAlias()
 {
 	local msg="${1:-}"
-	local COLOR OUTPUT
-	local PREFIX=""
-	local SUFFIX=""
+	local COLOR OUTPUT PREFIX SUFFIX
 	local STREAM="1"
 
 	local OUTARGS=()
