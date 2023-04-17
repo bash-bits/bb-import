@@ -55,7 +55,7 @@ There are essentially 4 different "types" of BB-Import can do for you:
 bb::import bb-ansi
 ```
 
-2 - A **FOREIGN** import - this is where you're importing code from ANY GitHub repository which is formatted in the way BB-Import expects it to be (more on that later) - like so:
+2 - A **NAMESPACED** import - this is where you're importing code from ANY GitHub repository which is formatted in the way BB-Import expects it to be (more on that later) - like so:
 
 ```shell
 bb::import myorg/myrepo

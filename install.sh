@@ -348,7 +348,7 @@ install::shebang()
     echo
     echo "bb::import bb-ansi                      # IMPLICIT IMPORT of Bash-Bits Module"
     echo "bb::import bb-ansi@1.1.0                # IMPLICIT IMPORT of specific version"
-    echo "bb::import github-org/repo              # FOREIGN IMPORT of a GitHub Repository"
+    echo "bb::import github-org/repo              # NAMESPACED IMPORT of a GitHub Repository"
     echo "bb::import https://example.com/project  # EXPLICIT IMPORT"
     echo "bb::import ../../myfile.sh              # RELATIVE IMPORT"
     echo

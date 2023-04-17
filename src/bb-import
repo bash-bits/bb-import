@@ -578,7 +578,7 @@ bb::import()
                 url="${IMPORT_SERVER_IMPLICIT_LATEST:-https://raw.githubusercontent.com/bash-bits/${repo}/master/src/${repo}}"
             fi
         elif ! echo "$url" | grep "://" > /dev/null && echo "$url" | awk -F/ '{print $1}' | grep '\.' > /dev/null; then
-            # foreign import (eg: bb::import org/repo)
+            # namespaced import (eg: bb::import org/repo)
             # check for version tag
             if echo "$url" | awk -F@ '{print $1}' > /dev/null; then
                 # has version tag
@@ -587,13 +587,13 @@ bb::import()
                 tag="${repo#*@}"
                 repo="${repo%@*}"
                 # rewrite url
-                url="${IMPORT_SERVER_FOREIGN_TAG:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
+                url="${IMPORT_SERVER_NAMESPACED_TAG:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
             else
                 # latest version
                 org="${url%/*}"
                 repo="${url#*/}"
                 # rewrite url
-                url="${IMPORT_SERVER_FOREIGN_LATEST:-https://raw.githubusercontent.com/${org}/${repo}/master/src/${repo}}"
+                url="${IMPORT_SERVER_NAMESPACED_LATEST:-https://raw.githubusercontent.com/${org}/${repo}/master/src/${repo}}"
             fi
         elif echo "$url" | grep "://" > /dev/null; then
             # explicit import (eg: bb::import https://github.com/org/repo)
