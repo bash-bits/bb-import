@@ -67,29 +67,70 @@ install::echoAlias()
     shift
 
     [[ -z "$msg" ]] && { echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
+	options=$(getopt -l "err,color:,prefix:,suffix:,escape,noline" -o "c:p:s:en" -a -- "$@")
 
-    while getopts ":c:p:s:eEn" char
-    do
-        case "$char" in
-            c)
-                COLOR="${OPTARG}";;
-            p)
-                PREFIX="${OPTARG}";;
-            s)
-                SUFFIX="${OPTARG}";;
-            e)
-                STREAM=2;;
-            E)
-                OUTARGS+=("-e");;
-            n)
-                OUTARGS+=("-n");;
-            :)
-                echo "${GOLD}${SYMBOL_WARNING} WARNING :: install::echoAlias :: Unexpected Argument!${RESET}";;
-            *)
-                echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Invalid Argument!${RESET}"
-                return 3;;
-        esac
-    done
+	eval set --"$options"
+
+	while true
+	do
+		case "$1" in
+			--err)
+				STREAM="2"
+				shift
+				;;
+			-c|--color)
+				COLOR="$2"
+				shift 2
+				;;
+			-p|--prefix)
+				PREFIX="$2"
+				shift 2
+				;;
+			-s|--suffix)
+				SUFFIX="$2"
+				shift 2
+				;;
+			-e|--escape)
+				OUTARGS+=("-e")
+				shift
+				;;
+			-n|--noline)
+				OUTARGS+=("-n")
+				shift
+				;;
+			--)
+				shift
+				break
+				;;
+			*)
+				echo "${RED}ERROR :: echoAlias :: Invalid Argument '$1'${RESET}"
+				return 1
+				;;
+		esac
+	done
+
+#    while getopts ":c:p:s:eEn" char
+#    do
+#        case "$char" in
+#            c)
+#                COLOR="${OPTARG}";;
+#            p)
+#                PREFIX="${OPTARG}";;
+#            s)
+#                SUFFIX="${OPTARG}";;
+#            e)
+#                STREAM=2;;
+#            E)
+#                OUTARGS+=("-e");;
+#            n)
+#                OUTARGS+=("-n");;
+#            :)
+#                echo "${GOLD}${SYMBOL_WARNING} WARNING :: install::echoAlias :: Unexpected Argument!${RESET}";;
+#            *)
+#                echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Invalid Argument!${RESET}"
+#                return 3;;
+#        esac
+#    done
 
     [[ -n "$COLOR" ]] && _0="${RESET}" || _0=""
 
