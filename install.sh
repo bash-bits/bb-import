@@ -66,7 +66,7 @@ install::echoAlias()
 
     shift
 
-    [[ -z "$msg" ]] && { echo "${RED}ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
+    [[ -z "$msg" ]] && { echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
 
     while getopts ":c:p:s:eEn" char
     do
@@ -84,9 +84,9 @@ install::echoAlias()
             n)
                 OUTARGS+=("-n");;
             :)
-                echo "${GOLD}WARNING :: install::echoAlias :: Unexpected Argument!${RESET}";;
+                echo "${GOLD}${SYMBOL_WARNING} WARNING :: install::echoAlias :: Unexpected Argument!${RESET}";;
             *)
-                echo "${RED}ERROR :: install::echoAlias :: Invalid Argument!${RESET}"
+                echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Invalid Argument!${RESET}"
                 return 3;;
         esac
     done
@@ -95,7 +95,9 @@ install::echoAlias()
 
     OUTPUT="${COLOR}${PREFIX}${msg}${SUFFIX}${_0}"
 
-    [[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
+#    [[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
+
+    echo "${OUTPUT}"
 
     return 0
 }
