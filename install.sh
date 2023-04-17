@@ -368,46 +368,46 @@ install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb
 #    echoRed "NOTE: YOU ARE GOING TO WANT TO WRITE SOME OF THIS DOWN SOMEWHERE!"
 #    echo
 #}
-## ------------------------------------------------------------------
-## install::menu
-## ------------------------------------------------------------------
-#install::menu()
-#{
-#    clear
-#	echoGold "=================================================================="
-#	echoGold "BASH-BITS CORE INSTALLER MENU"
-#	echoGold "=================================================================="
-#	echo
-#	echo "Install Type:"
-#	echo "  1) Shebang"
-#	echo "  2) Source"
-#	echo "Other Options:"
-#	echo "  3) Uninstall"
-#	echo "  Q) Quit"
-#	echo
-#	echoSuccess "Type your selection: (${GOLD}1${RESET}/2/3/Q) " -n
-#	while [[ ! "$INST" =~ [123Qq] ]]
-#	do
-#	    read -r -n 1 INST
-#	    [[ -z "$INST" ]] && INST="1"
-#	done
-#	echo
-#
-#	case "$INST" in
-#	    1|2)
-#	        install::install "$INST"
-#	        ;;
-#	    3)
-#	        install::uninstall
-#	        ;;
-#	    q|Q)
-#	        install::quit
-#	        ;;
-#	esac
-#
-#	install::returnQuit
-#}
-## ==================================================================
-## MAIN
-## ==================================================================
-#install::menu
+# ------------------------------------------------------------------
+# install::menu
+# ------------------------------------------------------------------
+install::menu()
+{
+    clear
+	echoGold "=================================================================="
+	echoGold "BASH-BITS CORE INSTALLER MENU"
+	echoGold "=================================================================="
+	echo
+	echo "Install Type:"
+	echo "  1) Shebang"
+	echo "  2) Source"
+	echo "Other Options:"
+	echo "  3) Uninstall"
+	echo "  Q) Quit"
+	echo
+	echoSuccess "Type your selection: (${GOLD}1${RESET}/2/3/Q) " -n
+	while [[ ! "$INST" =~ [123Qq] ]]
+	do
+	    read -r -n 1 INST
+	    [[ -z "$INST" ]] && INST="1"
+	done
+	echo
+
+	case "$INST" in
+	    1|2)
+	        install::install "$INST"
+	        ;;
+	    3)
+	        install::uninstall
+	        ;;
+	    q|Q)
+	        install::quit
+	        ;;
+	esac
+
+	install::returnQuit
+}
+# ==================================================================
+# MAIN
+# ==================================================================
+install::menu
