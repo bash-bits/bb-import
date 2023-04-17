@@ -372,9 +372,9 @@ install::source()
 install::menu()
 {
     clear
-	echoGold "=================================================================="
-	echoGold "BASH-BITS CORE INSTALLER MENU"
-	echoGold "=================================================================="
+	echo "=================================================================="
+	echo "BASH-BITS CORE INSTALLER MENU"
+	echo "=================================================================="
 	echo
 	echo "Install Type:"
 	echo "  1) Shebang"
