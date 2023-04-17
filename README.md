@@ -46,19 +46,17 @@ The most important and magical part of Bash Bits!
 
 BB-Import is THE library you are going to end up using in EVERY file of EVERY Bash script you write from now on.
 
-It's obviously a utility which imports external code / libraries into your scripts ... it's HOW BB-Import does it which is special.
-
-Not just for installing `Bash-Bits` modules, you can use `BB-Import` to retrieve ANY compatible module from GitHub or any other server, or locally-stored files like so:
+It's obviously a utility which imports external code / libraries into your scripts ... it's HOW BB-Import does it which is special.  Not just for installing `Bash-Bits` modules, you can use `BB-Import` to retrieve ANY compatible module from GitHub or any other server, or locally-stored files like so:
 
 ```shell
-#!/usr/bin/env bb-import                        # SHEBANG INSTALL - Requires modification of your system $PATH
+#!/usr/bin/env bb-import                    # SHEBANG INSTALL - Modify your system $PATH
 
-source ~/.bb/bb-import                          # SOURCE INSTALL - Simple and effective
+source ~/.bb/bb-import                      # SOURCE INSTALL - Simple and effective
 
-bb::import bb-ansi                              # IMPLICIT IMPORT - Import official Bash-Bits module
-bb::import myaccount/myrepo                     # NAMESPACED IMPORT - Import ANY properly-formatted module from GitHub
-bb::import https://myserver.com/project         # EXPLICIT IMPORT - Import properly-formatted modules from ANY server
-bb::import ../../myfile.sh                      # RELATIVE IMPORT - Import ANY file from your local environment
+bb::import bb-ansi                          # IMPLICIT IMPORT - Official Bash-Bits Modules
+bb::import myaccount/myrepo                 # NAMESPACED IMPORT - Formatted GitHub Project
+bb::import https://myserver.com/project     # EXPLICIT IMPORT - Custom Download Location
+bb::import ../../myfile.sh                  # RELATIVE IMPORT - Local Environment
 ```
 
 You can also specify specific versions of modules for import:
