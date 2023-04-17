@@ -373,6 +373,7 @@ install::source()
 install::menu()
 {
     clear
+    echo
 	echoGold "=================================================================="
 	echoGold "BASH-BITS CORE INSTALLER MENU"
 	echoGold "=================================================================="
