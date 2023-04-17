@@ -295,7 +295,7 @@ install::quit()
 install::returnQuit()
 {
     echo
-    echoSuccess "  Do you want to (R)eturn to the Menu, or (Q)uit? (R/${GOLD}Q${RESET}) " -n
+    echoSuccess "Do you want to (R)eturn to the Menu, or (Q)uit? (R/${GOLD}Q${RESET}) " -n
     while [[ ! "$RESP" =~ [rRqQ] ]]
     do
         read -r -n 1 RESP
