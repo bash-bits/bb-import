@@ -72,51 +72,34 @@ echoAlias()
 
 	local OUTARGS=()
 
-	[[ -z "$msg" ]] && { echo "${RED}ERROR :: echoAlias :: Requires Argument!${RESET}"; return 1; }
+	[[ -z "$msg" ]] && { echo "${RED}ERROR :: echoAlias :: Requires Argument!${RESET}"; return 2; }
 
 	shift
 
-	options=$(getopt -l "err,color:,prefix:,suffix:,escape,noline" -o "c:p:s:en" -a -- "$@")
-
-	eval set --"$options"
-
-	while true
-	do
-		case "$1" in
-			--err)
-				STREAM="2"
-				shift
-				;;
-			-c|--color)
-				COLOR="$2"
-				shift 2
-				;;
-			-p|--prefix)
-				PREFIX="$2"
-				shift 2
-				;;
-			-s|--suffix)
-				SUFFIX="$2"
-				shift 2
-				;;
-			-e|--escape)
-				OUTARGS+=("-e")
-				shift
-				;;
-			-n|--noline)
-				OUTARGS+=("-n")
-				shift
-				;;
-			--)
-				shift
-				break
-				;;
-			*)
-				echo "${RED}ERROR :: echoAlias :: Invalid Argument '$1'${RESET}"
-				return 1
-				;;
-		esac
-	done
+    while getopts ":c:p:s:eEn" char
+    do
+        case "$char" in
+            c)                              # color
+                COLOR="${OPTARG}";;
+            p)                              # prefix
+                PREFIX="${OPTARG}";;
+            s)                              # suffix
+                SUFFIX="${OPTARG}";;
+            e)                              # error
+                STREAM=2;;
+            E)                              # escape
+                OUTARGS+=("-e");;
+            n)                              # noline
+                OUTARGS+=("-n");;
+            :)
+                echo "${GOLD}WARNING :: echoAlias :: Unexpected Argument!${RESET}" >&2
+                ;;
+            *)
+                echo "${RED}ERROR :: echoAlias :: Invalid Argument!${RESET}" >&2
+                return 3
+                ;;
+        esac
+    done
 
 	OUTPUT="${COLOR}${PREFIX}$msg${SUFFIX}${RESET}"
 
