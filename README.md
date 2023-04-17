@@ -27,7 +27,6 @@ The most important and magical part of Bash Bits!
 - [What's Included?](#-whats-included)
 - [Installation](#-installation)
   - [AUTOMAGIC-INSTALL](#automagic-install)
-  - [AUTOMAGIC DOWNLOAD](#automagic-download)
   - [CLONE THE REPO](#clone-the-repo)
 - [Author/Maintainer](#-author--maintainer)
 - [Security](#-security)
@@ -114,14 +113,6 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 ```
 
 This script will automagically install BB-Import on your local machine in `SHEBANG` mode, into a directory under your HOME directory.  If you want to change any parameters, you can do so, of course - but you're going to have to clone a copy of the repo to do it (see below).
-
-#### [AUTOMAGIC-DOWNLOAD](#toc)
-
-You can, if you want, "install" Bash-Bits in such a way as to force the download of the MOST up-to-date version available each and every time you use it ... just be aware that this WILL NOT work offline, and is going to cost you an HTTP request every time you want to run your code.  Just include the following code snippet at the top of each file you want to use BB-Import in, and proceed normally from then on:
-
-```shell
-bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import)
-```
 
 #### [CLONE THE REPO](#toc)
 
