@@ -14,7 +14,7 @@
 # PREFLIGHT
 # ==================================================================
 # set debug mode = false
-declare -gx DEBUG=false
+declare -gx DEBUG=true
 # if script is called with 'debug' as an argument, then set debug mode
 if [[ "${1,,}" == "debug" ]]; then shift; DEBUG=true; set -- "${@}"; set -axeET; else set -aeET; fi
 # ==================================================================
