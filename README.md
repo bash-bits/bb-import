@@ -110,7 +110,7 @@ The easiest way to install Bash Bits is using the "**SUPER-AWESOME AUTOMAGIC INS
 All you need to do is run the following snippet from your terminal:
 
 ```shell
-sudo su -c "bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/install.sh)" root
+bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/install.sh)
 ```
 
 This script will automagically install BB-Import on your local machine in `SHEBANG` mode, into a directory under your HOME directory.  If you want to change any parameters, you can do so, of course - but you're going to have to clone a copy of the repo to do it (see below).
