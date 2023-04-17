@@ -13,14 +13,17 @@
 # ==================================================================
 # PREFLIGHT
 # ==================================================================
-
+# set debug mode = false
+declare -gx DEBUG=false
+# if script is called with 'debug' as an argument, then set debug mode
+if [[ "${1,,}" == "debug" ]]; then shift; DEBUG=true; set -- "${@}"; set -axeET; else set -aeET; fi
 # ==================================================================
 # VARIABLES
 # ==================================================================
 #
 # ENVIRONMENT VARIABLES
 #
-declare IMPORT_DEBUG=1
+declare -gx IMPORT_DEBUG=1
 #
 # ANSI VARIABLES
 #
