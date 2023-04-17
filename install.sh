@@ -332,7 +332,7 @@ install::shebang()
     echo "Include the following shebang at the top of every file you want to"
     echo "use BB-Import in:"
     echo
-    echo "#!/usr/bin/env bb-import"
+    echoGold "#!/usr/bin/env bb-import"
     echo
     echo "And import files like so:"
     echo
@@ -357,6 +357,7 @@ install::shebang()
 install::source()
 {
     local cache="$1"
+    local cacheDir="$(dirname "$cache")"
     local cachePath="$2"
     local relative="$3"
 
@@ -366,6 +367,27 @@ install::source()
     echo
     echoRed "NOTE: YOU ARE GOING TO WANT TO WRITE SOME OF THIS DOWN SOMEWHERE!"
     echo
+    echo "Include the following code at the top of every file you want to"
+    echo "use BB-Import in:"
+    echo
+    echoGold "source ~/.bb/bb-import"
+    echo
+    echo "And import files like so:"
+    echo
+    echo "bb::import bb-ansi                      # IMPLICIT IMPORT of Bash-Bits Module"
+    echo "bb::import bb-ansi@1.1.0                # IMPLICIT IMPORT of specific version"
+    echo "bb::import github-org/repo              # NAMESPACED IMPORT of a GitHub Repository"
+    echo "bb::import https://example.com/project  # EXPLICIT IMPORT"
+    echo "bb::import ../../myfile.sh              # RELATIVE IMPORT"
+    echo
+    echo "And that's really all there is to it."
+    echo
+    echo "Important Locations:"
+    echo "  - Cache Directory: '$cacheDir'"
+    echo "  - Cache Path: '$cachePath'"
+    echo "  - Symlink: '$relative'"
+    echo
+	echoGold "=================================================================="
 }
 # ------------------------------------------------------------------
 # install::menu
