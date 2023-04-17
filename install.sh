@@ -293,7 +293,7 @@ install::quit()
     echoGold "Program terminated at user request"
     echo
 
-    return 0
+    exit 0
 }
 # ------------------------------------------------------------------
 # install::returnQuit
@@ -307,6 +307,7 @@ install::returnQuit()
         read -r -n 1 RESP
         [[ -z "$RESP" ]] && RESP="Q"
     done
+    echo
 
     case "$RESP" in
         r|R)
