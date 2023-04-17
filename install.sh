@@ -64,9 +64,6 @@ install::echoAlias()
     local STREAM=1
     local -a OUTARGS
 
-    echo "$msg"
-    exit
-
     shift
 
     [[ -z "$msg" ]] && { echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
@@ -96,10 +93,9 @@ install::echoAlias()
 
     [[ -n "$COLOR" ]] && _0="${RESET}" || _0=""
 
-    #OUTPUT="${COLOR}${PREFIX}${msg}${SUFFIX}${_0}"
-    OUTPUT="$msg"
+    OUTPUT="${COLOR}${PREFIX}${msg}${SUFFIX}${_0}"
 
-#    [[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
+    [[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
 
     echo "${OUTPUT}"
 
@@ -108,7 +104,7 @@ install::echoAlias()
 #
 # COLOUR ALIASES
 #
-echoRed() { install::echoAlias "$1" -c="${RED}" "${@:2}"; }
+echoRed() { install::echoAlias "$1" -c "${RED}" "${@:2}"; }
 echoBlue() { install::echoAlias "$1" -c="${BLUE}" "${@:2}"; }
 echoGreen() { install::echoAlias "$1" -c="${GREEN}" "${@:2}"; }
 echoGold() { install::echoAlias "$1" -c="${GOLD}" "${@:2}"; }
