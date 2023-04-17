@@ -57,66 +57,66 @@ SYMBOL_SUCCESS="[+]"
 # @exitcode     0   Success
 # @exitcode     1   Failure
 # ------------------------------------------------------------------
-#install::echoAlias()
-#{
-#	local msg="${1:-}"
-#	local COLOR OUTPUT
-#	local PREFIX=""
-#	local SUFFIX=""
-#	local STREAM="1"
+install::echoAlias()
+{
+	local msg="${1:-}"
+	local COLOR OUTPUT
+	local PREFIX=""
+	local SUFFIX=""
+	local STREAM="1"
+
+	local OUTARGS=()
+
+	[[ -z "$msg" ]] && { echo "${RED}ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
+
+	shift
+
+    while getopts ":c:p:s:eEn" char
+    do
+        case "$char" in
+            c)                              # color
+                COLOR="${OPTARG}";;
+            p)                              # prefix
+                PREFIX="${OPTARG}";;
+            s)                              # suffix
+                SUFFIX="${OPTARG}";;
+            e)                              # error
+                STREAM=2;;
+            E)                              # escape
+                OUTARGS+=("-e");;
+            n)                              # noline
+                OUTARGS+=("-n");;
+            :)
+                echo "${GOLD}WARNING :: install::echoAlias :: Unexpected Argument!${RESET}" >&2
+                ;;
+            *)
+                echo "${RED}ERROR :: install::echoAlias :: Invalid Argument!${RESET}" >&2
+                return 3
+                ;;
+        esac
+    done
+
+	OUTPUT="${COLOR}${PREFIX}$msg${SUFFIX}${RESET}"
+
+	[[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "$OUTPUT" >&2 || echo "${OUTARGS[@]}" "$OUTPUT"
+
+	return 0
+}
 #
-#	local OUTARGS=()
+# COLOUR ALIASES
 #
-#	[[ -z "$msg" ]] && { echo "${RED}ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
+if ! command -v echoRed; then echoGold() { install::echoAlias "$1" -c="${RED}" "${@:2}"; } fi
+if ! command -v echoBlue; then echoGold() { install::echoAlias "$1" -c="${BLUE}" "${@:2}"; } fi
+if ! command -v echoGreen; then echoGold() { install::echoAlias "$1" -c="${GREEN}" "${@:2}"; } fi
+if ! command -v echoGold; then echoGold() { install::echoAlias "$1" -c="${GOLD}" "${@:2}"; } fi
 #
-#	shift
+# MESSAGE ALIASES
 #
-#    while getopts ":c:p:s:eEn" char
-#    do
-#        case "$char" in
-#            c)                              # color
-#                COLOR="${OPTARG}";;
-#            p)                              # prefix
-#                PREFIX="${OPTARG}";;
-#            s)                              # suffix
-#                SUFFIX="${OPTARG}";;
-#            e)                              # error
-#                STREAM=2;;
-#            E)                              # escape
-#                OUTARGS+=("-e");;
-#            n)                              # noline
-#                OUTARGS+=("-n");;
-#            :)
-#                echo "${GOLD}WARNING :: install::echoAlias :: Unexpected Argument!${RESET}" >&2
-#                ;;
-#            *)
-#                echo "${RED}ERROR :: install::echoAlias :: Invalid Argument!${RESET}" >&2
-#                return 3
-#                ;;
-#        esac
-#    done
-#
-#	OUTPUT="${COLOR}${PREFIX}$msg${SUFFIX}${RESET}"
-#
-#	[[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "$OUTPUT" >&2 || echo "${OUTARGS[@]}" "$OUTPUT"
-#
-#	return 0
-#}
-##
-## COLOUR ALIASES
-##
-#if ! command -v echoRed; then echoGold() { install::echoAlias "$1" -c="${RED}" "${@:2}"; } fi
-#if ! command -v echoBlue; then echoGold() { install::echoAlias "$1" -c="${BLUE}" "${@:2}"; } fi
-#if ! command -v echoGreen; then echoGold() { install::echoAlias "$1" -c="${GREEN}" "${@:2}"; } fi
-#if ! command -v echoGold; then echoGold() { install::echoAlias "$1" -c="${GOLD}" "${@:2}"; } fi
-##
-## MESSAGE ALIASES
-##
-#if ! command -v echoError; then echoError() { install::echoAlias "$SYMBOL_ERROR $1" -c="${RED}" -e "${@:2}"; } fi
-#if ! command -v echoWarning; then echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -c="${GOLD}" -e "${@:2}"; } fi
-#if ! command -v echoInfo; then echoInfo() { install::echoAlias "$SYMBOL_INFO $1" -c="${BLUE}" "${@:2}"; } fi
-#if ! command -v echoSuccess; then echoSuccess() { install::echoAlias "$SYMBOL_SUCCESS $1" -c="${GREEN}" "${@:2}"; } fi
-#if ! command -v errorReturn; then errorReturn() { install::echoAlias "$SYMBOL_ERROR $1" -c="${RED}" -e; return "${2:-1}"; } fi
+if ! command -v echoError; then echoError() { install::echoAlias "$SYMBOL_ERROR $1" -c="${RED}" -e "${@:2}"; } fi
+if ! command -v echoWarning; then echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -c="${GOLD}" -e "${@:2}"; } fi
+if ! command -v echoInfo; then echoInfo() { install::echoAlias "$SYMBOL_INFO $1" -c="${BLUE}" "${@:2}"; } fi
+if ! command -v echoSuccess; then echoSuccess() { install::echoAlias "$SYMBOL_SUCCESS $1" -c="${GREEN}" "${@:2}"; } fi
+if ! command -v errorReturn; then errorReturn() { install::echoAlias "$SYMBOL_ERROR $1" -c="${RED}" -e; return "${2:-1}"; } fi
 # ------------------------------------------------------------------
 # scriptPath
 # ------------------------------------------------------------------
