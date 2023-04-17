@@ -570,12 +570,13 @@ bb::import()
                 repo="${url%@*}"
                 tag="${url#*@}"
                 # rewrite url
-                url="${IMPORT_SERVER_IMPLICIT_TAG:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}}"
+                url="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}}"
             else
                 # latest version
                 repo="${url%@*}"
+                tag="master"
                 # rewrite url
-                url="${IMPORT_SERVER_IMPLICIT_LATEST:-https://raw.githubusercontent.com/bash-bits/${repo}/master/src/${repo}}"
+                url="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}}"
             fi
         elif ! echo "$url" | grep "://" > /dev/null && echo "$url" | awk -F/ '{print $1}' | grep '\.' > /dev/null; then
             # namespaced import (eg: bb::import org/repo)
@@ -587,13 +588,14 @@ bb::import()
                 tag="${repo#*@}"
                 repo="${repo%@*}"
                 # rewrite url
-                url="${IMPORT_SERVER_NAMESPACED_TAG:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
+                url="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
             else
                 # latest version
                 org="${url%/*}"
                 repo="${url#*/}"
+                tag="master"
                 # rewrite url
-                url="${IMPORT_SERVER_NAMESPACED_LATEST:-https://raw.githubusercontent.com/${org}/${repo}/master/src/${repo}}"
+                url="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
             fi
         elif echo "$url" | grep "://" > /dev/null; then
             # explicit import (eg: bb::import https://github.com/org/repo)
@@ -608,15 +610,16 @@ bb::import()
                 url="${url:0:$(( ${#url} - $repoLen ))}"
                 org="${url##*/}"
                 # rewrite url
-                url="${IMPORT_SERVER_EXPLICIT_TAG:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
+                url="${IMPORT_SERVER_EXPLICIT:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
             else
                 # latest version
                 repo="${url##*/}"
                 # shorten url
                 url="${url:0:$(( ${#url} - ${#repo} - 1 ))}"
                 org="${url##*/}"
+                tag="master"
                 # rewrite url
-                url="${IMPORT_SERVER_EXPLICIT_LATEST:-https://raw.githubusercontent.com/${org}/${repo}/master/src/${repo}}"
+                url="${IMPORT_SERVER_EXPLICIT:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
             fi
         elif echo "$url" | grep "./" > /dev/null && ! echo "$url" | awk -F@ '{print $1}' > /dev/null; then
             # relative import (eg: bb::import ../../file.sh)

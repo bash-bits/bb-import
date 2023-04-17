@@ -39,24 +39,24 @@ SYMBOL_ERROR="[-]"
 SYMBOL_WARNING="[!]"
 SYMBOL_INFO="[=]"
 SYMBOL_SUCCESS="[+]"
-## ==================================================================
-## FUNCTIONS
-## ==================================================================
-## ------------------------------------------------------------------
-## echoAlias
-## ------------------------------------------------------------------
-## @description Master alias function for `echo` command
-##
-## @arg  $1			[string]        String to be rendered
-## @arg  -c="$VAR"   [option]        Color alias as defined above 				(required)
-## @arg  -p='string' [option]        String to prefix to $1 						(optional)
-## @arg  -s='string' [option]        String to suffix to $1 						(optional)
-## @arg  -e          [option]        Enable escape codes 						(optional)
-## @arg  -n          [option]        Disable newline at end of rendered string 	(optional)
-##
-## @exitcode     0   Success
-## @exitcode     1   Failure
-## ------------------------------------------------------------------
+# ==================================================================
+# FUNCTIONS
+# ==================================================================
+# ------------------------------------------------------------------
+# echoAlias
+# ------------------------------------------------------------------
+# @description Master alias function for `echo` command
+#
+# @arg  $1			[string]        String to be rendered
+# @arg  -c="$VAR"   [option]        Color alias as defined above 				(required)
+# @arg  -p='string' [option]        String to prefix to $1 						(optional)
+# @arg  -s='string' [option]        String to suffix to $1 						(optional)
+# @arg  -e          [option]        Enable escape codes 						(optional)
+# @arg  -n          [option]        Disable newline at end of rendered string 	(optional)
+#
+# @exitcode     0   Success
+# @exitcode     1   Failure
+# ------------------------------------------------------------------
 #install::echoAlias()
 #{
 #	local msg="${1:-}"
@@ -117,42 +117,42 @@ SYMBOL_SUCCESS="[+]"
 #if ! command -v echoInfo; then echoInfo() { install::echoAlias "$SYMBOL_INFO $1" -c="${BLUE}" "${@:2}"; } fi
 #if ! command -v echoSuccess; then echoSuccess() { install::echoAlias "$SYMBOL_SUCCESS $1" -c="${GREEN}" "${@:2}"; } fi
 #if ! command -v errorReturn; then errorReturn() { install::echoAlias "$SYMBOL_ERROR $1" -c="${RED}" -e; return "${2:-1}"; } fi
-## ------------------------------------------------------------------
-## scriptPath
-## ------------------------------------------------------------------
-## @description Determine the calling script's current path
-##
-## @noargs
-##
-## @stdout The calling script's current path
-## ------------------------------------------------------------------
-#scriptPath() { printf '%s' "$(realpath "${BASH_SOURCE[0]}")"; }
-## ------------------------------------------------------------------
-## install::cacheDir
-## ------------------------------------------------------------------
-## @description Determine the path to bb-import
-##
-## @noargs
-##
-## @stdout The path to bb-import
-## ------------------------------------------------------------------
-#install::cacheDir()
-#{
-#    local home="${HOME:-"$(printf '%s' ~)"}"
-#    local default="$home/.bb"
-#    [ "$(uname -s)" = "Darwin" ] && default="$home/Library/Caches"
-#    printf '%s' "${XDG_CACHE_HOME:-${LOCALAPPDATA:-$default}}/$1"
-#}
-## ------------------------------------------------------------------
-## install::cacheDir::import
-## ------------------------------------------------------------------
-## @description Determine the path to bb-import
-##
-## @noargs
-##
-## @stdout The path to bb-import
-## ------------------------------------------------------------------
-#install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb-import)}"; }
+# ------------------------------------------------------------------
+# scriptPath
+# ------------------------------------------------------------------
+# @description Determine the calling script's current path
+#
+# @noargs
+#
+# @stdout The calling script's current path
+# ------------------------------------------------------------------
+scriptPath() { printf '%s' "$(realpath "${BASH_SOURCE[0]}")"; }
+# ------------------------------------------------------------------
+# install::cacheDir
+# ------------------------------------------------------------------
+# @description Determine the path to bb-import
+#
+# @noargs
+#
+# @stdout The path to bb-import
+# ------------------------------------------------------------------
+install::cacheDir()
+{
+    local home="${HOME:-"$(printf '%s' ~)"}"
+    local default="$home/.bb"
+    [ "$(uname -s)" = "Darwin" ] && default="$home/Library/Caches"
+    printf '%s' "${XDG_CACHE_HOME:-${LOCALAPPDATA:-$default}}/$1"
+}
+# ------------------------------------------------------------------
+# install::cacheDir::import
+# ------------------------------------------------------------------
+# @description Determine the path to bb-import
+#
+# @noargs
+#
+# @stdout The path to bb-import
+# ------------------------------------------------------------------
+install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb-import)}"; }
 ## ------------------------------------------------------------------
 ## install::install
 ## ------------------------------------------------------------------
