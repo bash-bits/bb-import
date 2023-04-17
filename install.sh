@@ -170,7 +170,7 @@ install::install()
 	echoGold "  =================================================================="
     echo
 
-    local user scriptDir repoPath installPath cacheDir cache
+    local scriptDir repoPath installPath cacheDir cache
     local url urlPath cachePath locFile dir linkDir hash hashFile
     local location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import"
 
@@ -333,6 +333,27 @@ install::shebang()
     echo
     echoRed "  NOTE: YOU ARE GOING TO WANT TO WRITE SOME OF THIS DOWN SOMEWHERE!"
     echo
+    echo "  Include the following shebang at the top of every file you want to"
+    echo "  use BB-Import in:"
+    echo
+    echo "  #!/usr/bin/env bb-import"
+    echo
+    echo "  And import files like so:"
+    echo
+    echo "  bb::import bb-ansi                      # IMPLICIT IMPORT of Bash-Bits Module"
+    echo "  bb::import bb-ansi@1.1.0                # IMPLICIT IMPORT of specific version"
+    echo "  bb::import github-org/repo              # FOREIGN IMPORT of a GitHub Repository"
+    echo "  bb::import https://example.com/project  # EXPLICIT IMPORT"
+    echo "  bb::import ../../myfile.sh              # RELATIVE IMPORT"
+    echo
+    echo "  And that's really all there is to it."
+    echo
+    echo "  Important Locations:"
+    echo "      - Cache Directory: '$cacheDir'"
+    echo "      - Cache Path: '$cachePath'"
+    echo "      - Symlink: '$relative'"
+    echo
+	echoGold "  =================================================================="
 }
 # ------------------------------------------------------------------
 # install::source
