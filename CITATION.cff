@@ -5,7 +5,7 @@
 
 cff-version: 1.2.0
 
-title: Bash Bits Import Module
+title: Bash-Bits Import Module
 
 message: >-
   If you use this software, please cite using the
@@ -25,6 +25,6 @@ repository-code: 'https://github.com/bash-bits/bb-import'
 url: 'https://bash-bits.github.io/'
 
 abstract: >-
-  The most critical and most magical part of Bash Bits.
+  The most critical and most magical part of Bash-Bits.  Import dependencies DIRECT from GitHub and other sources!
 
 license: MIT
