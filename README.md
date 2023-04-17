@@ -42,7 +42,55 @@ The most important and magical part of Bash Bits!
 
 ## ⭐ [Project Overview](#toc)
 
-The Bash Bits Import Module - The most important and magical part of Bash Bits!
+**The Bash Bits Import Module - The most important and magical part of Bash Bits!**
+
+BB-Import is THE library you are going to end up using in EVERY file of EVERY Bash script you write from now on.
+
+It's obviously a utility which imports external code / libraries into your scripts ... it's HOW BB-Import does it which is special.
+
+There are essentially 4 different "types" of BB-Import can do for you:
+
+1 - An **IMPLICIT** import - which is where you're importing one of the official Bash-Bits modules, and you only need to use the name of the module as your argument, like so:
+
+```shell
+bb::import bb-ansi
+```
+
+2 - A **FOREIGN** import - this is where you're importing code from ANY GitHub repository which is formatted in the way BB-Import expects it to be (more on that later) - like so:
+
+```shell
+bb::import myorg/myrepo
+```
+
+3 - An **EXPLICIT** import - allows you to import code from ANY SERVER ON THE PLANET ... as long as it's formatted the way BB-Import expects to find it:
+
+```shell
+bb::import https://example.com/myproject
+```
+
+4 - A **RELATIVE** import - means that you can even import code from local directories:
+
+```shell
+bb::import ../../myfile.sh
+```
+
+... and in ANY of the top 3 types of import, you can even import a specific git tag or branch:
+
+```shell
+bb::import bb-ansi@1.1.0
+bb::import myorg/myrepo@2.1.3
+bb::import https://example.com/myproject@1.3.2
+```
+
+But that's not even the best bit ...
+
+Once BB-Import has downloaded that project / repo / script to your local machine, it is cached FOREVER - which means rather than downloading it from the internet every time you want to use the same piece of code, BB-Import will download it once, and from then on will refer to the files in its cache before venturing online.
+
+AND THE NEXT VERSION WILL EVEN KEEP TRACK OF THE LATEST VERSIONS OF ALL IMPORTS ... which means you're ALWAYS going to have the absolute latest versions of all of your dependencies FOREVERMORE (or, until you decide for some reason that you don't want to use BB-Import anymore)
+
+> I have to admit that this wasn't my idea.  I've modeled BB-Import after the _INCREDIBLE_ `<a href="https://">importpw/import</a>` project by Nathan Rajlich, and decided to make a modified version of it a CORE feature of my Bash-Bits project the very moment I laid eyes on it.
+> 
+> As always ... I've only been able to do what I do, because I've stood upon the shoulders of giants to do it.
 
 [`^ Top`](#toc)
 
@@ -65,10 +113,30 @@ All you need to do is run the following snippet from your terminal:
 sudo su -c "bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/install.sh)" root
 ```
 
+This script will automagically install BB-Import on your local machine in `SHEBANG` mode, into a directory under your HOME directory.  If you want to change any parameters, you can do so, of course - but you're going to have to clone a copy of the repo to do it (see below).
+
 #### [AUTOMAGIC-DOWNLOAD](#toc)
 
+You can, if you want, "install" Bash-Bits in such a way as to force the download of the MOST up-to-date version available each and every time you use it ... just be aware that this WILL NOT work offline, and is going to cost you an HTTP request every time you want to run your code.  Just include the following code snippet at the top of each file you want to use BB-Import in, and proceed normally from then on:
+
+```shell
+bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import)
+```
 
 #### [CLONE THE REPO](#toc)
+
+If you want to get fussy and set all your own options for everything (one of *THOSE* people), then you're going to want to clone a copy of the repo to your local machine and install it manually.
+
+First step, is to clone the repo:
+
+```shell
+git clone git@github.com:bash-bits/bb-import your/path
+cd your/path
+bash install.sh
+```
+
+Of course, because you're one of *THOSE* people, you're probably only going to want to execute that last line after you've had a good sticky-beak at the options available in the accompanying bb-import.ini configuration file.  I'm sure you won't be disappointed - there's PLENTY of options in BB-Import that you can customize to your own liking.
+
 
 [`^ Top`](#toc)
 
