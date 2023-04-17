@@ -107,7 +107,7 @@ install::echoAlias()
 echoRed() { install::echoAlias "$1" -c "${RED}" "${@:2}"; }
 echoBlue() { install::echoAlias "$1" -c="${BLUE}" "${@:2}"; }
 echoGreen() { install::echoAlias "$1" -c="${GREEN}" "${@:2}"; }
-echoGold() { install::echoAlias "$1" -c="${GOLD}" "${@:2}"; }
+echoGold() { install::echoAlias "$1" -c "${GOLD}" "${@:2}"; }
 #
 # MESSAGE ALIASES
 #
