@@ -149,7 +149,7 @@ install::cacheDir()
 #
 # @stdout The path to bb-import
 # ------------------------------------------------------------------
-install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(install::cacheDir bb-import)}"; }
+install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(install::cacheDir import)}"; }
 # ------------------------------------------------------------------
 # install::install
 # ------------------------------------------------------------------
@@ -172,7 +172,7 @@ install::install()
 
     installPath="$(install::cacheDir::import)"
     cacheDir="${installPath%/*}"
-    cache="$installPath"
+    cache="$cacheDir"
 
     url="bb-import"
     urlPath="$(echo "$url" | sed 's/\:\///')"
@@ -181,6 +181,11 @@ install::install()
     tmpFile="$cachePath.tmp"
 
     dir="$(dirname "$urlPath")"
+    if [[ "$dir" == "." ]]; then
+        dir="$(realpath "$dir")"
+        dir="${dir##*/}"
+    fi
+
     linkDir="$cache/links/$dir"
 
     echo "Creating directories:"
