@@ -68,7 +68,7 @@ install::echoAlias()
 
     [[ -z "$msg" ]] && { echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
 
-    while getopts ":c:p:s:eEn" char
+    while getopts "c:p:s:eEn" char
     do
         case "$char" in
             c)
@@ -95,9 +95,7 @@ install::echoAlias()
 
     OUTPUT="${COLOR}${PREFIX}${msg}${SUFFIX}${_0}"
 
-    #[[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
-
-    echo "${COLOR}${msg}${_0}"
+    [[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
 
     return 0
 }
@@ -105,17 +103,17 @@ install::echoAlias()
 # COLOUR ALIASES
 #
 echoRed() { install::echoAlias "$1" -c "${RED}" "${@:2}"; }
-echoBlue() { install::echoAlias "$1" -c="${BLUE}" "${@:2}"; }
-echoGreen() { install::echoAlias "$1" -c="${GREEN}" "${@:2}"; }
+echoBlue() { install::echoAlias "$1" -c "${BLUE}" "${@:2}"; }
+echoGreen() { install::echoAlias "$1" -c "${GREEN}" "${@:2}"; }
 echoGold() { install::echoAlias "$1" -c "${GOLD}" "${@:2}"; }
 #
 # MESSAGE ALIASES
 #
-echoError() { install::echoAlias "$SYMBOL_ERROR $1" -c="${RED}" -e "${@:2}"; }
-echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -c="${GOLD}" -e "${@:2}"; }
-echoInfo() { install::echoAlias "$SYMBOL_INFO $1" -c="${BLUE}" "${@:2}"; }
-echoSuccess() { install::echoAlias "$SYMBOL_SUCCESS $1" -c="${GREEN}" "${@:2}"; }
-errorReturn() { install::echoAlias "$SYMBOL_ERROR $1" -c="${RED}" -e; return "${2:-1}"; }
+echoError() { install::echoAlias "$SYMBOL_ERROR $1" -c "${RED}" -e "${@:2}"; }
+echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -c "${GOLD}" -e "${@:2}"; }
+echoInfo() { install::echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; }
+echoSuccess() { install::echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; }
+errorReturn() { install::echoAlias "$SYMBOL_ERROR $1" -c "${RED}" -e; return "${2:-1}"; }
 # ------------------------------------------------------------------
 # scriptPath
 # ------------------------------------------------------------------
@@ -151,16 +149,17 @@ install::cacheDir()
 #
 # @stdout The path to bb-import
 # ------------------------------------------------------------------
-install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb-import)}"; }
+install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(install::cacheDir bb-import)}"; }
 # ------------------------------------------------------------------
 # install::install
 # ------------------------------------------------------------------
 install::install()
 {
     clear
-	echoGold "=================================================================="
-	echoGold "INSTALLING BB-IMPORT MODULE"
-	echoGold "=================================================================="
+    echo
+	echo "${GOLD}=================================================================="
+	echo "INSTALLING BB-IMPORT MODULE"
+	echo "==================================================================${RESET}"
     echo
 
     local scriptDir repoPath installPath cacheDir cache
@@ -306,7 +305,7 @@ install::returnQuit()
         r|R)
             unset INST
             unset RESP
-            install::main
+            install::menu
             ;;
         q|Q)
             install::quit
@@ -396,9 +395,9 @@ install::menu()
 {
     clear
     echo
-	echoGold "=================================================================="
-	echoGold "BASH-BITS CORE INSTALLER MENU"
-	echoGold "=================================================================="
+	echo "${GOLD}=================================================================="
+	echo "BASH-BITS CORE INSTALLER MENU"
+	echo "==================================================================${RESET}"
 	echo
 	echo "Install Type:"
 	echo "  1) Shebang"
