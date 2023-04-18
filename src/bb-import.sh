@@ -84,6 +84,10 @@ IMPORT_DEBUG="$BB_IMPORT_OPTIONS_DEBUG"
 #
 [[ -z "$isINT" ]] && declare isINT='^[-+]?\d+$'
 [[ -z "$isOPT" ]] && declare isOPT='^(-([A-Za-z]+)[\s]?([A-Za-z0-9_\.]*))$|^(--(([A-Za-z0-9_\.]+)=?([A-Za-z0-9_\.]*)))$'
+#
+# SCRIPT VARIABLES
+#
+declare importEntryPoint=0
 # ==================================================================
 # FUNCTIONS
 # ==================================================================
@@ -112,60 +116,70 @@ bb::scriptPath() { printf '%s' "$(realpath "${BASH_SOURCE[0]}")"; }
 # @exitcode     0   Success
 # @exitcode     1   Failure
 # ------------------------------------------------------------------
-if ! command -v echoAlias; then
-echoAlias()
+install::echoAlias()
 {
-	local msg="${1:-}"
-	local COLOR OUTPUT
-	local PREFIX=""
-	local SUFFIX=""
-	local STREAM="1"
+    local msg="${1:-}"
+    local COLOR OUTPUT PREFIX SUFFIX _0
+    local STREAM=1
+    local -a OUTARGS
 
-	local OUTARGS=()
+    shift
 
-	[[ -z "$msg" ]] && { echo "${RED}ERROR :: echoAlias :: Requires Argument!${RESET}"; return 1; }
+    [[ -z "$msg" ]] && { echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
 
-	shift
-
-    while getopts ":c:p:s:eEn" char
+    while getopts "c:p:s:eEn" char
     do
         case "$char" in
-            c)                              # color
+            c)
                 COLOR="${OPTARG}";;
-            p)                              # prefix
+            p)
                 PREFIX="${OPTARG}";;
-            s)                              # suffix
+            s)
                 SUFFIX="${OPTARG}";;
-            e)                              # error
+            e)
                 STREAM=2;;
-            E)                              # escape
+            E)
                 OUTARGS+=("-e");;
-            n)                              # noline
+            n)
                 OUTARGS+=("-n");;
             :)
-                echo "${GOLD}WARNING :: echoAlias :: Unexpected Argument!${RESET}" >&2
-                ;;
+                echo "${GOLD}${SYMBOL_WARNING} WARNING :: install::echoAlias :: Unexpected Argument!${RESET}";;
             *)
-                echo "${RED}ERROR :: echoAlias :: Invalid Argument!${RESET}" >&2
-                return 3
-                ;;
+                echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Invalid Argument!${RESET}"
+                return 3;;
         esac
     done
 
-	OUTPUT="${COLOR}${PREFIX}$msg${SUFFIX}${RESET}"
+    [[ -n "$COLOR" ]] && _0="${RESET}" || _0=""
 
-	[[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "$OUTPUT" >&2 || echo "${OUTARGS[@]}" "$OUTPUT"
+    OUTPUT="${COLOR}${PREFIX}${msg}${SUFFIX}${_0}"
 
-	return 0
+    [[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
+
+    return 0
 }
-fi
+#
+# COLOUR ALIASES
+#
+echoRed() { install::echoAlias "$1" -c "${RED}" "${@:2}"; }
+echoBlue() { install::echoAlias "$1" -c "${BLUE}" "${@:2}"; }
+echoGreen() { install::echoAlias "$1" -c "${GREEN}" "${@:2}"; }
+echoGold() { install::echoAlias "$1" -c "${GOLD}" "${@:2}"; }
 #
 # MESSAGE ALIASES
 #
-if ! command -v echoError; then echoError() { echoAlias "$SYMBOL_ERROR $1" -c="${RED}" --err "${@:2}"; } fi
-if ! command -v echoWarning; then echoWarning() { echoAlias "$SYMBOL_WARNING $1" -c="${GOLD}" --err "${@:2}"; } fi
-if ! command -v echoInfo; then echoInfo() { echoAlias "$SYMBOL_INFO $1" -c="${BLUE}" "${@:2}"; } fi
-if ! command -v echoSuccess; then echoSuccess() { echoAlias "$SYMBOL_SUCCESS $1" -c="${GREEN}" "${@:2}"; } fi
+echoError() { install::echoAlias "$SYMBOL_ERROR $1" -c "${RED}" -e "${@:2}"; }
+echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -c "${GOLD}" -e "${@:2}"; }
+echoInfo() { install::echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; }
+echoSuccess() { install::echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; }
+errorReturn() { install::echoAlias "$SYMBOL_ERROR $1" -c "${RED}" -e; return "${2:-1}"; }
+#
+# MESSAGE ALIASES
+#
+echoError() { echoAlias "$SYMBOL_ERROR $1" -c "${RED}" --err "${@:2}"; } fi
+echoWarning() { echoAlias "$SYMBOL_WARNING $1" -c "${GOLD}" --err "${@:2}"; } fi
+echoInfo() { echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; } fi
+echoSuccess() { echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; } fi
 # ------------------------------------------------------------------
 # import::cacheDir
 # ------------------------------------------------------------------
@@ -191,7 +205,7 @@ import::cacheDir()
 #
 # @stdout The path to bb-import
 # ------------------------------------------------------------------
-import::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb-import)}"; }
+import::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb-import.sh)}"; }
 # ------------------------------------------------------------------
 # import::log::checkLog
 # ------------------------------------------------------------------
@@ -272,11 +286,11 @@ import::log::rotate()
 # @description Provides basic logging services to bb-import
 #
 # @arg  $1          [string]    Log Message (optional)
-# @arg  -c='int'    [option]    Error Code
-# @arg  -C='string' [option]    Output Color
-# @arg  -I='string' [option]    Initialize LogFile
-# @arg  -M='string' [option]    Log Message
-# @arg  -p='int'    [option]    Log Priority / Level
+# @arg  -c 'int'    [option]    Error Code
+# @arg  -C 'string' [option]    Output Color
+# @arg  -I 'string' [option]    Initialize LogFile
+# @arg  -M 'string' [option]    Log Message
+# @arg  -p 'int'    [option]    Log Priority / Level
 # @arg  -1          [option]    No output to stdOut
 # @arg  -2          [option]    No output to stdErr
 # @arg  -3          [option]    No output to logFile
@@ -430,7 +444,7 @@ import::log()
 #
 # @arg  $1  [string]    Log Message
 # ------------------------------------------------------------------
-import::debug() { import::log "$1" -p=100; }
+import::debug() { import::log "$1" -p 100; }
 # ------------------------------------------------------------------
 # import::info
 # ------------------------------------------------------------------
@@ -438,7 +452,7 @@ import::debug() { import::log "$1" -p=100; }
 #
 # @arg  $1  [string]    Log Message
 # ------------------------------------------------------------------
-import::info() { import::log "$1" -p=200; }
+import::info() { import::log "$1" -p 200; }
 # ------------------------------------------------------------------
 # import::warning
 # ------------------------------------------------------------------
@@ -446,7 +460,7 @@ import::info() { import::log "$1" -p=200; }
 #
 # @arg  $1  [string]    Log Message
 # ------------------------------------------------------------------
-import::warning() { import::log "$1" -p=500; }
+import::warning() { import::log "$1" -p 500; }
 # ------------------------------------------------------------------
 # import::error
 # ------------------------------------------------------------------
@@ -455,7 +469,7 @@ import::warning() { import::log "$1" -p=500; }
 # @arg  $1  [string]    Log Message
 # @arg  $2  [integer]   Exit Code (optional)
 # ------------------------------------------------------------------
-import::error() { import::log "$1" -p=600; return "${2:-1}"; }
+import::error() { import::log "$1" -p 600; return "${2:-1}"; }
 # ------------------------------------------------------------------
 # import::fatal
 # ------------------------------------------------------------------
@@ -464,7 +478,7 @@ import::error() { import::log "$1" -p=600; return "${2:-1}"; }
 # @arg  $1  [string]    Log Message
 # @arg  $2  [integer]   Exit Code (optional)
 # ------------------------------------------------------------------
-import::fatal() { import::log "$1" -p=900; exit "${2:-1}"; }
+import::fatal() { import::log "$1" -p 900; exit "${2:-1}"; }
 #
 # LOG ALIASES
 #
@@ -539,6 +553,12 @@ import::retry()
     return "$exitCode"
 }
 # ------------------------------------------------------------------
+# import::file
+# ------------------------------------------------------------------
+# @description
+# ------------------------------------------------------------------
+import::file() { print=1 bb::import "$@"; }
+# ------------------------------------------------------------------
 # bb::import
 # ------------------------------------------------------------------
 # @description Perhaps the most important part of Bash Bits.
@@ -563,66 +583,45 @@ bb::import()
         url="${args[$i]}"
 
         if ! echo "$url" | grep "://" > /dev/null && ! echo "$url" | awk -F/ '{print $1}' | grep '\.' > /dev/null; then
-            # implicit import (eg: bb::import repo)
+            importDebug "Detected Implicit Import"
+            # IMPLICIT IMPORT (eg: bb::import bb-ansi)
+            repo="${url%@*}"
             # check for version tag
-            if echo "$url" | awk -F@ '{print $1}' > /dev/null; then
-                # has version tag
-                repo="${url%@*}"
-                tag="${url#*@}"
-                # rewrite url
-                url="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}}"
-            else
-                # latest version
-                repo="${url%@*}"
-                tag="master"
-                # rewrite url
-                url="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}}"
-            fi
+            [[ echo "$url" | awk -F@ '{print $1}' > /dev/null ]] && tag="${url#*@}" || tag="master"
+            # rewrite url
+            url="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}}"
         elif ! echo "$url" | grep "://" > /dev/null && echo "$url" | awk -F/ '{print $1}' | grep '\.' > /dev/null; then
-            # namespaced import (eg: bb::import org/repo)
+            importDebug "Detected Namespaced Import"
+            # NAMESPACED IMPORT (eg: bb::import my-org/my-repo)
+            org="${url%/*}"
+            repo="${url#*/}"
             # check for version tag
-            if echo "$url" | awk -F@ '{print $1}' > /dev/null; then
-                # has version tag
-                org="${url%/*}"
-                repo="${url#*/}"
-                tag="${repo#*@}"
-                repo="${repo%@*}"
-                # rewrite url
-                url="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
-            else
-                # latest version
-                org="${url%/*}"
-                repo="${url#*/}"
-                tag="master"
-                # rewrite url
-                url="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
-            fi
+            [[ echo "$url" | awk -F@ '{print $1}' > /dev/null ]] && tag="${repo#*@}"; repo="${repo%@*}"; || tag="master"
+            # rewrite url
+            url="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
         elif echo "$url" | grep "://" > /dev/null; then
-            # explicit import (eg: bb::import https://github.com/org/repo)
-            # check for version tag
+            importDebug "Detected Explicit Import"
+            # EXPLICIT IMPORT (EG: bb::import https://example.com/my-project)
             if echo "$url" | awk -F@ '{print $1}' > /dev/null; then
                 # has version tag
                 repo="${url##*/}"
                 tag="${repo#*@}"
                 repo="${repo%@*}"
-                repoLen="$((${#repo} + ${#tag} + 2))"
-                # shorten URL
-                url="${url:0:$(( ${#url} - $repoLen ))}"
+                repoLen="$(( ${#repo} + ${#tag} + 2 ))"
+                url="${url:0:$(( ${#url} - repoLen ))}"
                 org="${url##*/}"
-                # rewrite url
-                url="${IMPORT_SERVER_EXPLICIT:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
             else
                 # latest version
                 repo="${url##*/}"
-                # shorten url
                 url="${url:0:$(( ${#url} - ${#repo} - 1 ))}"
                 org="${url##*/}"
                 tag="master"
-                # rewrite url
-                url="${IMPORT_SERVER_EXPLICIT:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
             fi
+            # rewrite url
+            url="${IMPORT_SERVER_EXPLICIT:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
         elif echo "$url" | grep "./" > /dev/null && ! echo "$url" | awk -F@ '{print $1}' > /dev/null; then
-            # relative import (eg: bb::import ../../file.sh)
+            importDebug "Detected Relative Import"
+            # RELATIVE IMPORT (EG: bb::import ../../file.sh)
             case "$url" in
                 ./*) url="$(dirname "bb::scriptPath")/$url";;
                 ../*) url="$(dirname "bb::scriptPath")/$url";;
@@ -643,8 +642,16 @@ bb::import()
             # ensure the directory containing the symlink for this import exists
             local dir linkDir
 
-            dir="$(dirname "$urlPath")"
+            dir="$(realpath "$dir")"
+            dir="${dir##*/}"
+
             linkDir="$cache/links/$dir"
+
+            importDebug "Creating directories:"
+            importDebug "$linkDir"
+            importDebug "$cache/data"
+            importDebug "$cache/locations/$dir"
+            echo
 
             mkdir -p "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || return
 
@@ -712,24 +719,52 @@ bb::import()
             importDebug "File already cached '$url'"
         fi
 
-        # reset the bb::import command args.  There's not really a good reason to pass
-        # the URL ro the sourced script, and in fact could cause undesirable results.
-        # ie: This is required to make `import/kward/shunit2` work out of the box
-        set --
-
-        # at this point the file has been saved to the cache, so either source it or print it
-        if [ -z "${print-}" ]; then
-            importDebug "Sourcing '$cachePath'"
-            local _importParentLocation="$(bb::scriptPath)"
-            local _importLocation="$(cat "$cache/locations/$urlPath")" || return
-            source "$cachePath" || return
-            _importLocation="$_importParentLocation"
-        else
-            importDebug "Printing '$cachePath'"
-            echo "$cachePath"
-        fi
     done
 }
 # ==================================================================
 # MAIN
 # ==================================================================
+# for `#1/usr/bin/env bb-import`
+if [ -n "${ZSH_EVAL_CONTEXT-}" ]; then
+    if [ "${ZSH_EVAL_CONTEXT-}" == "toplevel" ]; then
+        importEntryPoint="1"
+    fi
+elif [ "$(echo "$0" | cut -c1)" != "-" ] && [ "$(basename "$0" .sh)" == "bb-import" ]; then
+    importEntryPoint=1
+    echo "ENTRYPOINT: $(basename "$0" .sh)"
+fi
+
+if [ -n "${importEntryPoint}" ]; then
+    # parse argv
+    while [ $# -gt 0 ]
+    do
+        case "$1" in
+            -s=*|--shell=*)
+                importShell="${1#*=}" && shift
+                ;;
+            -s|--shell)
+                importShell="$2" && shift 2
+                ;;
+            -c)
+                importCommand="$2" && shift 2
+                ;;
+            -*)
+                echoError "bb-import :: Unknown Argument '$1'" >&2 && exit 2
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
+    if [ -n "${importShell-}" ]; then
+        # if a specific shell was requested, then relaunch using it
+        exec "$importShell" "$0" "$@"
+    elif [ -n "${importCommand-}" ]; then
+        eval "$importCommand"
+    else
+        importEntryPoint="$1"
+        shift
+        source "$importEntryPoint"
+    fi
+fi
