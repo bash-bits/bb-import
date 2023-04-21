@@ -1,5 +1,3 @@
-![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/BashBits-Social-200x100-X.png)
-
 # [📑 API](README.md)
 
 ## 🔸 `bb::import '$url'`

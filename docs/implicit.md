@@ -1,5 +1,3 @@
-![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/BashBits-Social-200x100-X.png)
-
 # [⬇️ Implicit Imports](README.md)
 
 `Implicit Imports` are all those where you are importing an official `Bash-Bits` module from the [**Bash-Bits repositories**](https://github.com/bash-bits) at GitHub

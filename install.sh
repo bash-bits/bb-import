@@ -149,7 +149,7 @@ install::cacheDir()
 #
 # @stdout The path to bb-import
 # ------------------------------------------------------------------
-install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(install::cacheDir import)}"; }
+install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(install::cacheDir bb-import.sh)}"; }
 # ------------------------------------------------------------------
 # install::install
 # ------------------------------------------------------------------
@@ -157,105 +157,83 @@ install::install()
 {
     clear
     echo
-	echo "${GOLD}=================================================================="
-	echo "INSTALLING BB-IMPORT MODULE"
-	echo "==================================================================${RESET}"
+	echoGold "=================================================================="
+	echoGold "INSTALLING BB-IMPORT MODULE"
+	echoGold "=================================================================="
     echo
 
-    local scriptDir repoPath installPath cacheDir cache
+    local installPath cacheDir cache
     local url urlPath cachePath locFile dir linkDir hash hashFile
-    local location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import"
+    local importURL="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
+    local installPath="/usr/local/bin/bb-import"
 
-#    [[ "$SUDO_USER" ]] && user="root" || user="$(whoami)"
-
-    scriptDir="$(dirname "$(scriptPath)")"
-
-    installPath="$(install::cacheDir::import)"
-    cacheDir="${installPath%/*}"
-    cache="$cacheDir"
-
+    # bb-import not installed - fresh install
     url="bb-import"
+    cache="$(install::cacheDir::import)"
     urlPath="$(echo "$url" | sed 's/\:\///')"
     cachePath="$cache/links/$urlPath"
-    locFile="$cache/locations/$urlPath"
-    tmpFile="$cachePath.tmp"
-
     dir="$(dirname "$urlPath")"
-    if [[ "$dir" == "." ]]; then
-        dir="$(realpath "$dir")"
-        dir="${dir##*/}"
-    fi
-
     linkDir="$cache/links/$dir"
 
     echo "Creating directories:"
     echo "    $linkDir"
     echo "    $cache/data"
     echo "    $cache/locations/$dir"
-    echo
+    # create cache paths
+    mkdir -p "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || return
 
-    mkdir -p "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || errorReturn "Could Not Create Directory '$cacheDir'" 2
+    tmpFile="$cachePath.tmp"
+    tmpHeader="$cachePath.header"
+    locFile="$cache/locations/$urlPath"
 
-    # resolve the cache and link with `pwd` now that the directories exist
-    cache="$( ( cd "$cache" && pwd ) )" || return
-    linkDir="$( ( cd "$linkDir" && pwd ) )" || return
-    cachePath="$cache/links/$urlPath"
+    echo "Downloading $importURL"
+    # download to temp directory so sha1sum can be computed
+    curl -sfLS --netrc-optional --dump-header "$tmpHeader" "${IMPORT_CURL_OPTS-}" "$importURL" > "$tmpFile" || {
+        local r=$?
+        echo "Failed to download: $importURL" >&2
+        rm -f "$tmpFile" "$tmpHeader"
+        return "$r"
+    }
+    sudo mv "$tmpFile" "$installPath"
+    sudo chmod +x "$installPath"
 
-    # install bb-import
-    if [[ -f "$scriptDir/src/bb-import" ]]; then
-        echo "Installing from local repository ... "
-        # install from local repository
-        repoPath="$scriptDir/src/bb-import"
-        mv "$repoPath" "$installPath" || errorReturn "Installation Failed!" 2
-    else
-        echo "Downloading from '$location' ..."
-        # download & install
-        curl -sfLS "$location" > "$installPath" || errorReturn "Download Failed! Try again later" 2
-        echo "SUCCESS!"
-    fi
-    chmod +x "$installPath"
-
+    # print x-import-warning headers
+    grep -i '^location\|^content-location:' < "$headers" | while IFS='' read -r line
+    do
+        echo "${RED}import: warning - $(echo "$line" | awk -F": " '{print $2}' | tr -d \\r)${RESET}"
+    done
+    # parse the location
+    locationHeader="$(grep -i '^location|^content-location:' < "$headers" | tail -n1)"
+    [[ -n "$locationHeader" ]] && location="$(echo "$locationHeader" | awk -F": " '{print $2}' | tr -d \\r)"
+    echo "Resolved location '$url' -> '$location'"
     echo "$location" > "$locFile"
+    rm -f "$tmpHeader"
 
-    echo "Calculating file hash ..."
-
-    # calculate the hash of the downloaded file
+    #calculate the sha1 hash of the contents of the download file
     hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return
-    echo "FILE HASH: '$hash'"
+    echo "Calculated hash '$url' -> '$hash'"
     hashFile="$cache/data/$hash"
-    echo "HASH FILE: '$hashFile'"
-    echo
+    # If the hashed file doesn't exist, then move it into place
+    # otherwise delete the temp file - it's no longer needed.
+    [[ -f "$hashFile" ]] && { rm -f "$tmpFile" || return; } || { mv "$tmpFile" "$hashFile" || return; }
 
-    # if the hashed file doesn't exist, move it into place,
-    # otherwise delete the temp file - it's no longer needed
-    if [ -f "$hashFile" ]; then
-        rm -f "$tmpFile" || return
-    else
-        mv "$tmpFile" "$hashFile" || return
-    fi
-
-    echo "Creating symlink pointing to hashed file ..."
-
-    # create a relative symlink for this import pointing to the hashed file
-    local relative cacheStart
-    # shellcheck disable=SC2003
-    cacheStart="$(expr "${#cache}" + 1)" || return
-    relative="$(echo "$linkDir" | awk '{print substr($0, '"$cacheStart"')}' | sed 's/\/[^/]*/..\//g')data/$hash" || return
-    [ -n "${IMPORT_DEBUG-}" ] && importDebug "import :: Creating symlink"
+    # shellcheck disable=SC2034
+    cacheStart="$(( "${#cache}" + 1 ))" || return
+    relative="$(echo "$linkDir" | awk '{print substr($0, "$cacheStart")}' | sed 's\/[^/]*/..\//g')data/$hash" || return
+    printf "import: Creating symlink " >&2
     ln -fs${IMPORT_DEBUG:+v} "$relative" "$cachePath" >&2 || return
 
+    [ -n "${IMPORT_TRACE-}" ] && echo "$importURL" >> "$IMPORT_TRACE"
+
+    echo "Successfully downloaded '$url' -> '$hashFile'"
     echo "SYMLINK: '$relative' -> '$cachePath'"
-    echo
 
-    echo "Creating path file ... "
-    echo
-
+    echo "Creating path file ..."
     # prepend cacheDir to $PATH
     echo "PATH=\"$cacheDir:\$PATH\"" > "$cacheDir/bb-path.sh"
-
     # install for bash ... everyone else is on their own
     if [[ "$SHELL" =~ .*bash.* ]]; then
-        echo -n "  Moving path file to /etc/profile.d directory ... "
+        echo -n "Moving path file to /etc/profile.d directory ... "
         if sudo cp "$cacheDir/bb-path.sh" /etc/profile.d/bb-path.sh; then echo "DONE"; writePath=1; else echo "FAIL"; writePath=0; fi
     fi
 
@@ -291,6 +269,16 @@ install::quit()
     echo
 
     exit 0
+}
+# ------------------------------------------------------------------
+# install::parseLocation
+# ------------------------------------------------------------------
+install::parseLocation()
+{
+    local location="$1"
+    local headers="$2"
+    local locationHeader=""
+
 }
 # ------------------------------------------------------------------
 # install::returnQuit

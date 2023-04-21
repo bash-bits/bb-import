@@ -1,5 +1,3 @@
-![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/BashBits-Social-200x100-X.png)
-
 # 🔑 [Authentication](README.md)
 
 Because `bb-import` uses `curl`, you can use the standard [`.netrc` file format](https://ec.haxx.se/usingcurl-netrc.html) to define your username and passwords to the server you are importing from.

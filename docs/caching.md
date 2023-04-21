@@ -1,5 +1,3 @@
-![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/BashBits-Social-200x100-X.png)
-
 # [📂 Caching](README.md)
 
 Caching is a core concept in `import`.  Scripts are downloaded _exactly once_, and then are cached on your local filesystem _forever_ (unless, of course, the `IMPORT_RELOAD=1` environment variable is set).

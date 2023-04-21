@@ -17,7 +17,7 @@ The most important and magical part of Bash Bits!
 <h3 align="center">
 <a href="https://github.com/bash-bits/bb-import/issues" target="_blank">Issues</a>
 🔹
-<a href="https://bash-bits.github.io/bb-import" target="_blank">Documentation</a>
+<a href="docs/README.md" target="_blank">Documentation</a>
 🔹
 <a href="https://github.com/bash-bits/bb-import/releases" target="_blank">Releases</a>
 </h3>
@@ -26,11 +26,10 @@ The most important and magical part of Bash Bits!
 <summary><h2><a name="toc">📖 Table of Contents</a></h2></summary>
 
 - [Project Overview](#-project-overview)
+  - [Branch Reliability](#branch-reliability)
 - [What's Included?](#-whats-included)
 - [Installation](#-installation)
-  - [AUTOMAGIC-INSTALL](#automagic-install)
-  - [CLONE THE REPO](#clone-the-repo)
-  - [PACKAGE DOWNLOAD](#package-download)
+  - [INSTALLATION DOCUMENTATION](docs/install.md)
 - [Author/Maintainer](#-author--maintainer)
 - [Security](#-security)
 - [Available Support](#-available-support)
@@ -40,20 +39,40 @@ The most important and magical part of Bash Bits!
 - [License](#-license)
 - [Resources](#-resources)
 
+**REPOSITORY DOCUMENTATION**
+
+- [Table of Contents](docs/README.md)
+  - [API](docs/api.md)
+  - [Authentication](docs/authentication.md)
+  - [Caching](docs/caching.md)
+  - [Config](docs/config.md)
+  - [Imports](docs/imports.md)
+    - [Implicit Imports](docs/implicit.md)
+    - [Namespaced Imports](docs/namespaced.md)
+    - [Explicit Imports](docs/explicit.md)
+    - [Relative Imports](docs/relative.md)
+  - [Installation](docs/install.md)
+
 </details>
 
 ## ⭐ [Project Overview](#toc)
 
 **The Bash Bits Import Module - The most important and magical part of `Bash-Bits`!**
 
-BB-Import is THE library you are going to end up using in EVERY file of EVERY Bash script you write from now on.
+> `BB-Import` is THE library you are going to end up using in EVERY file of EVERY Bash script you write from now on.
 
-It's obviously a utility which imports external code / libraries into your scripts ... it's HOW BB-Import does it which is special.  Not just for installing `Bash-Bits` modules, you can use `BB-Import` to retrieve ANY compatible module from GitHub or any other server, or locally-stored files like so:
+It's obviously a utility which imports external code / libraries into your scripts ... it's HOW BB-Import does it which is special.  Not just for installing `Bash-Bits` modules, you can use `BB-Import` in any of 4 different ways to import ANY script from ANY server on the planet directly into YOUR code!
+
+And that's not even the best bit!  Once `BB-Import` has downloaded that project / repo / script to your local machine, it is cached FOREVER - which means rather than downloading it from the internet every time you want to use your software, BB-Import will download it all once, and from then on will use its locally-cached version unless it's told to go and get a new version.
+
+AND THE NEXT VERSION WILL EVEN KEEP TRACK OF THE LATEST VERSIONS OF ALL OF YOUR IMPORTS AND RECOMMEND UPDATES!!  That means you're GUARANTEED to always have the very latest available versions of all of your dependencies, FOREVERMORE (or until you decide to stop using Bash-Bits for some reason ... but why would you do that???)
 
 ```shell
-#!/usr/bin/env bb-import                    # SHEBANG INSTALL - Modify your system $PATH
+USAGE EXAMPLES:
 
-source ~/.bb/bb-import                      # SOURCE INSTALL - Simple and effective
+#!/usr/bin/env bb::import                   # SHEBANG INSTALL - Modify your system $PATH
+
+source ~/.bb/bb-import.sh                   # SOURCE INSTALL - Simple and effective
 
 bb::import bb-ansi                          # IMPLICIT IMPORT - Official Bash-Bits Modules
 bb::import myaccount/myrepo                 # NAMESPACED IMPORT - Formatted GitHub Project
@@ -61,7 +80,7 @@ bb::import https://myserver.com/project     # EXPLICIT IMPORT - Custom Download 
 bb::import ../../myfile.sh                  # RELATIVE IMPORT - Local Environment
 ```
 
-You can also specify specific versions of modules for import:
+You can even specify specific git branches, tags, or versions to import!
 
 ```shell
 bb::import bb-ansi@1.1.3
@@ -69,58 +88,53 @@ bb::import myaccount/myrepo@mybranch
 bb::import https://myserver.com/project@1.2.3
 ```
 
-But that's not even the best bit ...
-
-Once BB-Import has downloaded that project / repo / script to your local machine, it is cached FOREVER - which means rather than downloading it from the internet every time you want to use the same piece of code, BB-Import will download it once, and from then on will refer to the files in its cache before venturing online.
-
-AND THE NEXT VERSION WILL EVEN KEEP TRACK OF THE LATEST VERSIONS OF ALL IMPORTS ... which means you're ALWAYS going to have the absolute latest versions of all of your dependencies FOREVERMORE (or, until you decide for some reason that you don't want to use BB-Import anymore)
-
 > I have to admit that this wasn't my idea.  I've modeled BB-Import after the _INCREDIBLE_ [`importpw/import`](https://github.com/importpw/import) project by Nathan Rajlich, and decided to make a modified version of it a CORE feature of my Bash-Bits project the very moment I laid eyes on it.
 > 
 > **As always ... I've only been able to do what I do, because I've stood upon the shoulders of giants to do it.**
+ 
+### [Branch Reliability](#toc)
+
+| Branch               |    Stability    | Code Age         | Reliability |
+|----------------------|:---------------:|------------------|:-----------:|
+| `master`             |  latest stable  | latest release   |     🟢      |
+| `develop`            | latest unstable | most recent code |     🔴      |
 
 [`^ Top`](#toc)
 
 ## ❓ [What's Included?](#toc)
 
-- ✅ bb-import
-- ✅ bb-import.ini
+**Repository Files**
+
+- ✅ [bb-import.ini](src/bb-import.ini)
+- ✅ [bb-import.sh](src/bb-import.sh)
+- ✅ [install.sh](install.sh)
+
+**Repository Documentation**
+
+  - [Table of Contents](docs/README.md)
+    - [API](docs/api.md)
+    - [Authentication](docs/authentication.md)
+    - [Caching](docs/caching.md)
+    - [Config](docs/config.md)
+    - [Imports](docs/imports.md)
+      - [Implicit Imports](docs/implicit.md)
+      - [Namespaced Imports](docs/namespaced.md)
+      - [Explicit Imports](docs/explicit.md)
+      - [Relative Imports](docs/relative.md)
+    - [Installation](docs/install.md)
 
 [`^ Top`](#toc)
 
 ## 📂 [Installation](#toc)
 
-#### [AUTOMAGIC-INSTALL](#toc)
-
-The easiest way to install Bash Bits is using the "**SUPER-AWESOME AUTOMAGIC INSTALL**".  
-
-All you need to do is run the following snippet from your terminal:
+Run the code snippet below in your terminal to setup and install everything automagically - ready to go in 2 minutes!
 
 ```shell
 bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/install.sh)
 ```
 
-This script will automagically install BB-Import on your local machine in `SHEBANG` mode, into a directory under your HOME directory.  If you want to change any parameters, you can do so, of course - but you're going to have to clone a copy of the repo to do it (see below).
+<h3 align="center"><a href="docs/install.md" target="_blank">SEE THE REST OF THE INSTALLATION DOCUMENTATION HERE</a></h3>
 
-#### [CLONE THE REPO](#toc)
-
-If you want to get fussy and set all your own options for everything, then you're going to want to clone a copy of the repo to your local machine and install it manually.
-
-First step, is to clone the repo:
-
-```shell
-git clone git@github.com:bash-bits/bb-import your/path
-cd your/path
-bash install.sh
-```
-
-Of course, you're probably only going to want to execute that last line after you've had a good sticky-beak at the options available in the accompanying [bb-import.ini](src/bb-import.ini) configuration file.  I'm sure you won't be disappointed - there's PLENTY of options in BB-Import that you can customize to your own liking.
-
-#### [PACKAGE DOWNLOAD](#toc)
-
-And if you're one of those people who are absolutely _determined_ to do things the hard way, you can download the latest release package from GitHub so that you can install it manually to your own specifications.
-
-[**GET THE LATEST PACKAGE HERE**](https://github.com/bash-bits/bb-import/releases/latest)
 
 [`^ Top`](#toc)
 
@@ -154,7 +168,7 @@ If you discover any issue regarding the security of this project, please disclos
 
 <a href="https://github.com/bash-bits/bb-import/issues" target="_blank">Issues Register</a>
 🔸
-<a href="https://bash-bits.github.io/bb-import" target="_blank">Documentation</a>
+<a href="docs/README.md" target="_blank">Documentation</a>
 
 <a href="https://discord.gg/54PkrM7TKq" target="_blank">Join the Discord Server</a>
 

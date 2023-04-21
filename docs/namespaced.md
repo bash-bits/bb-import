@@ -1,15 +1,15 @@
-![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/BashBits-Social-200x100-X.png)
-
 # [⬇️ Namespaced Imports](README.md)
 
 Any `bb-import` (with 2 special exceptions) where the beginning portion (before the slash) of the URL _does not_ contain a `.` is considered to be a **Namespaced Import**
 
 The two exceptions are where the beginning portion is either bb-functions or bb-regex.  These are _technically_ **Implicit Imports**, although they look and feel like namespaced imports.  You'll get used to it easy enough ...
 
-A Namespaced Import means that the `IMPORT_SERVER` (which defaults to https://github.com/bash-bits) is prepended to the import URL.  For example, these two invocations are identical:
+A `Namespaced Import` means that the `IMPORT_SERVER` (which defaults to https://github.com/) is prepended to the import URL.  For example, these two invocations are identical:
 
-  - `bb::import bb-ansi`
+  - `bb::import bash-bits/bb-ansi`
   - `bb::import https://github.com/bash-bits/bb-ansi`
+
+Repositories intended to be imported using `Namespaced Imports` MUST conform to the [BB-Import Compatible Project Format](imports.md#-compatible-project-format). 
 
 ## [Example](#-namespaced-imports)
 

@@ -589,7 +589,7 @@ bb::import()
             # check for version tag
             [[ echo "$url" | awk -F@ '{print $1}' > /dev/null ]] && tag="${url#*@}" || tag="master"
             # rewrite url
-            url="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}}"
+            url="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}.sh}"
         elif ! echo "$url" | grep "://" > /dev/null && echo "$url" | awk -F/ '{print $1}' | grep '\.' > /dev/null; then
             importDebug "Detected Namespaced Import"
             # NAMESPACED IMPORT (eg: bb::import my-org/my-repo)
@@ -598,27 +598,11 @@ bb::import()
             # check for version tag
             [[ echo "$url" | awk -F@ '{print $1}' > /dev/null ]] && tag="${repo#*@}"; repo="${repo%@*}"; || tag="master"
             # rewrite url
-            url="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
+            url="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}.sh}"
         elif echo "$url" | grep "://" > /dev/null; then
             importDebug "Detected Explicit Import"
             # EXPLICIT IMPORT (EG: bb::import https://example.com/my-project)
-            if echo "$url" | awk -F@ '{print $1}' > /dev/null; then
-                # has version tag
-                repo="${url##*/}"
-                tag="${repo#*@}"
-                repo="${repo%@*}"
-                repoLen="$(( ${#repo} + ${#tag} + 2 ))"
-                url="${url:0:$(( ${#url} - repoLen ))}"
-                org="${url##*/}"
-            else
-                # latest version
-                repo="${url##*/}"
-                url="${url:0:$(( ${#url} - ${#repo} - 1 ))}"
-                org="${url##*/}"
-                tag="master"
-            fi
-            # rewrite url
-            url="${IMPORT_SERVER_EXPLICIT:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}}"
+            url="$url"
         elif echo "$url" | grep "./" > /dev/null && ! echo "$url" | awk -F@ '{print $1}' > /dev/null; then
             importDebug "Detected Relative Import"
             # RELATIVE IMPORT (EG: bb::import ../../file.sh)
@@ -642,7 +626,7 @@ bb::import()
             # ensure the directory containing the symlink for this import exists
             local dir linkDir
 
-            dir="$(realpath "$dir")"
+            dir="$(realpath "$urlPath")"
             dir="${dir##*/}"
 
             linkDir="$cache/links/$dir"

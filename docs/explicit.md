@@ -1,8 +1,6 @@
-![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/BashBits-Social-200x100-X.png)
-
 # [⬇️ Explicit Imports](README.md)
 
-Explicit Imports are those which are hosted on ANY server. 
+`Explicit Imports` can be used to import ANY file from ANY server, and without needing to worry about whether the repository is in any particular format.
 
 ## [Example](#example)
 

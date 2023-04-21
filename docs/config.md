@@ -1,5 +1,3 @@
-![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/BashBits-Social-200x100-X.png)
-
 # [🚧 Configuration](README.md)
 
 `bb-import` is configurable via the following environment variables:
