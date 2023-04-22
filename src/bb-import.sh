@@ -119,7 +119,7 @@ bb::scriptPath() { printf '%s' "$(realpath "${BASH_SOURCE[0]}")"; }
 install::echoAlias()
 {
     local msg="${1:-}"
-    local COLOR OUTPUT PREFIX SUFFIX _0
+    local COLOR OUTPUT PREFIX SUFFIX _0 options
     local STREAM=1
     local -a OUTARGS
 
@@ -127,26 +127,41 @@ install::echoAlias()
 
     [[ -z "$msg" ]] && { echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
 
-    while getopts "c:p:s:eEn" char
+    options=$(getopt -l "color:,prefix:,suffix:,escape,noline" -o "c:p:s:en" -a -- "$@")
+
+    eval set --"$options"
+
+    while true
     do
-        case "$char" in
-            c)
-                COLOR="${OPTARG}";;
-            p)
-                PREFIX="${OPTARG}";;
-            s)
-                SUFFIX="${OPTARG}";;
-            e)
-                STREAM=2;;
-            E)
-                OUTARGS+=("-e");;
-            n)
-                OUTARGS+=("-n");;
-            :)
-                echo "${GOLD}${SYMBOL_WARNING} WARNING :: install::echoAlias :: Unexpected Argument!${RESET}";;
+        case "$1" in
+            -c|--color)
+                COLOR="$2"
+                shift 2
+                ;;
+            -p|--prefix)
+                PREFIX="$2"
+                shift 2
+                ;;
+            -s|--suffix)
+                SUFFIX="$2"
+                shift 2
+                ;;
+            -e|--escape)
+                OUTARGS+=("-e")
+                shift
+                ;;
+            -n|--noline)
+                OUTARGS+=("-n")
+                shift
+                ;;
+            --)
+                shift
+                break
+                ;;
             *)
-                echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Invalid Argument!${RESET}"
-                return 3;;
+                echo "${RED}ERROR :: echoAlias ::Invalid Argument '$1'!${RESET}"
+                return 1
+                ;;
         esac
     done
 
@@ -168,18 +183,11 @@ echoGold() { install::echoAlias "$1" -c "${GOLD}" "${@:2}"; }
 #
 # MESSAGE ALIASES
 #
-echoError() { install::echoAlias "$SYMBOL_ERROR $1" -c "${RED}" -e "${@:2}"; }
-echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -c "${GOLD}" -e "${@:2}"; }
+echoError() { install::echoAlias "$SYMBOL_ERROR $1" -e -c "${RED}" "${@:2}"; }
+echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -e -c "${GOLD}" "${@:2}"; }
 echoInfo() { install::echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; }
 echoSuccess() { install::echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; }
-errorReturn() { install::echoAlias "$SYMBOL_ERROR $1" -c "${RED}" -e; return "${2:-1}"; }
-#
-# MESSAGE ALIASES
-#
-echoError() { echoAlias "$SYMBOL_ERROR $1" -c "${RED}" --err "${@:2}"; } fi
-echoWarning() { echoAlias "$SYMBOL_WARNING $1" -c "${GOLD}" --err "${@:2}"; } fi
-echoInfo() { echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; } fi
-echoSuccess() { echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; } fi
+errorReturn() { echoError "$1"; return "${2:-1}"; }
 # ------------------------------------------------------------------
 # import::cacheDir
 # ------------------------------------------------------------------
@@ -305,7 +313,7 @@ import::log::rotate()
 # ------------------------------------------------------------------
 import::log()
 {
-    local msg fileName exitCode color user priority timestamp
+    local msg fileName exitCode color user priority timestamp options
     local tag="" msgLog="" msgOut="" msgErr=""
     local isError=0 toStdOut=1 toStdErr=1 toFile=1
 
@@ -316,24 +324,32 @@ import::log()
         shift
     fi
 
-    while getopts ":c:C:I:M:p:t:123ewis" char
+    options="$(getopt -l "code:,Color:,Init:,Msg:,priority:,tag:,error,warn,info,success" -o "c:C:I:M:p:t:123ewis" -a -- "$@")"
+
+    eval set --"$options"
+
+    while true
     do
-        case "$char" in
-            c)                              # Error Code
-                [[ ! "${OPTARG}" =~ $isINT ]] && { echoError "Invalid Argument!"; return 3; }
-                exitCode="${OPTARG}"
+        case "$1" in
+            -c|--code)
+                [[ ! "$2" =~ $isINT ]] && errorReturn "Invalid Argument!" 3
+                exitCode="$2"
+                shift 2
                 ;;
-            C)                              # Output Color
-                color="${OPTARG}"
+            -C|--Color)
+                color="$2"
+                shift 2
                 ;;
-            I)                              # Init Logfile
-                fileName="${OPTARG}"
+            -I|--Init)
+                fileName="$2"
+                shift 2
                 ;;
-            M)                              # Log Message
-                msg="${OPTARG}"
+            -M|--Msg)
+                msg="$2"
+                shift 2
                 ;;
-            p)                              # Priority
-                case "$OPTARG" in
+            -p|--priority)
+                case "$2" in
                     10)     priority="TRACE";;
                     100)    priority="DEBUG";;
                     200)    priority="INFO";;
@@ -349,32 +365,46 @@ import::log()
                         return 3
                         ;;
                 esac
+                shift 2
                 ;;
-            t)                              # Tag
-                tag="${OPTARG}"
+            -t|--tag)
+                tag="$2"
+                shift 2
                 ;;
-            1)                              # toStdOut
-                toStdOut=0;;
-            2)                              # toStdErr
-                toStdErr=0;;
-            3)                              # toFile
-                toFile=0;;
-            e)                              # ERROR
-                isError=1;;
-            w)                              # WARNING
-                isWarning=1;;
-            i)                              # INFO
-                isInfo=1;;
-            s)                              # SUCCESS
-                isSuccess=1;;
-
-            :)
-                echoError "-${OPTARG} Requires Argument!"
-                return 4
+            1)
+                toStdOut=0
+                shift
+                ;;
+            2)
+                toStdErr=0
+                shift
+                ;;
+            3)
+                toFile=0
+                shift
+                ;;
+            -e|--error)
+                isError=1
+                shift
+                ;;
+            -w|--warn)
+                isWarning=1
+                shift
+                ;;
+            -i|--info)
+                isInfo=1
+                shift
+                ;;
+            -s|--success)
+                isSuccess=1
+                shift
+                ;;
+            --)
+                shift
+                break
                 ;;
             *)
-                echoError "Invalid Argument!"
-                return 3
+                errorReturn "Invalid Argument '$1'!" 3
                 ;;
         esac
     done
@@ -542,6 +572,7 @@ import::retry()
 
     while [ "$retryCount" -lt "$numberRetries" ]
     do
+        [[ "$retryCount" -gt 0 ]] && echo "Retry #$retryCount"
         exitCode=0
         "$@" || exitCode=$?
         [[ "$exitCode" -eq 0 ]] && break
@@ -589,7 +620,7 @@ bb::import()
             # check for version tag
             [[ echo "$url" | awk -F@ '{print $1}' > /dev/null ]] && tag="${url#*@}" || tag="master"
             # rewrite url
-            url="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}.sh}"
+            location="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}.sh}"
         elif ! echo "$url" | grep "://" > /dev/null && echo "$url" | awk -F/ '{print $1}' | grep '\.' > /dev/null; then
             importDebug "Detected Namespaced Import"
             # NAMESPACED IMPORT (eg: bb::import my-org/my-repo)
@@ -598,17 +629,17 @@ bb::import()
             # check for version tag
             [[ echo "$url" | awk -F@ '{print $1}' > /dev/null ]] && tag="${repo#*@}"; repo="${repo%@*}"; || tag="master"
             # rewrite url
-            url="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}.sh}"
+            location="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}.sh}"
         elif echo "$url" | grep "://" > /dev/null; then
             importDebug "Detected Explicit Import"
             # EXPLICIT IMPORT (EG: bb::import https://example.com/my-project)
-            url="$url"
+            location="$url"
         elif echo "$url" | grep "./" > /dev/null && ! echo "$url" | awk -F@ '{print $1}' > /dev/null; then
             importDebug "Detected Relative Import"
             # RELATIVE IMPORT (EG: bb::import ../../file.sh)
             case "$url" in
-                ./*) url="$(dirname "bb::scriptPath")/$url";;
-                ../*) url="$(dirname "bb::scriptPath")/$url";;
+                ./*) location="$(dirname "bb::scriptPath")/$url";;
+                ../*) location="$(dirname "bb::scriptPath")/$url";;
             esac
         else
             # ERROR - Unsupported Import Target
@@ -646,34 +677,24 @@ bb::import()
 
             # download the requested file to a temporary directory so that the shasum
             # can be computed to determine the proper final filename
-            local location=""
             local tempFile="$cachePath.tmp"
-            local tmpHeader="$cachePath.header"
             local locFile="$cache/locations/$urlPath"
-            local qs="?"
-            if echo "$url" | grep '?' > /dev/null; then
-                qs="&"
-            fi
 
             # ======================================================
             # DOWNLOAD THE FILE
             # ======================================================
-            importLog "Downloading '$url'"
-            local urlWithQS="${url}${qs}format=raw"
+            importLog "Downloading '$location'"
 
-            import::retry curl -sfLS --netrc-optional --dump-header "$tmpHeader" "${IMPORT_CURL_OPTS-}" "$urlWithQS" > "$tempFile" || {
+            import::retry curl -sfLS --netrc-optional --output "$tempFile" "$location" || {
                 local r=$?
-                importWarning "Failed to download: $urlWithQS"
-                rm -f "$tempFile" "$tmpHeader" || true
+                importWarning "Failed to download: $location"
+                rm -f "$tempFile" || true
                 return "$r"
             }
             # ======================================================
 
-            # now that the HTTP request has been resolved, parse the "location"
-            location="$(import::parseLocation "$url" "$tmpHeader")" || return
             importDebug "Resolved location '$url' -> '$location'"
             echo "$location" > "$locFile"
-            rm -f "$tmpHeader"
 
             # calculate the sha1 hash of the contents of the downloaded file
             local hash
@@ -692,8 +713,10 @@ bb::import()
 
             # create a relative symlink for this import pointing to the hashed file
             local relative cacheStart
-            # shellcheck disable=SC2003
-            cacheStart="$(expr "${#cache}" + 1)" || return
+
+            [[ "${linkDir:0-1}" == "." ]] && linkDir="${linkDir:0:${#linkDir}-2}"
+
+            cacheStart="$(( "${#cache}" + 1 ))" || return
             relative="$(echo "$linkDir" | awk '{print substr($0, '"$cacheStart"')}' | sed 's/\/[^/]*/..\//g')data/$hash" || return
             [ -n "${IMPORT_DEBUG-}" ] && importDebug "import :: Creating symlink"
             ln -fs${IMPORT_DEBUG:+v} "$relative" "$cachePath" >&2 || return
