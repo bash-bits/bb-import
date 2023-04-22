@@ -38,7 +38,7 @@ Technically, you can install this script _anywhere_ on your `$PATH` - but to tak
 First we're going to borrow a few snippets of code from the importer to make life easier:
 
 ```shell
-importURL="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh?format=raw"
+location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
 installPath="/usr/local/bin/bb-import"
 url="bb-import"
 cacheDir="$HOME/.bb"
@@ -60,19 +60,12 @@ mkdir -p "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || return
 tmpFile="$cachePath.tmp"
 tmpHeader="$cachePath.header"
 locFile="$cache/locations/$urlPath"
-echo "Downloading $importURL"
-curl -sfLS --netrc-optional --dump-header "$tmpHeader" "${IMPORT_CURL_OPTS-}" "$importURL" > "$tmpFile" || { r=$?; echo "Failed to download: $importURL" >&2; rm -f "$tmpFile" "$tmpHeader"; return "$r"; }
-sudo mv "$tmpFile" "$installPath"
+echo "Downloading $location -> $tmpFile"
+curl -sfLS --netrc-optional --output "$tmpFile" "$location" || { r=$?; echo "Failed to download: $location" >&2; rm -f "$tmpFile"; return "$r"; }
+sudo cp "$tmpFile" "$installPath" || { r=$?; echo "Failed to install bb-import in $installPath"; return "$r"; }
 sudo chmod +x "$installPath"
-grep -i '^location\|^content-location:' < "$headers" | while IFS='' read -r line
-do
-    echo "${RED}import: warning - $(echo "$line" | awk -F": " '{print $2}' | tr -d \\r)${RESET}"
-done
-locationHeader="$(grep -i '^location|^content-location:' < "$headers" | tail -n1)"
-[[ -n "$locationHeader" ]] && location="$(echo "$locationHeader" | awk -F": " '{print $2}' | tr -d \\r)"
 echo "Resolved location '$url' -> '$location'"
 echo "$location" > "$locFile"
-rm -f "$tmpHeader"
 ```
 
 ### Step 3 - Get File Hash
@@ -82,11 +75,12 @@ hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || retur
 echo "Calculated hash '$url' -> '$hash'"
 hashFile="$cache/data/$hash"
 [[ -f "$hashFile" ]] && { rm -f "$tmpFile" || return; } || { mv "$tmpFile" "$hashFile" || return; }
+[[ "${linkDir:0-1}" == "." ]] && linkDir="${linkDir:0:${#linkDir}-2}"
 cacheStart="$(( "${#cache}" + 1 ))" || return
-relative="$(echo "$linkDir" | awk '{print substr($0, "$cacheStart")}' | sed 's\/[^/]*/..\//g')data/$hash" || return
+relative="$(echo "$linkDir" | awk '{print substr($0, '"$cacheStart"')}' | sed 's/\/[^/]*/..\//g')data/$hash" || return
 printf "import: Creating symlink " >&2
 ln -fs${IMPORT_DEBUG:+v} "$relative" "$cachePath" >&2 || return
-[ -n "${IMPORT_TRACE-}" ] && echo "$importURL" >> "$IMPORT_TRACE"
+[ -n "${IMPORT_TRACE-}" ] && echo "$location" >> "$IMPORT_TRACE"
 echo "Successfully downloaded '$url' -> '$hashFile'"
 echo "SYMLINK: '$relative' -> '$cachePath'"
 echo "Creating path file ..."
@@ -101,10 +95,27 @@ fi
 
 ## [Clone Repository](#toc)
 
+If you think you might need to change a few options or modify some code before you install bb-import, then this is the option for you.
+
+Simply clone the repo, make your modifications, enter the root directory, and run the installer:
+
+```shell
+git clone git@github.com:bash-bits/bb-import
+... <tinker> ...
+cd bb-import
+bash install.sh
+```
+
 <br />
 
 ## [Package Download](#toc)
 
 And if you're one of those people who are absolutely _determined_ to do things the hard way, you can download the latest release package from GitHub so that you can install it manually to your own specifications.
 
-[**GET THE LATEST PACKAGE HERE**](https://github.com/bash-bits/bb-import/releases/latest)
+Step 1 - [**DOWNLOAD THE LATEST PACKAGE HERE**](https://github.com/bash-bits/bb-import/releases/latest)
+Step 2 - Inflate the archive
+Step 3 - Enter the root directory of the repository
+Step 4 - `bash install.sh`
+
+
+[`^ Top`](#-installation)

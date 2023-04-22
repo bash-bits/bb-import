@@ -59,13 +59,13 @@ The most important and magical part of Bash Bits!
 
 **The Bash Bits Import Module - The most important and magical part of `Bash-Bits`!**
 
-> `BB-Import` is THE library you are going to end up using in EVERY file of EVERY Bash script you write from now on.
+_**`BB-Import` is THE library you are going to end up using in Bash script you write from now on!**_
 
 It's obviously a utility which imports external code / libraries into your scripts ... it's HOW BB-Import does it which is special.  Not just for installing `Bash-Bits` modules, you can use `BB-Import` in any of 4 different ways to import ANY script from ANY server on the planet directly into YOUR code!
 
 And that's not even the best bit!  Once `BB-Import` has downloaded that project / repo / script to your local machine, it is cached FOREVER - which means rather than downloading it from the internet every time you want to use your software, BB-Import will download it all once, and from then on will use its locally-cached version unless it's told to go and get a new version.
 
-AND THE NEXT VERSION WILL EVEN KEEP TRACK OF THE LATEST VERSIONS OF ALL OF YOUR IMPORTS AND RECOMMEND UPDATES!!  That means you're GUARANTEED to always have the very latest available versions of all of your dependencies, FOREVERMORE (or until you decide to stop using Bash-Bits for some reason ... but why would you do that???)
+AND THE NEXT VERSION  WILL EVEN KEEP TRACK OF THE LATEST VERSIONS OF ALL OF YOUR IMPORTS AND RECOMMEND UPDATES!!  That means you're GUARANTEED to always have the very latest available versions of all of your dependencies, FOREVERMORE (or until you decide to stop using Bash-Bits for some reason ... but why would you do that???)
 
 ```shell
 USAGE EXAMPLES:

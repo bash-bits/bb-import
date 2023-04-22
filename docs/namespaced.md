@@ -59,3 +59,6 @@ See the `Bash-Bits` repository on GitHub for the complete list of repositories.
 Here are some GitHub repositories that are known to be compatible with `bb-import`:
 
 (Send a pull request) if you would like to list YOUR project here!
+
+
+[`^ Top`](#-namespaced-imports)
