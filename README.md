@@ -59,7 +59,7 @@ The most important and magical part of Bash Bits!
 
 **The Bash Bits Import Module - The most important and magical part of `Bash-Bits`!**
 
-_**`BB-Import` is THE library you are going to end up using in Bash script you write from now on!**_
+_**`BB-Import` is THE library you are going to end up using in EVERY Bash script you write from now on!**_
 
 It's obviously a utility which imports external code / libraries into your scripts ... it's HOW BB-Import does it which is special.  Not just for installing `Bash-Bits` modules, you can use `BB-Import` in any of 4 different ways to import ANY script from ANY server on the planet directly into YOUR code!
 
