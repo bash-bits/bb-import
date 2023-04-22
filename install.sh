@@ -11,6 +11,13 @@
 # License:      MIT License
 # Copyright:    Copyright © 2023 Darren (Ragdata) Poulton
 # ==================================================================
+# PREFLIGHT
+# ==================================================================
+# set debug mode = false
+declare -gx DEBUG=false
+# if script is called with 'debug' as an argument, then set debug mode
+if [[ "${1,,}" == "debug" ]]; then shift; DEBUG=true; set -- "${@}"; set -axeET; else set -aeET; fi
+# ==================================================================
 # VARIABLES
 # ==================================================================
 #
@@ -25,11 +32,11 @@ declare ANSI_CSI="${ANSI_ESC}["
 #
 # COLOR VARIABLES
 #
-declare RED="$(printf '%s31m' "$ANSI_CSI";)"
-declare BLUE="$(printf '%s94m' "$ANSI_CSI";)"
-declare GREEN="$(printf '%s32m' "$ANSI_CSI";)"
-declare GOLD="$(printf '%s33m' "$ANSI_CSI";)"
-declare RESET="$(printf '%s0m' "$ANSI_CSI";)"
+declare RED="$(printf '%s31m' "$ANSI_CSI")"
+declare BLUE="$(printf '%s94m' "$ANSI_CSI")"
+declare GREEN="$(printf '%s32m' "$ANSI_CSI")"
+declare GOLD="$(printf '%s33m' "$ANSI_CSI")"
+declare RESET="$(printf '%s0m' "$ANSI_CSI")"
 #
 # LOCAL CONFIG VARIABLES
 #
@@ -60,7 +67,11 @@ SYMBOL_SUCCESS="[+]"
 install::echoAlias()
 {
     local msg="${1:-}"
-    local COLOR OUTPUT PREFIX SUFFIX _0
+    local COLOR=""
+    local OUTPUT=""
+    local PREFIX=""
+    local SUFFIX=""
+    local _0=""
     local STREAM=1
     local -a OUTARGS
 
@@ -68,26 +79,41 @@ install::echoAlias()
 
     [[ -z "$msg" ]] && { echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Requires Argument!${RESET}"; return 2; }
 
-    while getopts "c:p:s:eEn" char
+    options=$(getopt -l "color:,prefix:,suffix:,escape,noline" -o "c:p:s:en" -a -- "$@")
+
+    eval set --"$options"
+
+    while true
     do
-        case "$char" in
-            c)
-                COLOR="${OPTARG}";;
-            p)
-                PREFIX="${OPTARG}";;
-            s)
-                SUFFIX="${OPTARG}";;
-            e)
-                STREAM=2;;
-            E)
-                OUTARGS+=("-e");;
-            n)
-                OUTARGS+=("-n");;
-            :)
-                echo "${GOLD}${SYMBOL_WARNING} WARNING :: install::echoAlias :: Unexpected Argument!${RESET}";;
+        case "$1" in
+            -c|--color)
+                COLOR="$2"
+                shift 2
+                ;;
+            -p|--prefix)
+                PREFIX="$2"
+                shift 2
+                ;;
+            -s|--suffix)
+                SUFFIX="$2"
+                shift 2
+                ;;
+            -e|--escape)
+                OUTARGS+=("-e")
+                shift
+                ;;
+            -n|--noline)
+                OUTARGS+=("-n")
+                shift
+                ;;
+            --)
+                shift
+                break
+                ;;
             *)
-                echo "${RED}${SYMBOL_ERROR} ERROR :: install::echoAlias :: Invalid Argument!${RESET}"
-                return 3;;
+                echo "${RED}ERROR :: echoAlias ::Invalid Argument '$1'!${RESET}"
+                return 1
+                ;;
         esac
     done
 
@@ -97,7 +123,7 @@ install::echoAlias()
 
     [[ "$STREAM" -eq 2 ]] && echo "${OUTARGS[@]}" "${OUTPUT}" >&2 || echo "${OUTARGS[@]}" "${OUTPUT}"
 
-    return 0
+#    return 0
 }
 #
 # COLOUR ALIASES
@@ -109,11 +135,11 @@ echoGold() { install::echoAlias "$1" -c "${GOLD}" "${@:2}"; }
 #
 # MESSAGE ALIASES
 #
-echoError() { install::echoAlias "$SYMBOL_ERROR $1" -c "${RED}" -e "${@:2}"; }
-echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -c "${GOLD}" -e "${@:2}"; }
+echoError() { install::echoAlias "$SYMBOL_ERROR $1" -e -c "${RED}" "${@:2}"; }
+echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -e -c "${GOLD}" "${@:2}"; }
 echoInfo() { install::echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; }
 echoSuccess() { install::echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; }
-errorReturn() { install::echoAlias "$SYMBOL_ERROR $1" -c "${RED}" -e; return "${2:-1}"; }
+errorReturn() { echoError "$1"; return "${2:-1}"; }
 # ------------------------------------------------------------------
 # scriptPath
 # ------------------------------------------------------------------
@@ -164,11 +190,12 @@ install::install()
 
     local installPath cacheDir cache
     local url urlPath cachePath locFile dir linkDir hash hashFile
-    local importURL="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
+    local location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
     local installPath="/usr/local/bin/bb-import"
 
     # bb-import not installed - fresh install
     url="bb-import"
+    cacheDir="$(install::cacheDir)"
     cache="$(install::cacheDir::import)"
     urlPath="$(echo "$url" | sed 's/\:\///')"
     cachePath="$cache/links/$urlPath"
@@ -183,31 +210,20 @@ install::install()
     mkdir -p "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || return
 
     tmpFile="$cachePath.tmp"
-    tmpHeader="$cachePath.header"
     locFile="$cache/locations/$urlPath"
 
-    echo "Downloading $importURL"
+    echo "Downloading $location -> $tmpFile"
     # download to temp directory so sha1sum can be computed
-    curl -sfLS --netrc-optional --dump-header "$tmpHeader" "${IMPORT_CURL_OPTS-}" "$importURL" > "$tmpFile" || {
+    install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || {
         local r=$?
-        echo "Failed to download: $importURL" >&2
-        rm -f "$tmpFile" "$tmpHeader"
+        echo "Failed to download: $location" >&2
+        rm -f "$tmpFile"
         return "$r"
     }
-    sudo mv "$tmpFile" "$installPath"
+    sudo cp "$tmpFile" "$installPath" || { r=$?; echo "Failed to install bb-import in $installPath"; return "$r"; }
     sudo chmod +x "$installPath"
-
-    # print x-import-warning headers
-    grep -i '^location\|^content-location:' < "$headers" | while IFS='' read -r line
-    do
-        echo "${RED}import: warning - $(echo "$line" | awk -F": " '{print $2}' | tr -d \\r)${RESET}"
-    done
-    # parse the location
-    locationHeader="$(grep -i '^location|^content-location:' < "$headers" | tail -n1)"
-    [[ -n "$locationHeader" ]] && location="$(echo "$locationHeader" | awk -F": " '{print $2}' | tr -d \\r)"
     echo "Resolved location '$url' -> '$location'"
     echo "$location" > "$locFile"
-    rm -f "$tmpHeader"
 
     #calculate the sha1 hash of the contents of the download file
     hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return
@@ -217,13 +233,16 @@ install::install()
     # otherwise delete the temp file - it's no longer needed.
     [[ -f "$hashFile" ]] && { rm -f "$tmpFile" || return; } || { mv "$tmpFile" "$hashFile" || return; }
 
+    # create a relative symlink for this import pointing to the hashed file
+    local relative cacheStart
+    [[ "${linkDir:0-1}" == "." ]] && linkDir="${linkDir:0:${#linkDir}-2}"
     # shellcheck disable=SC2034
     cacheStart="$(( "${#cache}" + 1 ))" || return
-    relative="$(echo "$linkDir" | awk '{print substr($0, "$cacheStart")}' | sed 's\/[^/]*/..\//g')data/$hash" || return
+    relative="$(echo "$linkDir" | awk '{print substr($0, '"$cacheStart"')}' | sed 's/\/[^/]*/..\//g')data/$hash" || return
     printf "import: Creating symlink " >&2
     ln -fs${IMPORT_DEBUG:+v} "$relative" "$cachePath" >&2 || return
 
-    [ -n "${IMPORT_TRACE-}" ] && echo "$importURL" >> "$IMPORT_TRACE"
+    [ -n "${IMPORT_TRACE-}" ] && echo "$location" >> "$IMPORT_TRACE"
 
     echo "Successfully downloaded '$url' -> '$hashFile'"
     echo "SYMLINK: '$relative' -> '$cachePath'"
@@ -231,6 +250,7 @@ install::install()
     echo "Creating path file ..."
     # prepend cacheDir to $PATH
     echo "PATH=\"$cacheDir:\$PATH\"" > "$cacheDir/bb-path.sh"
+    source "$cacheDir/bb-path.sh"
     # install for bash ... everyone else is on their own
     if [[ "$SHELL" =~ .*bash.* ]]; then
         echo -n "Moving path file to /etc/profile.d directory ... "
@@ -239,6 +259,7 @@ install::install()
 
     # TODO :: Read / Write config variables
 
+    echo
     echoGold "INSTALLATION COMPLETE!"
 	echoGold "=================================================================="
 	echo
@@ -256,6 +277,8 @@ install::uninstall()
     echo
     echoSuccess "Uninstalling ... " -n
     rm -Rf "$HOME/.bb"
+    sudo rm -f /usr/local/bin/bb-import
+    sudo rm -f /etc/profile.d/bb-path.sh
     echoSuccess "DONE!"
     echo
 }
@@ -271,14 +294,26 @@ install::quit()
     exit 0
 }
 # ------------------------------------------------------------------
-# install::parseLocation
+# install::retry
 # ------------------------------------------------------------------
-install::parseLocation()
+install::retry()
 {
-    local location="$1"
-    local headers="$2"
-    local locationHeader=""
+    local exitCode=""
+    local retryCount=0
+    local numberRetries="${retries:-5}"
 
+    while [ "$retryCount" -lt "$numberRetries" ]
+    do
+        [[ "$retryCount" -gt 0 ]] && echo "Retry #$retryCount"
+        exitCode=0
+        "$@" || exitCode=$?
+        [[ "$exitCode" -eq 0 ]] && break
+        # TODO :: add exponential back-off
+        sleep 1
+        retryCount=$(( "$retryCount" + 1 ))
+    done
+
+    return "$exitCode"
 }
 # ------------------------------------------------------------------
 # install::returnQuit
@@ -388,9 +423,9 @@ install::menu()
 {
     clear
     echo
-	echo "${GOLD}=================================================================="
-	echo "BASH-BITS CORE INSTALLER MENU"
-	echo "==================================================================${RESET}"
+	echoGold "=================================================================="
+	echoGold "BASH-BITS CORE INSTALLER MENU"
+	echoGold "=================================================================="
 	echo
 	echo "Install Type:"
 	echo "  1) Shebang"
