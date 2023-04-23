@@ -3,7 +3,7 @@
 
 #set -eu
 
-realpath "${BASH_SOURCE[0]}"
+echo "$(realpath "${BASH_SOURCE[0]}")"
 
 ./test/start-server.sh &
 nginx_pid="$!"
