@@ -5,7 +5,7 @@
 
 realpath "${BASH_SOURCE[0]}"
 
-./test/files/start-server.sh &
+./test/start-server.sh &
 nginx_pid="$!"
 nginx_addr="http://127.0.0.1:12006"
 
