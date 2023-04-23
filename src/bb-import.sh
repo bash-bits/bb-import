@@ -582,8 +582,8 @@ import::getHash()
 import::baseDirs()
 {
 	[[ -z "${IMPORT_CACHE_DIR}" ]] && declare -gx IMPORT_CACHE_DIR="$(import::cacheDir)"
-	[[ -z "${IMPORT_TRACE_DIR}" ]] && declare -gx IMPORT_TRACE_DIR="${IMPORT_CACHE_DIR}/data"
-	[[ -z "${IMPORT_LOG_DIR}" ]] && declare -gx IMPORT_LOG_DIR="${IMPORT_CACHE_DIR}/log"
+	[[ -z "${IMPORT_TRACE_DIR}" ]] && declare -gx IMPORT_TRACE_DIR="${IMPORT_CACHE_DIR}data"
+	[[ -z "${IMPORT_LOG_DIR}" ]] && declare -gx IMPORT_LOG_DIR="${IMPORT_CACHE_DIR}log"
 
 	[[ -z "${IMPORT_CACHE}" ]] && declare -gx IMPORT_CACHE="$(import::cacheDir::import)"
 
