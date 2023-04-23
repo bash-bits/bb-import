@@ -22,6 +22,7 @@
 # ==================================================================
 # PREFLIGHT
 # ==================================================================
+declare BB_IMPORT_SYMBOL_ERROR
 # ==================================================================
 # VARIABLES
 # ==================================================================
@@ -29,7 +30,7 @@
 # CONFIG VARIABLES
 #
 # SYMBOL SECTION
-[[ -z "$BB_IMPORT_SYMBOL_ERROR" ]] && declare BB_IMPORT_SYMBOL_ERROR="🚫"
+[[ -z "$BB_IMPORT_SYMBOL_ERROR" ]] && BB_IMPORT_SYMBOL_ERROR="🚫"
 [[ -z "$BB_IMPORT_SYMBOL_WARNING" ]] && declare BB_IMPORT_SYMBOL_WARNING="⚠️"
 [[ -z "$BB_IMPORT_SYMBOL_INFO" ]] && declare BB_IMPORT_SYMBOL_INFO="ℹ️"
 [[ -z "$BB_IMPORT_SYMBOL_SUCCESS" ]] && declare BB_IMPORT_SYMBOL_SUCCESS="✅"
