@@ -41,6 +41,7 @@ declare -gx IMPORT_CACHE="${IMPORT_CACHE_DIR}/bb-import.sh"
 declare -gx IMPORT_TRACE_DIR="${IMPORT_CACHE_DIR}/data"
 declare -gx IMPORT_TRACE="${IMPORT_TRACE_DIR}/trace"
 declare -gx IMPORT_LOG_DIR="${IMPORT_CACHE_DIR}/log"
+declare -gx IMPORT_LOG="${IMPORT_LOG_DIR}/import"
 declare -gx IMPORT_CACHE_CFG="${IMPORT_CACHE}/cfg"
 declare -gx IMPORT_ENV="${IMPORT_CACHE_CFG}/bb-import.env"
 #
