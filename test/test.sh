@@ -3,8 +3,6 @@
 
 #set -eu
 
-echo "$(realpath "${BASH_SOURCE[0]}")"
-
 ./test/start-server.sh &
 nginx_pid="$!"
 nginx_addr="http://127.0.0.1:12006"
@@ -28,7 +26,7 @@ IMPORT_DEBUG=1
 IMPORT_RELOAD=1
 IMPORT_SERVER="${nginx_addr}"
 
-source "src/bb-import.sh"
+source ./src/bb-import.sh
 
 # Test basic import
 bb::import foo
