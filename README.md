@@ -17,7 +17,7 @@ The most important and magical part of Bash Bits!
 <h3 align="center">
 <a href="https://github.com/bash-bits/bb-import/issues" target="_blank">Issues</a>
 🔹
-<a href="docs/README.md" target="_blank">Documentation</a>
+<a href="https://github.com/bash-bits/bb-import/wiki" target="_blank">Documentation Wiki</a>
 🔹
 <a href="https://github.com/bash-bits/bb-import/releases" target="_blank">Releases</a>
 </h3>
@@ -32,6 +32,7 @@ The most important and magical part of Bash Bits!
 <summary><h2><a name="toc">📖 Table of Contents</a></h2></summary>
 
 - [Project Overview](#-project-overview)
+  - [Significant Differences from `import`](#significant-differences-between-bb-import--import-by-nathan-rajlich)
   - [Branch Reliability](#branch-reliability)
 - [What's Included?](#-whats-included)
 - [Installation](#-installation)
@@ -97,6 +98,26 @@ bb::import https://myserver.com/project@1.2.3
 > I have to admit that this wasn't my idea.  I've modeled BB-Import after the _INCREDIBLE_ [`importpw/import`](https://github.com/importpw/import) project by Nathan Rajlich, and decided to make a modified version of it a CORE feature of my Bash-Bits project the very moment I laid eyes on it.
 > 
 > **As always ... I've only been able to do what I do, because I've stood upon the shoulders of giants to do it.**
+
+### [Significant Differences Between BB-Import & `import` by Nathan Rajlich](#toc)
+
+I'll admit, at first glance - especially upon its first release - it might be hard to spot the differences between `BB-Import` and the project that I based it on, `import` by Nathan Rajlich.  So, I'd like to take a moment to draw your attention to the main points of difference.  I'd like to add, the fact that I've done things this way is not at all intended to say that Nathan's solution is _wrong_ or inferior in **ANY** way - I just saw a way it might be done _differently_.
+
+### 1 - No Server
+
+BB-Import does not use a server to resolve the location of resources.
+
+### 2 - Configuration Layer
+
+BB-Import implements a more robust configuration layer.
+
+### 3 - Integrated Logger
+
+BB-Import includes an integrated, but basic logger, to help provide insight into the import process.
+
+### 4 - The Automagic Installer
+
+It is possible to install BB-Import with a single command in your terminal.
  
 ### [Branch Reliability](#toc)
 
