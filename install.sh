@@ -188,7 +188,7 @@ install::install()
 	echoGold "=================================================================="
     echo
 
-    local installPath cacheDir cache cfgDir cfgPath envPath
+    local installPath cacheDir cache cfgDir cfgPath envPath ini
     local url urlPath cachePath locFile dir linkDir hash hashFile
     local location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
     local cfgFile="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.ini"
@@ -196,10 +196,11 @@ install::install()
 
     # bb-import not installed - fresh install
     url="bb-import"
+    ini="bb-import.ini"
     cacheDir="$(install::cacheDir)"
     cache="$(install::cacheDir::import)"
     cfgDir="$cache/cfg"
-    cfgPath="$cfgDir/$cfgFile"
+    cfgPath="$cfgDir/$ini"
     urlPath="$(echo "$url" | sed 's/\:\///')"
     cachePath="$cache/links/$urlPath"
     dir="$(dirname "$urlPath")"
