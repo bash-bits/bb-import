@@ -627,7 +627,7 @@ bb::import()
             org="${url%/*}"
             repo="${url#*/}"
             # check for version tag
-            [[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${repo#*@}"; repo="${repo%@*}"; || tag="master"
+            [[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && { tag="${repo#*@}"; repo="${repo%@*}"; } || tag="master"
             # rewrite url
             location="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}.sh}"
         elif echo "$url" | grep "://" > /dev/null; then
