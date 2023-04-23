@@ -373,6 +373,8 @@ import::log()
     local tag="" msgLog="" msgOut="" msgErr=""
     local isError=0 toStdOut=1 toStdErr=1 toFile=1
 
+	[[ "$TEST" ]] && return 0
+
     [[ ! "$(import::log::checkLog)" ]] && errorReturn "Import Log Failed Integrity Check" 2;
 
     if [[ ! "$1" =~ $isOPT ]]; then
