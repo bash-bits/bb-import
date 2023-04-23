@@ -39,22 +39,27 @@ First we're going to borrow a few snippets of code from the importer to make lif
 
 ```shell
 location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
+cfgFile="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.ini"
 installPath="/usr/local/bin/bb-import"
 url="bb-import"
 cacheDir="$HOME/.bb"
 cache="$cacheDir/bb-import.sh"
+cfgDir="$cache/cfg"
+cfgPath="$cfgDir/$cfgFile"
+envPath="$cfgDir/$envFile"
 urlPath="$(echo "$url" | sed 's/\:\///')"
 cachePath="$cache/links/$urlPath"
 dir="$(dirname "$urlPath")"
 linkDir="$cache/links/$dir"
 echo "Creating directories:"
+echo "    $cfgDir"
 echo "    $linkDir"
 echo "    $cache/data"
 echo "    $cache/locations/$dir"
-mkdir -p "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || return
+mkdir -p "$cfgDir" "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || return
 ```
 
-### Step 2 - Download bb-import.sh
+### Step 2 - Download bb-import.sh & bb-import.ini
 
 ```shell
 tmpFile="$cachePath.tmp"
@@ -66,6 +71,9 @@ sudo cp "$tmpFile" "$installPath" || { r=$?; echo "Failed to install bb-import i
 sudo chmod +x "$installPath"
 echo "Resolved location '$url' -> '$location'"
 echo "$location" > "$locFile"
+echo
+echo "Downloading $cfgFile -> $cfgPath"
+curl -sfLS --netrc-optional --output "$cfgPath" "$cfgFile" || { r=$?; echo "Failed to download: $cfgFile" >&2; rm -f "$cfgPath"; return "$r"; }
 ```
 
 ### Step 3 - Get File Hash

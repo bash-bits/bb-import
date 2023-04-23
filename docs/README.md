@@ -4,9 +4,9 @@
 <br />
 <img src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/bash_logo-128x128.png" alt="Bourne Again Shell" />
 
-[ BB-Import Documentation v-1.0.0](../README.md)
-
 </h1>
+
+<h1 align="center"><a href="https://github.com/bash-bits/bb-import/wiki">BB-Import Documentation v-1.0.0</a></h1>
 
 <h3 align="center">In-Repository Documentation for the<br /><br />`Bash-Bits Import Module`</h3>
 
