@@ -512,12 +512,12 @@ import::fatal() { import::log "$1" -p 900; exit "${2:-1}"; }
 #
 # LOG ALIASES
 #
-alias importLog='import::log'
-alias importDebug='import::debug'
-alias importInfo='import::info'
-alias importWarning='import::warning'
-alias importError='import::error'
-alias importFatal='import::fatal'
+importLog() { import::log; }
+importDebug() { import::debug; }
+importInfo() { import::info; }
+importWarning() { import::warning; }
+importError() { import::error; }
+importFatal() { import::fatal; }
 #
 # IMPORT HASH UTILITY
 #
