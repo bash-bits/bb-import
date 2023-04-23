@@ -82,6 +82,7 @@
 [[ -z "$BLUE" ]] && declare BLUE="$(printf '%s94m' "$ANSI_CSI";)"
 [[ -z "$GREEN" ]] && declare GREEN="$(printf '%s32m' "$ANSI_CSI";)"
 [[ -z "$GOLD" ]] && declare GOLD="$(printf '%s33m' "$ANSI_CSI";)"
+[[ -z "$WHITE" ]] && declare WHITE="$(printf '%s37m' "$ANSI_CSI";)"
 [[ -z "$RESET" ]] && declare RESET="$(printf '%s0m' "$ANSI_CSI";)"
 #
 # REGEX VARIABLES
@@ -188,6 +189,7 @@ echoRed() { import::echoAlias "$1" -c "${RED}" "${@:2}"; }
 echoBlue() { import::echoAlias "$1" -c "${BLUE}" "${@:2}"; }
 echoGreen() { import::echoAlias "$1" -c "${GREEN}" "${@:2}"; }
 echoGold() { import::echoAlias "$1" -c "${GOLD}" "${@:2}"; }
+echoWhite() { import::echoAlias "$1" -c "${WHITE}" "${@:2}"; }
 #
 # MESSAGE ALIASES
 #
@@ -200,19 +202,6 @@ errorReturn() { echoError "$1"; return "${2:-1}"; }
 #
 # CONFIGURATION FUNCTIONS
 #
-# ------------------------------------------------------------------
-# import::getConfig
-# ------------------------------------------------------------------
-#
-#
-#
-#
-#
-# ------------------------------------------------------------------
-import::getconfig()
-{
-	local
-}
 # ------------------------------------------------------------------
 # import::parseConfig
 # ------------------------------------------------------------------
@@ -228,38 +217,61 @@ import::getconfig()
 import::parseConfig()
 {
 	local cfgFile="${1:-}"
-	local myName prefix section line cache
+	local myName prefix module section key val line cache
+	local writeEnv=0
 
 	if [[ -z "$cfgFile" ]]; then
 		myName="${BASH_SOURCE[0]}"
 		myExt="${myName#*.}"
 		myName="${myName%.*}"
 		cfgFile="$myName.ini"
+		envFile="$myName.env"
 	fi
 
 	cachePath="$(import::cacheDir::import)"
 	cfgDir="$cachePath/cfg"
 	cfgPath="$cfgDir/$cfgFile"
+	envPath="$cfgDir/$envFile"
 
 	[[ ! -f "$cfgPath" ]] && errorReturn "Config File Not Found!" 2
 
+	[[ ! -f "$envPath" ]] && writeEnv=1 && touch "$envPath"
+
 	while IFS= read -r line
 	do
-		echo "$line"
+
+		if [[ "${line:0:1}" == "[" && "${line:0-1}" == "]" ]]; then
+			section="${line:1:${#line}-2}"
+			[[ "${section^^}" == "MODULE" ]] && section="${myName:3}" && section="${section^^}" && module="$section"
+		else
+			key="${line%=*}"
+			key="${key^^}"
+			val="${line#*=}"
+			key="${section}_${key}"
+			[[ "${val}" == *"$"* ]] && eval "val=\$$val"
+			[[ "${val}" == *"{"*"}"* ]] && val="$(import::template "${val}")"
+			declare -gx "${key}"="${val}"
+#			echo "${key}=${!key}"
+			[[ "$writeEnv" -eq 1 ]] && echo "${key}=${!key}" >> "$envPath"
+		fi
 	done < "$cfgPath"
 }
 # ------------------------------------------------------------------
-# import::setConfig
+# import::template
 # ------------------------------------------------------------------
+# @description Replace placeholders in template strings with known
+# variables.
 #
+# @arg	$1		[mixed]		A template string containing placeholders
 #
-#
-#
-#
+# @exitcode		0		Success
+# @exitcode		1		Failure
+# @exitcode		2		ERROR - Missing Argument
 # ------------------------------------------------------------------
-import::setConfig()
+import::template()
 {
-	local
+	local template="${1:-}"
+
 }
 # ------------------------------------------------------------------
 #
@@ -644,28 +656,72 @@ import::file() { print=1 bb::import "$@"; }
 # ------------------------------------------------------------------
 # import::usage
 # ------------------------------------------------------------------
+# @description Show usage information about the module
 #
+# @noargs
 #
-#
-#
-#
+# @stdout Usage information about the module
 # ------------------------------------------------------------------
 import::usage()
 {
-	local
+	echo
+	echoGold "===================================================================="
+	echoWhite "Usage:  bb::import <resource> ... "
+	echoGold "===================================================================="
+	echo
+	echo "Documentation: https://github.com/bash-bits/bb-import/wiki"
+	echo "Bash-Bits Core Modules: https://github.com/bash-bits"
+	echo
+	echoGold "Example use in Script Headers:"
+	echo
+	echo "    ${WHITE}#!/usr/bin/env bb-import${RESET} # The 'SHEBANG' method of inclusion"
+	echo
+	echo "    ${WHITE}source bb-import${RESET}         # The 'Sourced' method of inclusion"
+	echo
+	echoGold "Example use in Scripts:"
+	echo
+	echo "    ${WHITE}bb::import bb-ansi${RESET}       # import the latest commit of the bb-ansi module"
+	echo "    ${WHITE}bb::import bb-ansi@1.3.1${RESET} # import the tagged version 1.3.1 of the bb-ansi module"
+	echo "    ${WHITE}bb::import org-name/repo${RESET} # import the org-name/repo project from GitHub"
+	echo "    ${WHITE}bb::import https://example.com/project${RESET}  # Import from ANY server in the world"
+	echo
+	echo "    ${WHITE}NOTE: You can include as many resource identifiers after a bb::import statement as you like!${RESET}"
+	echo
+	echoGold "Example use on the Command-Line:"
+	echo
+	echo "    ${WHITE}bb-import -h${RESET}             # Display (this) usage information"
+	echo "    ${WHITE}bb-import -v${RESET}             # Show version information"
+	echo
+	echoGold "Options:"
+	echo
+	echo "    ${WHITE}-f, --force${RESET}              # Force the resource to be downloaded even if cached"
+	echo "    ${WHITE}-h, --help${RESET}               # Show usage (this) information"
+	echo "    ${WHITE}-l, --list${RESET}               # List cached resources"
+	echo "    ${WHITE}-v, --version${RESET}            # Show version information"
+#	echo "    ${WHITE}${RESET}"
+	echo
+	echoGold "===================================================================="
+	echo
 }
 # ------------------------------------------------------------------
 # import::version
 # ------------------------------------------------------------------
+# @description Reports the version and build date of this release
 #
+# @noargs
 #
-#
-#
-#
+# @stdout Version, Copyright, & Build Information
 # ------------------------------------------------------------------
 import::version()
 {
-	local
+	local ver buildDate
+
+	echo
+	echo "Bash-Bits Modular Bash Library"
+	echoWhite "BB-Import Module v-${IMPORT_VERSION}"
+	echo "Copyright © 2022-2023 Darren (Ragdata) Poulton"
+	echo "Build Date: ${IMPORT_BUILD_DATE}"
+	echo
 }
 # ------------------------------------------------------------------
 # bb::import
@@ -811,7 +867,41 @@ bb::import()
 # MAIN
 # ==================================================================
 
+options=$(getopt -l "force,help,list,version" -o "fhlv" -a -- "$@")
 
+eval set --"$options"
+
+while true
+do
+	case "$1" in
+		-f|--force)
+			IMPORT_RELOAD=1
+			shift
+			;;
+		-h|--help)
+			import::usage
+			shift
+			return 0
+			;;
+		-l|--list)
+			import::list
+			shift
+			return 0
+			;;
+		-v|--version)
+			import::version
+			shift
+			return 0
+			;;
+		--)
+			shift
+			break
+			;;
+		*)
+			errorReturn "Invalid Argument!" 2
+			;;
+	esac
+done
 
 ## for `#1/usr/bin/env bb-import`
 #if [ -n "${ZSH_EVAL_CONTEXT-}" ]; then
