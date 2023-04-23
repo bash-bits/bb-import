@@ -188,42 +188,43 @@ install::install()
 	echoGold "=================================================================="
     echo
 
-    local installPath cacheDir cache
+    local installPath cacheDir cache cfgDir cfgPath envPath
     local url urlPath cachePath locFile dir linkDir hash hashFile
     local location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
+    local cfgFile="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.ini"
     local installPath="/usr/local/bin/bb-import"
 
     # bb-import not installed - fresh install
     url="bb-import"
     cacheDir="$(install::cacheDir)"
     cache="$(install::cacheDir::import)"
+    cfgDir="$cache/cfg"
+    cfgPath="$cfgDir/$cfgFile"
     urlPath="$(echo "$url" | sed 's/\:\///')"
     cachePath="$cache/links/$urlPath"
     dir="$(dirname "$urlPath")"
     linkDir="$cache/links/$dir"
 
     echo "Creating directories:"
+    echo "    $cfgDir"
     echo "    $linkDir"
     echo "    $cache/data"
     echo "    $cache/locations/$dir"
     # create cache paths
-    mkdir -p "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || return
+    mkdir -p "$cfgDir" "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || return
 
     tmpFile="$cachePath.tmp"
     locFile="$cache/locations/$urlPath"
 
     echo "Downloading $location -> $tmpFile"
     # download to temp directory so sha1sum can be computed
-    install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || {
-        local r=$?
-        echo "Failed to download: $location" >&2
-        rm -f "$tmpFile"
-        return "$r"
-    }
+    install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; echo "Failed to download: $location" >&2; rm -f "$tmpFile"; return "$r"; }
     sudo cp "$tmpFile" "$installPath" || { r=$?; echo "Failed to install bb-import in $installPath"; return "$r"; }
     sudo chmod +x "$installPath"
     echo "Resolved location '$url' -> '$location'"
     echo "$location" > "$locFile"
+	echo "Downloading $cfgFile -> $cfgPath"
+    install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$cfgPath" "$cfgFile" || { local r=$?; echo "Failed to download: $cfgFile" >&2; rm -f "$cfgPath"; return "$r"; }
 
     #calculate the sha1 hash of the contents of the download file
     hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return

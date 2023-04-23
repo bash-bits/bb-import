@@ -25,45 +25,49 @@
 # ==================================================================
 # VARIABLES
 # ==================================================================
-#
-# CONFIG VARIABLES
-#
-# SYMBOL SECTION
-[[ -z "$BB_IMPORT_SYMBOL_ERROR" ]] && BB_IMPORT_SYMBOL_ERROR="🚫"
-[[ -z "$BB_IMPORT_SYMBOL_WARNING" ]] && declare BB_IMPORT_SYMBOL_WARNING="⚠️"
-[[ -z "$BB_IMPORT_SYMBOL_INFO" ]] && declare BB_IMPORT_SYMBOL_INFO="ℹ️"
-[[ -z "$BB_IMPORT_SYMBOL_SUCCESS" ]] && declare BB_IMPORT_SYMBOL_SUCCESS="✅"
-# IMPORT SECTION
-[[ -z "$BB_IMPORT_OPTIONS_CACHE" ]] && declare BB_IMPORT_OPTIONS_CACHE="$HOME/.bb"
-[[ -z "$BB_IMPORT_OPTIONS_SERVER" ]] && declare BB_IMPORT_OPTIONS_SERVER="https://github.com/bash-bits"
-[[ -z "$BB_IMPORT_OPTIONS_LOG_DIR" ]] && declare BB_IMPORT_OPTIONS_LOG_DIR="$BB_IMPORT_OPTIONS_CACHE/log"
-[[ -z "$BB_IMPORT_OPTIONS_LOG" ]] && declare BB_IMPORT_OPTIONS_LOG="$BB_IMPORT_OPTIONS_LOG_DIR/debug"
-[[ -z "$BB_IMPORT_OPTIONS_TRACE" ]] && declare BB_IMPORT_OPTIONS_TRACE_DIR="$BB_IMPORT_OPTIONS_CACHE/trace"
-[[ -z "$BB_IMPORT_OPTIONS_LOG_SIZE" ]] && declare BB_IMPORT_OPTIONS_LOG_SIZE=1048576
-[[ -z "$BB_IMPORT_OPTIONS_LOG_BACKUPS" ]] && declare BB_IMPORT_OPTIONS_LOG_BACKUPS=5
-[[ -z "$BB_IMPORT_OPTIONS_LOG_ARCHIVE" ]] && declare BB_IMPORT_OPTIONS_LOG_ARCHIVE=1
-[[ -z "$BB_IMPORT_OPTIONS_CURL_OPTS" ]] && declare BB_IMPORT_OPTIONS_CURL_OPTS
-[[ -z "$BB_IMPORT_OPTIONS_RELOAD" ]] && declare BB_IMPORT_OPTIONS_RELOAD=0
-[[ -z "$BB_IMPORT_OPTIONS_DEBUG" ]] && declare BB_IMPORT_OPTIONS_DEBUG=0
-#
-# LOCAL CONFIG VARIABLES
-#
-SYMBOL_ERROR="$BB_IMPORT_SYMBOL_ERROR"
-SYMBOL_WARNING="$BB_IMPORT_SYMBOL_WARNING"
-SYMBOL_INFO="$BB_IMPORT_SYMBOL_INFO"
-SYMBOL_SUCCESS="$BB_IMPORT_SYMBOL_SUCCESS"
-# IMPORT SECTION
-IMPORT_CACHE="$BB_IMPORT_OPTIONS_CACHE"
-IMPORT_SERVER="$BB_IMPORT_OPTIONS_SERVER"
-IMPORT_LOG_DIR="$BB_IMPORT_OPTIONS_LOG_DIR"
-IMPORT_LOG="$BB_IMPORT_OPTIONS_LOG"
-IMPORT_TRACE="$BB_IMPORT_OPTIONS_TRACE"
-IMPORT_LOG_SIZE="$BB_IMPORT_OPTIONS_LOG_SIZE"
-IMPORT_LOG_BACKUPS="$BB_IMPORT_OPTIONS_LOG_BACKUPS"
-IMPORT_LOG_ARCHIVE="$BB_IMPORT_OPTIONS_LOG_ARCHIVE"
-IMPORT_CURL_OPTS="$BB_IMPORT_OPTIONS_CURL_OPTS"
-IMPORT_RELOAD="$BB_IMPORT_OPTIONS_RELOAD"
-IMPORT_DEBUG="$BB_IMPORT_OPTIONS_DEBUG"
+
+
+##
+## CONFIG VARIABLES
+##
+## SYMBOL SECTION
+#[[ -z "$BB_IMPORT_SYMBOL_ERROR" ]] && BB_IMPORT_SYMBOL_ERROR="🚫"
+#[[ -z "$BB_IMPORT_SYMBOL_WARNING" ]] && declare BB_IMPORT_SYMBOL_WARNING="⚠️"
+#[[ -z "$BB_IMPORT_SYMBOL_INFO" ]] && declare BB_IMPORT_SYMBOL_INFO="ℹ️"
+#[[ -z "$BB_IMPORT_SYMBOL_SUCCESS" ]] && declare BB_IMPORT_SYMBOL_SUCCESS="✅"
+## IMPORT SECTION
+#[[ -z "$BB_IMPORT_OPTIONS_CACHE" ]] && declare BB_IMPORT_OPTIONS_CACHE="$HOME/.bb"
+#[[ -z "$BB_IMPORT_OPTIONS_SERVER" ]] && declare BB_IMPORT_OPTIONS_SERVER="https://github.com/bash-bits"
+#[[ -z "$BB_IMPORT_OPTIONS_LOG_DIR" ]] && declare BB_IMPORT_OPTIONS_LOG_DIR="$BB_IMPORT_OPTIONS_CACHE/log"
+#[[ -z "$BB_IMPORT_OPTIONS_LOG" ]] && declare BB_IMPORT_OPTIONS_LOG="$BB_IMPORT_OPTIONS_LOG_DIR/debug"
+#[[ -z "$BB_IMPORT_OPTIONS_TRACE" ]] && declare BB_IMPORT_OPTIONS_TRACE_DIR="$BB_IMPORT_OPTIONS_CACHE/trace"
+#[[ -z "$BB_IMPORT_OPTIONS_LOG_SIZE" ]] && declare BB_IMPORT_OPTIONS_LOG_SIZE=1048576
+#[[ -z "$BB_IMPORT_OPTIONS_LOG_BACKUPS" ]] && declare BB_IMPORT_OPTIONS_LOG_BACKUPS=5
+#[[ -z "$BB_IMPORT_OPTIONS_LOG_ARCHIVE" ]] && declare BB_IMPORT_OPTIONS_LOG_ARCHIVE=1
+#[[ -z "$BB_IMPORT_OPTIONS_CURL_OPTS" ]] && declare BB_IMPORT_OPTIONS_CURL_OPTS
+#[[ -z "$BB_IMPORT_OPTIONS_RELOAD" ]] && declare BB_IMPORT_OPTIONS_RELOAD=0
+#[[ -z "$BB_IMPORT_OPTIONS_DEBUG" ]] && declare BB_IMPORT_OPTIONS_DEBUG=0
+##
+## LOCAL CONFIG VARIABLES
+##
+#SYMBOL_ERROR="$BB_IMPORT_SYMBOL_ERROR"
+#SYMBOL_WARNING="$BB_IMPORT_SYMBOL_WARNING"
+#SYMBOL_INFO="$BB_IMPORT_SYMBOL_INFO"
+#SYMBOL_SUCCESS="$BB_IMPORT_SYMBOL_SUCCESS"
+## IMPORT SECTION
+#IMPORT_CACHE="$BB_IMPORT_OPTIONS_CACHE"
+#IMPORT_SERVER="$BB_IMPORT_OPTIONS_SERVER"
+#IMPORT_LOG_DIR="$BB_IMPORT_OPTIONS_LOG_DIR"
+#IMPORT_LOG="$BB_IMPORT_OPTIONS_LOG"
+#IMPORT_TRACE="$BB_IMPORT_OPTIONS_TRACE"
+#IMPORT_LOG_SIZE="$BB_IMPORT_OPTIONS_LOG_SIZE"
+#IMPORT_LOG_BACKUPS="$BB_IMPORT_OPTIONS_LOG_BACKUPS"
+#IMPORT_LOG_ARCHIVE="$BB_IMPORT_OPTIONS_LOG_ARCHIVE"
+#IMPORT_CURL_OPTS="$BB_IMPORT_OPTIONS_CURL_OPTS"
+#IMPORT_RELOAD="$BB_IMPORT_OPTIONS_RELOAD"
+#IMPORT_DEBUG="$BB_IMPORT_OPTIONS_DEBUG"
+
+
 #
 # ANSI VARIABLES
 #
@@ -102,7 +106,11 @@ declare importEntryPoint=0
 # ------------------------------------------------------------------
 bb::scriptPath() { printf '%s' "$(realpath "${BASH_SOURCE[0]}")"; }
 # ------------------------------------------------------------------
-# echoAlias
+#
+# DISPLAY FUNCTIONS
+#
+# ------------------------------------------------------------------
+# import::echoAlias
 # ------------------------------------------------------------------
 # @description Master alias function for `echo` command
 #
@@ -116,7 +124,7 @@ bb::scriptPath() { printf '%s' "$(realpath "${BASH_SOURCE[0]}")"; }
 # @exitcode     0   Success
 # @exitcode     1   Failure
 # ------------------------------------------------------------------
-install::echoAlias()
+import::echoAlias()
 {
     local msg="${1:-}"
     local COLOR OUTPUT PREFIX SUFFIX _0 options
@@ -176,44 +184,87 @@ install::echoAlias()
 #
 # COLOUR ALIASES
 #
-echoRed() { install::echoAlias "$1" -c "${RED}" "${@:2}"; }
-echoBlue() { install::echoAlias "$1" -c "${BLUE}" "${@:2}"; }
-echoGreen() { install::echoAlias "$1" -c "${GREEN}" "${@:2}"; }
-echoGold() { install::echoAlias "$1" -c "${GOLD}" "${@:2}"; }
+echoRed() { import::echoAlias "$1" -c "${RED}" "${@:2}"; }
+echoBlue() { import::echoAlias "$1" -c "${BLUE}" "${@:2}"; }
+echoGreen() { import::echoAlias "$1" -c "${GREEN}" "${@:2}"; }
+echoGold() { import::echoAlias "$1" -c "${GOLD}" "${@:2}"; }
 #
 # MESSAGE ALIASES
 #
-echoError() { install::echoAlias "$SYMBOL_ERROR $1" -e -c "${RED}" "${@:2}"; }
-echoWarning() { install::echoAlias "$SYMBOL_WARNING $1" -e -c "${GOLD}" "${@:2}"; }
-echoInfo() { install::echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; }
-echoSuccess() { install::echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; }
+echoError() { import::echoAlias "$SYMBOL_ERROR $1" -e -c "${RED}" "${@:2}"; }
+echoWarning() { import::echoAlias "$SYMBOL_WARNING $1" -e -c "${GOLD}" "${@:2}"; }
+echoInfo() { import::echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; }
+echoSuccess() { import::echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; }
 errorReturn() { echoError "$1"; return "${2:-1}"; }
 # ------------------------------------------------------------------
-# import::cacheDir
-# ------------------------------------------------------------------
-# @description Determine the path to bb-import
 #
-# @noargs
+# CONFIGURATION FUNCTIONS
 #
-# @stdout The path to bb-import
 # ------------------------------------------------------------------
-import::cacheDir()
+# import::getConfig
+# ------------------------------------------------------------------
+#
+#
+#
+#
+#
+# ------------------------------------------------------------------
+import::getconfig()
 {
-    local home="${HOME:-"$(printf '%s' ~)"}"
-    local default="$home/.bb"
-    [ "$(uname -s)" = "Darwin" ] && default="$home/Library/Caches"
-    printf '%s' "${XDG_CACHE_HOME:-${LOCALAPPDATA:-$default}}/$1"
+	local
 }
 # ------------------------------------------------------------------
-# import::cacheDir::import
+# import::parseConfig
 # ------------------------------------------------------------------
-# @description Determine the path to bb-import
+# @description Parse the specified config file to make them available
+# in the environment and to Bash-Bits as a whole.
 #
-# @noargs
+# @arg $1	[string]	Name of the configuration file
 #
-# @stdout The path to bb-import
+# @exitcode		0		Success
+# @exitcode		1		Failure
+# @exitcode		2		ERROR - Config File Not Found
 # ------------------------------------------------------------------
-import::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb-import.sh)}"; }
+import::parseConfig()
+{
+	local cfgFile="${1:-}"
+	local myName prefix section line cache
+
+	if [[ -z "$cfgFile" ]]; then
+		myName="${BASH_SOURCE[0]}"
+		myExt="${myName#*.}"
+		myName="${myName%.*}"
+		cfgFile="$myName.ini"
+	fi
+
+	cachePath="$(import::cacheDir::import)"
+	cfgDir="$cachePath/cfg"
+	cfgPath="$cfgDir/$cfgFile"
+
+	[[ ! -f "$cfgPath" ]] && errorReturn "Config File Not Found!" 2
+
+	while IFS= read -r line
+	do
+		echo "$line"
+	done < "$cfgPath"
+}
+# ------------------------------------------------------------------
+# import::setConfig
+# ------------------------------------------------------------------
+#
+#
+#
+#
+#
+# ------------------------------------------------------------------
+import::setConfig()
+{
+	local
+}
+# ------------------------------------------------------------------
+#
+# LOGGING FUNCTIONS
+#
 # ------------------------------------------------------------------
 # import::log::checkLog
 # ------------------------------------------------------------------
@@ -317,7 +368,7 @@ import::log()
     local tag="" msgLog="" msgOut="" msgErr=""
     local isError=0 toStdOut=1 toStdErr=1 toFile=1
 
-    [[ ! "$(import::log::checkLog)" ]] && { echoError "Import Log Failed Integrity Check"; return 2; }
+    [[ ! "$(import::log::checkLog)" ]] && errorReturn "Import Log Failed Integrity Check" 2;
 
     if [[ ! "$1" =~ $isOPT ]]; then
         msg="$1"
@@ -526,10 +577,40 @@ importFatal() { import::fatal "$@"; }
 # and only `sha1sum` is present on Alpine by default
 _importSHASum="$(command -v sha1sum)" || _importSHASum="$(command -v shasum)" || {
     r=$?
-    importLog "No \`shasum\` or \`sha1sum\` command present!"
+#    importLog "No \`shasum\` or \`sha1sum\` command present!"
     exit "$r"
 }
-importDebug "Using '$_importSHASum' for hashing"
+#importDebug "Using '$_importSHASum' for hashing"
+# ------------------------------------------------------------------
+#
+# IMPORT FUNCTIONS
+#
+# ------------------------------------------------------------------
+# import::cacheDir
+# ------------------------------------------------------------------
+# @description Determine the path to bb-import
+#
+# @noargs
+#
+# @stdout The path to bb-import
+# ------------------------------------------------------------------
+import::cacheDir()
+{
+    local home="${HOME:-"$(printf '%s' ~)"}"
+    local default="$home/.bb"
+    [ "$(uname -s)" = "Darwin" ] && default="$home/Library/Caches"
+    printf '%s' "${XDG_CACHE_HOME:-${LOCALAPPDATA:-$default}}/$1"
+}
+# ------------------------------------------------------------------
+# import::cacheDir::import
+# ------------------------------------------------------------------
+# @description Determine the path to bb-import
+#
+# @noargs
+#
+# @stdout The path to bb-import
+# ------------------------------------------------------------------
+import::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb-import.sh)}"; }
 # ------------------------------------------------------------------
 # import::retry
 # ------------------------------------------------------------------
@@ -560,6 +641,32 @@ import::retry()
 # @description
 # ------------------------------------------------------------------
 import::file() { print=1 bb::import "$@"; }
+# ------------------------------------------------------------------
+# import::usage
+# ------------------------------------------------------------------
+#
+#
+#
+#
+#
+# ------------------------------------------------------------------
+import::usage()
+{
+	local
+}
+# ------------------------------------------------------------------
+# import::version
+# ------------------------------------------------------------------
+#
+#
+#
+#
+#
+# ------------------------------------------------------------------
+import::version()
+{
+	local
+}
 # ------------------------------------------------------------------
 # bb::import
 # ------------------------------------------------------------------
@@ -592,6 +699,7 @@ bb::import()
             [[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${url#*@}" || tag="master"
             # rewrite url
             location="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}.sh}"
+            cfgFile="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}.sh}"
         elif ! echo "$url" | grep "://" > /dev/null && echo "$url" | awk -F/ '{print $1}' | grep '\.' > /dev/null; then
             importDebug "Detected Namespaced Import"
             # NAMESPACED IMPORT (eg: bb::import my-org/my-repo)
@@ -702,47 +810,50 @@ bb::import()
 # ==================================================================
 # MAIN
 # ==================================================================
-# for `#1/usr/bin/env bb-import`
-if [ -n "${ZSH_EVAL_CONTEXT-}" ]; then
-    if [ "${ZSH_EVAL_CONTEXT-}" == "toplevel" ]; then
-        importEntryPoint="1"
-    fi
-elif [ "$(echo "$0" | cut -c1)" != "-" ] && [ "$(basename "$0" .sh)" = "bb-import" ]; then
-    importEntryPoint="1"
-    echo "ENTRYPOINT: $(basename "$0" .sh)"
-fi
 
-if [ -n "${importEntryPoint-}" ]; then
-    # parse argv
-    while [ $# -gt 0 ]
-    do
-        case "$1" in
-            -s=*|--shell=*)
-                importShell="${1#*=}" && shift
-                ;;
-            -s|--shell)
-                importShell="$2" && shift 2
-                ;;
-            -c)
-                importCommand="$2" && shift 2
-                ;;
-            -*)
-                echoError "bb-import :: Unknown Argument '$1'" >&2 && exit 2
-                ;;
-            *)
-                break
-                ;;
-        esac
-    done
 
-    if [ -n "${importShell-}" ]; then
-        # if a specific shell was requested, then relaunch using it
-        exec "$importShell" "$0" "$@"
-    elif [ -n "${importCommand-}" ]; then
-        eval "$importCommand"
-    else
-        importEntryPoint="$1"
-        shift
-        source "$importEntryPoint"
-    fi
-fi
+
+## for `#1/usr/bin/env bb-import`
+#if [ -n "${ZSH_EVAL_CONTEXT-}" ]; then
+#    if [ "${ZSH_EVAL_CONTEXT-}" == "toplevel" ]; then
+#        importEntryPoint="1"
+#    fi
+#elif [ "$(echo "$0" | cut -c1)" != "-" ] && [ "$(basename "$0" .sh)" = "bb-import" ]; then
+#    importEntryPoint="1"
+#    echo "ENTRYPOINT: $(basename "$0" .sh)"
+#fi
+#
+#if [ -n "${importEntryPoint-}" ]; then
+#    # parse argv
+#    while [ $# -gt 0 ]
+#    do
+#        case "$1" in
+#            -s=*|--shell=*)
+#                importShell="${1#*=}" && shift
+#                ;;
+#            -s|--shell)
+#                importShell="$2" && shift 2
+#                ;;
+#            -c)
+#                importCommand="$2" && shift 2
+#                ;;
+#            -*)
+#                echoError "bb-import :: Unknown Argument '$1'" >&2 && exit 2
+#                ;;
+#            *)
+#                break
+#                ;;
+#        esac
+#    done
+#
+#    if [ -n "${importShell-}" ]; then
+#        # if a specific shell was requested, then relaunch using it
+#        exec "$importShell" "$0" "$@"
+#    elif [ -n "${importCommand-}" ]; then
+#        eval "$importCommand"
+#    else
+#        importEntryPoint="$1"
+#        shift
+#        source "$importEntryPoint"
+#    fi
+#fi
