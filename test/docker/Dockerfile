@@ -8,7 +8,7 @@ RUN apk add sudo && NEWUSER="ragdata" && adduser -g "${NEWUSER}" $NEWUSER -D && 
 USER ragdata
 
 WORKDIR /usr/src
-RUN mkdir -p test/files/logs /run/nginx
+RUN sudo mkdir -p test/files/logs /run/nginx
 COPY . .
 
 FROM base
