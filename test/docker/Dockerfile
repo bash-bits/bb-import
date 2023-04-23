@@ -1,6 +1,5 @@
 FROM alpine:3.7 as base
-RUN apk add --no-cache curl bash tree build-base nginx
-RUN apk add doas; adduser ragdata -G wheel; echo "ragdata:123" | chpasswd; echo 'permit :wheel as root' > /etc/doas.d/doas.conf
+RUN apk add --no-cache curl bash tree build-base nginx doas; adduser ragdata -G wheel; echo "ragdata:123" | chpasswd; echo 'permit :wheel as root' > /etc/doas.d/doas.conf
 
 USER ragdata
 
