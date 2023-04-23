@@ -618,7 +618,7 @@ bb::import()
             # IMPLICIT IMPORT (eg: bb::import bb-ansi)
             repo="${url%@*}"
             # check for version tag
-            [[ echo "$url" | awk -F@ '{print $1}' > /dev/null ]] && tag="${url#*@}" || tag="master"
+            [[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${url#*@}" || tag="master"
             # rewrite url
             location="${IMPORT_SERVER_IMPLICIT:-https://raw.githubusercontent.com/bash-bits/${repo}/${tag}/src/${repo}.sh}"
         elif ! echo "$url" | grep "://" > /dev/null && echo "$url" | awk -F/ '{print $1}' | grep '\.' > /dev/null; then
@@ -627,7 +627,7 @@ bb::import()
             org="${url%/*}"
             repo="${url#*/}"
             # check for version tag
-            [[ echo "$url" | awk -F@ '{print $1}' > /dev/null ]] && tag="${repo#*@}"; repo="${repo%@*}"; || tag="master"
+            [[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${repo#*@}"; repo="${repo%@*}"; || tag="master"
             # rewrite url
             location="${IMPORT_SERVER_NAMESPACED:-https://raw.githubusercontent.com/${org}/${repo}/${tag}/src/${repo}.sh}"
         elif echo "$url" | grep "://" > /dev/null; then
