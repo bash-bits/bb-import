@@ -12,4 +12,4 @@ RUN sudo mkdir -p test/files/logs /run/nginx
 COPY . .
 
 FROM base
-RUN bash ./test/files/test.sh
+RUN sudo bash ./test/files/test.sh
