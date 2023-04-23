@@ -822,7 +822,7 @@ bb::import()
             # ======================================================
             importLog "Downloading '$location'"
             # download location
-            install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; rm -f "$tmpFile"; return "$r"; }
+            import::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; rm -f "$tmpFile"; return "$r"; }
 			# log location resolution
 			importDebug "Resolved location '$url' -> '$location'"
 			# record location in locFile
@@ -835,7 +835,7 @@ bb::import()
 				# log resolution of configFile to configPath
 				importLog "Downloading '$cfgLocation'"
 				# download the configFile
-				install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$cfgPath" "$cfgLocation" || { local r=$?; importWarning "Failed to download '$cfgLocation'" >&2; rm -f "$cfgPath"; return "$r"; }
+				import::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$cfgPath" "$cfgLocation" || { local r=$?; importWarning "Failed to download '$cfgLocation'" >&2; rm -f "$cfgPath"; return "$r"; }
 				# log cfgLocation resolution
 				importDebug "Download '$ini' -> '$cfgPath'"
 				# record location in configFile
