@@ -281,7 +281,7 @@ import::log::checkLog()
 {
     local size
     # initialize logfile if it doesn't exist
-    [[ ! -f "${IMPORT_LOG}" ]] && { import::log::init debug || return 0; }
+    [[ ! -f "${IMPORT_LOG}" ]] && { import::log::init import || return 0; }
     # check logfile size
     size=$(wc -c "${IMPORT_LOG}" | awk '{print $1}')
     # rotate logfile if necessary
