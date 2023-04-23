@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
-set -eu
+#set -eu
 
 realpath "${BASH_SOURCE[0]}"
 
