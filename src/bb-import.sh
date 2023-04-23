@@ -228,11 +228,11 @@ import::log::checkLog()
 {
     local size
     # initialize logfile if it doesn't exist
-    [[ ! -f "${IMPORT_LOG}" ]] && { import::log::init debug || return 1; }
+    [[ ! -f "${IMPORT_LOG}" ]] && { import::log::init debug || return 0; }
     # check logfile size
     size=$(wc -c "${IMPORT_LOG}" | awk '{print $1}')
     # rotate logfile if necessary
-    [[ $size -ge $IMPORT_LOG_SIZE ]] && { import::log::rotate || return 1; }
+    [[ $size -ge $IMPORT_LOG_SIZE ]] && { import::log::rotate || return 0; }
     # return success if we got this far
     return 0
 }
@@ -508,16 +508,17 @@ import::error() { import::log "$1" -p 600; return "${2:-1}"; }
 # @arg  $1  [string]    Log Message
 # @arg  $2  [integer]   Exit Code (optional)
 # ------------------------------------------------------------------
+# shellcheck disable=SC2120
 import::fatal() { import::log "$1" -p 900; exit "${2:-1}"; }
 #
 # LOG ALIASES
 #
-importLog() { import::log; }
-importDebug() { import::debug; }
-importInfo() { import::info; }
-importWarning() { import::warning; }
-importError() { import::error; }
-importFatal() { import::fatal; }
+importLog() { import::log "$@"; }
+importDebug() { import::debug "$@"; }
+importInfo() { import::info "$@"; }
+importWarning() { import::warning "$@"; }
+importError() { import::error "$@"; }
+importFatal() { import::fatal "$@"; }
 #
 # IMPORT HASH UTILITY
 #
@@ -529,36 +530,6 @@ _importSHASum="$(command -v sha1sum)" || _importSHASum="$(command -v shasum)" ||
     exit "$r"
 }
 importDebug "Using '$_importSHASum' for hashing"
-# ------------------------------------------------------------------
-# import::parseLocation
-# ------------------------------------------------------------------
-# @description Resolve the location of the imported file
-#
-# @arg  $1      [string]    URL of imported file
-# @arg  $2      [string]    Headers from HTTP session retrieving file
-#
-# @stdout The resolved location
-# ------------------------------------------------------------------
-import::parseLocation()
-{
-    local location="$1"
-    local headers="$2"
-    local locationHeader=""
-
-    # print `x-import-warning` headers
-    grep -i '^x-import-warning:' < "$headers" | while IFS="" read -r line
-    do
-        importWarning "import: warning - $(echo "$line" | awk -F": " '{print $2}' | tr -d \\r)"
-    done
-
-    # find the final `Location` or `Content-Location` header
-    locationHeader="$(grep -i '^Location\|^content-location:' < "$headers" | tail -n1)"
-    if [ -n "$locationHeader" ]; then
-        location="$(echo "$locationHeader" | awk -F": " '{print $2}' | tr -d \\r)"
-    fi
-    # result to stdOut
-    printf '%s' "$location"
-}
 # ------------------------------------------------------------------
 # import::retry
 # ------------------------------------------------------------------
@@ -736,12 +707,12 @@ if [ -n "${ZSH_EVAL_CONTEXT-}" ]; then
     if [ "${ZSH_EVAL_CONTEXT-}" == "toplevel" ]; then
         importEntryPoint="1"
     fi
-elif [ "$(echo "$0" | cut -c1)" != "-" ] && [ "$(basename "$0" .sh)" == "bb-import" ]; then
-    importEntryPoint=1
+elif [ "$(echo "$0" | cut -c1)" != "-" ] && [ "$(basename "$0" .sh)" = "bb-import" ]; then
+    importEntryPoint="1"
     echo "ENTRYPOINT: $(basename "$0" .sh)"
 fi
 
-if [ -n "${importEntryPoint}" ]; then
+if [ -n "${importEntryPoint-}" ]; then
     # parse argv
     while [ $# -gt 0 ]
     do
