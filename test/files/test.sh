@@ -29,7 +29,7 @@ IMPORT_SERVER="${nginx_addr}"
 source ./src/bb-import.sh test
 
 # Test basic import
-bb::import foo
+bb::import ./foo
 test "$(foo)" = "foo"
 
 # Test version import
