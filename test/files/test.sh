@@ -26,7 +26,7 @@ IMPORT_DEBUG=1
 IMPORT_RELOAD=1
 IMPORT_SERVER="${nginx_addr}"
 
-source ./src/bb-import.sh
+source ./src/bb-import.sh test
 
 # Test basic import
 bb::import foo

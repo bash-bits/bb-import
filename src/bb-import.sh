@@ -22,6 +22,14 @@
 # ==================================================================
 # PREFLIGHT
 # ==================================================================
+# set debug mode = false
+declare -gx TEST=false
+# if script is called with 'test' as an argument, then set debug mode
+if [[ "${1,,}" == "test" ]]; then shift; TEST=true; set -- "${@}"; fi
+# set debug mode = false
+declare -gx DEBUG=false
+# if script is called with 'debug' as an argument, then set debug mode
+if [[ "${1,,}" == "debug" ]]; then shift; DEBUG=true; set -- "${@}"; set -axeET; else set -aeET; fi
 # ==================================================================
 # VARIABLES
 # ==================================================================
@@ -176,6 +184,8 @@ import::parseConfig()
 	local cfgFile="${1:-}"
 	local myName prefix module section key val line cache
 	local writeEnv=0
+
+	[[ "$TEST" ]] && return 0
 
 	if [[ -z "$cfgFile" ]]; then
 		myName="${BASH_SOURCE[0]}"
