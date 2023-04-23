@@ -6,4 +6,4 @@ RUN mkdir -p test/logs run/nginx
 COPY . .
 
 FROM base
-RUN bash ./test/test.sh
+RUN bash ./test/files/test.sh
