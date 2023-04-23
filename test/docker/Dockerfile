@@ -7,4 +7,4 @@ COPY test/files/* test/
 COPY src/bb-import.* src/
 
 FROM base
-RUN bash ./test/files/test.sh
+RUN bash ./test/test.sh
