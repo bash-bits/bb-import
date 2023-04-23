@@ -121,6 +121,11 @@ It is possible to install BB-Import with a single command in your terminal.
  
 ### [Branch Reliability](#toc)
 
+The Branch Reliability Table is a way for you to determine how close to the bleeding edge you're comfortable getting.
+
+If you need stability, then download a branch marked with 🟢
+If you're contributing code to the project, you'll want 🔴
+
 | Branch               |    Stability    | Code Age         | Reliability |
 |----------------------|:---------------:|------------------|:-----------:|
 | `master`             |  latest stable  | latest release   |     🟢      |
