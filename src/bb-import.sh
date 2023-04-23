@@ -44,6 +44,9 @@ declare -gx IMPORT_LOG_DIR="${IMPORT_CACHE_DIR}/log"
 declare -gx IMPORT_LOG="${IMPORT_LOG_DIR}/import"
 declare -gx IMPORT_CACHE_CFG="${IMPORT_CACHE}/cfg"
 declare -gx IMPORT_ENV="${IMPORT_CACHE_CFG}/bb-import.env"
+declare -gx IMPORT_LOG_SIZE=1048576
+declare -gx IMPORT_LOG_BACKUPS=5
+declare -gx IMPORT_LOG_ARCHIVE=1
 #
 # ANSI VARIABLES
 #
