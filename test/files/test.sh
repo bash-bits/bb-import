@@ -3,7 +3,7 @@
 
 #set -eu
 
-./test/start-server.sh &
+./test/files/start-server.sh &
 nginx_pid="$!"
 nginx_addr="http://127.0.0.1:12006"
 
