@@ -34,6 +34,16 @@ if [[ "${1,,}" == "debug" ]]; then shift; DEBUG=true; set -- "${@}"; set -axeET;
 # VARIABLES
 # ==================================================================
 #
+# DEFAULTS
+#
+declare -gx IMPORT_CACHE_DIR="$HOME/.bb"
+declare -gx IMPORT_CACHE="${IMPORT_CACHE_DIR}/bb-import.sh"
+declare -gx IMPORT_TRACE_DIR="${IMPORT_CACHE_DIR}/data"
+declare -gx IMPORT_TRACE="${IMPORT_TRACE_DIR}/trace"
+declare -gx IMPORT_LOG_DIR="${IMPORT_CACHE_DIR}/log"
+declare -gx IMPORT_CACHE_CFG="${IMPORT_CACHE}/cfg"
+declare -gx IMPORT_ENV="${IMPORT_CACHE_CFG}/bb-import.env"
+#
 # ANSI VARIABLES
 #
 [[ -z "$ANSI_ESC" ]] && declare ANSI_ESC=$'\033'
@@ -797,7 +807,7 @@ bb::import()
 
 			# download the requested file to a temp directory so that the sha1sum
 			# can be computed and the final filename determined
-			local tmpPath="$cachePath.tmp"
+			local tmpFile="$cachePath.tmp"
 			local locFile="$cache/locations/$urlPath"
 			[[ -n "$ini" ]] && local cfgFile="$cache/locations/config"
 
