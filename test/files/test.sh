@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
-set -eu
+set -exu
 
 ./test/files/start-server.sh &
 nginx_pid="$!"
