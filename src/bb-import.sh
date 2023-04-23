@@ -23,13 +23,6 @@
 # PREFLIGHT
 # ==================================================================
 # ==================================================================
-# CONFIG
-# ==================================================================
-# if an environment file exists, then source it - otherwise parse the config file and create it
-[[ ! -f "${IMPORT_ENV}" ]] && import::parseConfig bb-import.ini || source "${IMPORT_ENV}"
-# find which hash utility we can use
-[[ -z "$importSHASum" ]] && importSHASum="$(import::getHash)"
-# ==================================================================
 # VARIABLES
 # ==================================================================
 #
@@ -876,6 +869,13 @@ bb::import()
 
     done
 }
+# ==================================================================
+# CONFIG
+# ==================================================================
+# if an environment file exists, then source it - otherwise parse the config file and create it
+[[ ! -f "${IMPORT_ENV}" ]] && import::parseConfig bb-import.ini || source "${IMPORT_ENV}"
+# find which hash utility we can use
+[[ -z "$importSHASum" ]] && importSHASum="$(import::getHash)"
 # ==================================================================
 # MAIN
 # ==================================================================
