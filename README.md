@@ -22,6 +22,12 @@ The most important and magical part of Bash Bits!
 <a href="https://github.com/bash-bits/bb-import/releases" target="_blank">Releases</a>
 </h3>
 
+<div align="center">
+
+<a href="https://github.com/bash-bits/bb-import/actions/workflows/test.yml"><img alt="Import Tests" src="https://img.shields.io/github/actions/workflow/status/bash-bits/bb-import/test.yml?logo=github&style=for-the-badge"></a>
+
+</div>
+
 <details>
 <summary><h2><a name="toc">📖 Table of Contents</a></h2></summary>
 
