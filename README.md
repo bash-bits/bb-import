@@ -24,7 +24,7 @@ The most important and magical part of Bash Bits!
 
 <div align="center">
 
-<a href="https://github.com/bash-bits/bb-import/actions/workflows/test.yml"><img alt="Import Tests" src="https://img.shields.io/github/actions/workflow/status/bash-bits/bb-import/test.yml?logo=github&style=for-the-badge"></a>
+[//]: # (<a href="https://github.com/bash-bits/bb-import/actions/workflows/test.yml"><img alt="Import Tests" src="https://img.shields.io/github/actions/workflow/status/bash-bits/bb-import/test.yml?logo=github&style=for-the-badge"></a>)
 
 </div>
 

@@ -1,4 +1,0 @@
-foo()
-{
-    echo foo
-}
