@@ -11,7 +11,7 @@ Let's take a look at importing this project https://github.com/ragdata/release-m
 ```shell
 #!/usr/bin/env bb-import
 
-bb::import https://raw.githubusercontent.com/ragdata/release-manager/master/src/lib/rm/functions
+bb-import https://raw.githubusercontent.com/ragdata/release-manager/master/src/lib/rm/functions
 
 password="$(getPassword)"
 ```
@@ -21,7 +21,7 @@ You can also choose to import a specific git branch, tag, or version by manipula
 ```shell
 #!/usr/bin/env bb-import
 
-bb::import https://raw.githubusercontent.com/ragdata/release-manager/develop/src/lib/rm/functions
+bb-import https://raw.githubusercontent.com/ragdata/release-manager/develop/src/lib/rm/functions
 
 password="$(getPassword)"
 ```

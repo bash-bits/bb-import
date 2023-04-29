@@ -11,7 +11,7 @@ IMPORT_BASE_DIR=/tmp
 # Force a fresh download of the script files (like shift+F5 in a browser)
 IMPORT_RELOAD=1
 
-bb::import bb-ansi
+bb-import bb-ansi
 ```
 
 Now, let's take a look at what the actual directory structure looks like:

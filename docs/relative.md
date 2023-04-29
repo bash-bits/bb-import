@@ -21,6 +21,6 @@ curl -sI https://import.sh/tootallnate/hello | grep -i location
 # content-location: https://raw.githubusercontent.com/tootallnate/hello/master/hello.sh
 ```
 
-`bb-import` keeps track of these URL locations, so that from _within_ the `hello.sh` script, any relative import (let's say `bb::import ./foo.sh`), will be normalized to relative of the current URL location.
+`bb-import` keeps track of these URL locations, so that from _within_ the `hello.sh` script, any relative import (let's say `bb-import ./foo.sh`), will be normalized to relative of the current URL location.
 
 [`^ Top`](#-relative-imports)

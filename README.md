@@ -28,13 +28,13 @@ The most important and magical part of Bash Bits!
 
 </div>
 
-<h3 align="center">
+<h4 align="center">
 
 If you like this repo, please give it a ⭐ (it really does help)
 
 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/bash-bits/bb-import?style=social">
 
-</h3>
+</h4>
 
 <details>
 <summary><h2><a name="toc">📖 Table of Contents</a></h2></summary>
@@ -85,22 +85,22 @@ AND THE NEXT VERSION  WILL EVEN KEEP TRACK OF THE LATEST VERSIONS OF ALL OF YOUR
 ```shell
 USAGE EXAMPLES:
 
-#!/usr/bin/env bb::import                   # SHEBANG INSTALL - Modify your system $PATH
+#!/usr/bin/env bb-import                   # SHEBANG INSTALL - Modify your system $PATH
 
 source ~/.bb/bb-import.sh                   # SOURCE INSTALL - Simple and effective
 
-bb::import bb-ansi                          # IMPLICIT IMPORT - Official Bash-Bits Modules
-bb::import myaccount/myrepo                 # NAMESPACED IMPORT - Formatted GitHub Project
-bb::import https://myserver.com/project     # EXPLICIT IMPORT - Custom Download Location
-bb::import ../../myfile.sh                  # RELATIVE IMPORT - Local Environment
+bb-import bb-ansi                          # IMPLICIT IMPORT - Official Bash-Bits Modules
+bb-import myaccount/myrepo                 # NAMESPACED IMPORT - Formatted GitHub Project
+bb-import https://myserver.com/project     # EXPLICIT IMPORT - Custom Download Location
+bb-import ../../myfile.sh                  # RELATIVE IMPORT - Local Environment
 ```
 
 You can even specify specific git branches, tags, or versions to import!
 
 ```shell
-bb::import bb-ansi@1.1.3
-bb::import myaccount/myrepo@mybranch
-bb::import https://myserver.com/project@1.2.3
+bb-import bb-ansi@1.1.3
+bb-import myaccount/myrepo@mybranch
+bb-import https://myserver.com/project@1.2.3
 ```
 
 > I have to admit that this wasn't my idea.  I've modeled BB-Import after the _INCREDIBLE_ [`importpw/import`](https://github.com/importpw/import) project by Nathan Rajlich, and decided to make a modified version of it a CORE feature of my Bash-Bits project the very moment I laid eyes on it.

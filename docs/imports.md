@@ -4,12 +4,12 @@
 
 | Name                                 | Example                              | Description                                                                 |
 |--------------------------------------|--------------------------------------|-----------------------------------------------------------------------------|
-| [Implicit Import](implicit.md) +     | `bb::import bb-ansi`                 | An Implicit Import is used to import official Bash-Bits modules from GitHub |
-| [Namespaced Import](namespaced.md) + | `bb::import my-organisation/my-repo` | A Namespaced Import can be used to import files from ANY GitHub repo        |
+| [Implicit Import](implicit.md) +     | `bb-import bb-ansi`                 | An Implicit Import is used to import official Bash-Bits modules from GitHub |
+| [Namespaced Import](namespaced.md) + | `bb-import my-organisation/my-repo` | A Namespaced Import can be used to import files from ANY GitHub repo        |
 | [Explicit Import](explicit.md)       | `https://example.com/my-project`     | An Explicit Import can be used to import files from ANY live server         |
 | [Relative Import](relative.md)       | `../../file.sh`                      | Relative Imports are used to import files from your local filesystem        |
 
-+ Any of these import types can also be used to import a particular git branch, tag or version of a file by adding an `@` symbol along with the name, tag or version.  EG: `bb::import bb-ansi@1.3.0`
++ Any of these import types can also be used to import a particular git branch, tag or version of a file by adding an `@` symbol along with the name, tag or version.  EG: `bb-import bb-ansi@1.3.0`
 
 ## [⭐ Compatible Project Format](#-imports)
 

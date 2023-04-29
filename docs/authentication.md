@@ -12,10 +12,10 @@ password    x-oauth-basic
 
 The `login` token is a [GitHub "Personal Access Token"](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).  Follow the instructions in that link to create a token for yourself.
 
-After that, a `bb::import` call to a private repository will work as expected:
+After that, a `bb-import` call to a private repository will work as expected:
 
 ```shell
-bb::import "my-organization/private-repo@0.3.5"
+bb-import "my-organization/private-repo@0.3.5"
 ```
 
 Your GitHub credentials are **NEVER** given to any server owned or operated by Ragdata or the `Bash-Bits` team.

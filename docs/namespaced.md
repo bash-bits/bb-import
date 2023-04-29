@@ -6,8 +6,8 @@ The two exceptions are where the beginning portion is either bb-functions or bb-
 
 A `Namespaced Import` means that the `IMPORT_SERVER` (which defaults to https://github.com/) is prepended to the import URL.  For example, these two invocations are identical:
 
-  - `bb::import bash-bits/bb-ansi`
-  - `bb::import https://github.com/bash-bits/bb-ansi`
+  - `bb-import bash-bits/bb-ansi`
+  - `bb-import https://github.com/bash-bits/bb-ansi`
 
 Repositories intended to be imported using `Namespaced Imports` MUST conform to the [BB-Import Compatible Project Format](imports.md#-compatible-project-format). 
 
@@ -18,7 +18,7 @@ Let's take a look at importing this [tootalnate/hello](https://github.com/tootal
 ```shell
 #!/usr/bin/env bb-import
 
-bb::import "tootalnate/hello"
+bb-import "tootalnate/hello"
 
 hello
 # Hello, from @TooTallNate!
@@ -26,9 +26,9 @@ hello
 
 ## [The Bash-Bits Repositories](#-namespaced-imports)
 
-The default `IMPORT_SERVER` is `https://github.com/bash-bits`, which serves GitHub repositories that are _'bb::import-compatible'_, according to the following conventions:
+The default `IMPORT_SERVER` is `https://github.com/bash-bits`, which serves GitHub repositories that are _'bb-import-compatible'_, according to the following conventions:
 
-  - The main import syntax is `bb::import <org>/<repo>`
+  - The main import syntax is `bb-import <org>/<repo>`
   - The entrypoint of the import is the file with the name of the repo and a `.sh` suffix in either the root OR src directories (root first, then src)
   - If there is no `/` in the import path, then the default organisation (`bash-bits`) is applied
   - Specific tags may be referenced by appending an `@<version>` to the end where `<version>` is either a git branch name, tag name, or version number.
@@ -42,7 +42,7 @@ For example, the `bb-ansi` module includes functions that write ANSI color and s
 ```shell
 #!/usr/bin/env bb-import
 
-bb::import bb-ansi
+bb-import bb-ansi
 
 echoGold "HERE"
 # HERE (coloured GOLD)
