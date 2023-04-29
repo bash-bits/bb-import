@@ -14,16 +14,25 @@
 # PREFLIGHT
 # ==================================================================
 # set debug mode = false
-declare -gx DEBUG=false
+declare -gx INSTALL_DEBUG=0
 # if script is called with 'debug' as an argument, then set debug mode
-if [[ "${1,,}" == "debug" ]]; then shift; DEBUG=true; set -- "${@}"; set -axeET; else set -aeET; fi
+if [[ "${1,,}" == "debug" ]]; then shift; INSTALL_DEBUG=1; set -- "${@}"; set -axeET; else set -aeET; fi
 # ==================================================================
 # VARIABLES
 # ==================================================================
 #
-# ENVIRONMENT VARIABLES
+# BUILD VARIABLES
 #
-declare IMPORT_DEBUG=1
+declare -gx INSTALL_VERSION="v-1.0.0"
+declare -gx INSTALL_BUILD="x"
+declare -gx INSTALL_BUILD_DATE="2023-04-15T16:00:00+10:00"
+#
+# DEFAULT PATHS
+#
+[[ -z "${IMPORT_BASE_DIR}" ]] && declare -gx IMPORT_BASE_DIR="$HOME/.bb"
+[[ -z "${IMPORT_CACHE_DIR}" ]] && declare -gx IMPORT_CACHE_DIR="${IMPORT_BASE_DIR}/cache"
+[[ -z "${IMPORT_LOG_DIR}" ]] && declare -gx IMPORT_LOG_DIR="${IMPORT_BASE_DIR}/log"
+[[ -z "${IMPORT_LOG}" ]] && declare -gx IMPORT_LOG="${IMPORT_LOG_DIR}/import"
 #
 # ANSI VARIABLES
 #
@@ -40,10 +49,10 @@ declare RESET="$(printf '%s0m' "$ANSI_CSI")"
 #
 # LOCAL CONFIG VARIABLES
 #
-SYMBOL_ERROR="[-]"
-SYMBOL_WARNING="[!]"
-SYMBOL_INFO="[=]"
-SYMBOL_SUCCESS="[+]"
+[[ -z "${SYMBOL_ERROR}" ]] && declare -gx SYMBOL_ERROR="🚫"
+[[ -z "${SYMBOL_WARNING}" ]] && declare -gx SYMBOL_WARNING="⚠️"
+[[ -z "${SYMBOL_INFO}" ]] && declare -gx SYMBOL_INFO="ℹ️"
+[[ -z "${SYMBOL_SUCCESS}" ]] && declare -gx SYMBOL_SUCCESS="✅"
 # ==================================================================
 # FUNCTIONS
 # ==================================================================
@@ -151,32 +160,6 @@ errorReturn() { echoError "$1"; return "${2:-1}"; }
 # ------------------------------------------------------------------
 scriptPath() { printf '%s' "$(realpath "${BASH_SOURCE[0]}")"; }
 # ------------------------------------------------------------------
-# install::cacheDir
-# ------------------------------------------------------------------
-# @description Determine the path to bb-import
-#
-# @noargs
-#
-# @stdout The path to bb-import
-# ------------------------------------------------------------------
-install::cacheDir()
-{
-    local home="${HOME:-"$(printf '%s' ~)"}"
-    local default="$home/.bb"
-    [ "$(uname -s)" = "Darwin" ] && default="$home/Library/Caches"
-    printf '%s' "${XDG_CACHE_HOME:-${LOCALAPPDATA:-$default}}/$1"
-}
-# ------------------------------------------------------------------
-# install::cacheDir::import
-# ------------------------------------------------------------------
-# @description Determine the path to bb-import
-#
-# @noargs
-#
-# @stdout The path to bb-import
-# ------------------------------------------------------------------
-install::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(install::cacheDir bb-import.sh)}"; }
-# ------------------------------------------------------------------
 # install::install
 # ------------------------------------------------------------------
 install::install()
@@ -188,78 +171,58 @@ install::install()
 	echoGold "=================================================================="
     echo
 
-    local installPath cacheDir cache cfgDir cfgPath envPath ini
-    local url urlPath cachePath locFile dir linkDir hash hashFile
-    local location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
-    local cfgFile="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.ini"
-    local installPath="/usr/local/bin/bb-import"
+	local url="bb-import"
+	local location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
+	[[ "$1" -eq 1 ]] && installPath="/usr/local/bin/bb-import" || installPath="${IMPORT_BASE_DIR}/bb-import"
+	local cachePath="${IMPORT_CACHE_DIR}/links/bb-import"
+	local tmpFile="$cachePath.tmp"
+	local locFile="${IMPORT_CACHE_DIR}/locations/bb-import"
 
-    # bb-import not installed - fresh install
-    url="bb-import"
-    ini="bb-import.ini"
-    cacheDir="$(install::cacheDir)"
-    cache="$(install::cacheDir::import)"
-    cfgDir="$cache/cfg"
-    cfgPath="$cfgDir/$ini"
-    urlPath="$(echo "$url" | sed 's/\:\///')"
-    cachePath="$cache/links/$urlPath"
-    dir="$(dirname "$urlPath")"
-    linkDir="$cache/links/$dir"
+	if [[ ! -d "${IMPORT_CACHE_DIR}" ]]; then
+		echo "Creating Directories:"
+		echo "    ${IMPORT_CACHE_DIR}"
+		echo "    ${IMPORT_LOG_DIR}"
 
-    echo "Creating directories:"
-    echo "    $cfgDir"
-    echo "    $linkDir"
-    echo "    $cache/data"
-    echo "    $cache/locations/$dir"
-    # create cache paths
-    mkdir -p "$cfgDir" "$linkDir" "$cache/data" "$cache/locations/$dir" >&2 || return
+		mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_LOG_DIR}" || errorReturn "Unable to Create Base Directories!" 2
+	fi
 
-    tmpFile="$cachePath.tmp"
-    locFile="$cache/locations/$urlPath"
+	if [[ -f "$cachePath" ]]; then
+		echo "Deleting old version ..."
+		rm -f "$(readlink "$cachePath")"
+		rm -f "$cachePath"
+		rm -f "$locFile"
+		if [[ -f /usr/local/bin/bb-import ]]; then
+			sudo mv /usr/local/bin/bb-import /usr/local/bin/bb-import~ || errorReturn "Unable to Remove Previous Version!" 3
+		elif [[ -f "${IMPORT_BASE_DIR}/bb-import" ]]; then
+			mv "${IMPORT_BASE_DIR}/bb-import" "${IMPORT_BASE_DIR}/bb-import~" || errorReturn "Unable to Remove Previous Version!" 3
+		fi
+	fi
 
-    echo "Downloading $location -> $tmpFile"
-    # download to temp directory so sha1sum can be computed
-    install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; echo "Failed to download: $location" >&2; rm -f "$tmpFile"; return "$r"; }
-    sudo cp "$tmpFile" "$installPath" || { r=$?; echo "Failed to install bb-import in $installPath"; return "$r"; }
-    sudo chmod +x "$installPath"
-    echo "Resolved location '$url' -> '$location'"
-    echo "$location" > "$locFile"
-	echo "Downloading $cfgFile -> $cfgPath"
-    install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$cfgPath" "$cfgFile" || { local r=$?; echo "Failed to download: $cfgFile" >&2; rm -f "$cfgPath"; return "$r"; }
+	# download bb-import
+	echo "Downloading '$location' -> '$tmpFile'"
+	install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; return "$r"; }
+	# record location in locFile
+	echo "Recording Location in '$locFile'"
+	echo "$location" > "$locFile"
+	# install bb-import
+	echo "Installing BB-Import to '$installPath'"
+	if [[ "$1" -eq 1 ]]; then
+		sudo cp "$tmpFile" "$installPath" || { r=$?; echo "Failed to install BB-Import in '$installPath'"; return "$r"; }
+		sudo chmod +x "$installPath"
+	else
+		cp "$tmpFile" "$installPath" || { r=$?; echo "Failed to install BB-Import in '$installPath'"; return "$r"; }
+	fi
 
-    #calculate the sha1 hash of the contents of the download file
-    hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return
-    echo "Calculated hash '$url' -> '$hash'"
-    hashFile="$cache/data/$hash"
-    # If the hashed file doesn't exist, then move it into place
-    # otherwise delete the temp file - it's no longer needed.
-    [[ -f "$hashFile" ]] && { rm -f "$tmpFile" || return; } || { mv "$tmpFile" "$hashFile" || return; }
+	# calculate file hash
+	echo "Calculating File Hash"
+	hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return 1
+	echo "Calculated hash '$url' -> '$hash'"
+	hashFile="${IMPORT_CACHE_DIR}/data/$hash"
+	mv "$tmpFile" "$hashFile" || return 1
 
-    # create a relative symlink for this import pointing to the hashed file
-    local relative cacheStart
-    [[ "${linkDir:0-1}" == "." ]] && linkDir="${linkDir:0:${#linkDir}-2}"
-    # shellcheck disable=SC2034
-    cacheStart="$(( "${#cache}" + 1 ))" || return
-    relative="$(echo "$linkDir" | awk '{print substr($0, '"$cacheStart"')}' | sed 's/\/[^/]*/..\//g')data/$hash" || return
-    printf "import: Creating symlink " >&2
-    ln -fs${IMPORT_DEBUG:+v} "$relative" "$cachePath" >&2 || return
-
-    [ -n "${IMPORT_TRACE-}" ] && echo "$location" >> "$IMPORT_TRACE"
-
-    echo "Successfully downloaded '$url' -> '$hashFile'"
-    echo "SYMLINK: '$relative' -> '$cachePath'"
-
-    echo "Creating path file ..."
-    # prepend cacheDir to $PATH
-    echo "PATH=\"$cacheDir:\$PATH\"" > "$cacheDir/bb-path.sh"
-    source "$cacheDir/bb-path.sh"
-    # install for bash ... everyone else is on their own
-    if [[ "$SHELL" =~ .*bash.* ]]; then
-        echo -n "Moving path file to /etc/profile.d directory ... "
-        if sudo cp "$cacheDir/bb-path.sh" /etc/profile.d/bb-path.sh; then echo "DONE"; writePath=1; else echo "FAIL"; writePath=0; fi
-    fi
-
-    # TODO :: Read / Write config variables
+	# create symlink
+	echo "Creating Symlink for '$cachePath' -> '$hashFile'"
+	ln -fs "$hashFile" "$cachePath" || return 1
 
     echo
     echoGold "INSTALLATION COMPLETE!"
@@ -267,8 +230,8 @@ install::install()
 	echo
 
     case "$1" in
-        1) install::shebang "$cache" "$cachePath" "$relative" "$writePath";;
-        2) install::source "$cache" "$cachePath" "$relative" "$writePath";;
+        1) install::global "${IMPORT_CACHE_DIR}" "$cachePath" "$hashFile";;
+        2) install::local "${IMPORT_CACHE_DIR}" "$cachePath" "$hashFile";;
     esac
 }
 # ------------------------------------------------------------------
@@ -278,9 +241,8 @@ install::uninstall()
 {
     echo
     echoSuccess "Uninstalling ... " -n
-    rm -Rf "$HOME/.bb"
+    rm -Rf "${IMPORT_BASE_DIR}"
     sudo rm -f /usr/local/bin/bb-import
-    sudo rm -f /etc/profile.d/bb-path.sh
     echoSuccess "DONE!"
     echo
 }
@@ -343,9 +305,9 @@ install::returnQuit()
     esac
 }
 # ------------------------------------------------------------------
-# install::shebang
+# install::global
 # ------------------------------------------------------------------
-install::shebang()
+install::global()
 {
     local cache="$1"
     local cacheDir="$(dirname "$cache")"
@@ -353,7 +315,7 @@ install::shebang()
     local relative="$3"
 
 	echoGold "=================================================================="
-	echoGold "USAGE :: SHEBANG INSTALL"
+	echoGold "USAGE :: GLOBAL INSTALL"
 	echoGold "=================================================================="
     echo
     echoRed "NOTE: YOU ARE GOING TO WANT TO WRITE SOME OF THIS DOWN SOMEWHERE!"
@@ -381,9 +343,9 @@ install::shebang()
 	echoGold "=================================================================="
 }
 # ------------------------------------------------------------------
-# install::source
+# install::local
 # ------------------------------------------------------------------
-install::source()
+install::local()
 {
     local cache="$1"
     local cacheDir="$(dirname "$cache")"
@@ -391,7 +353,7 @@ install::source()
     local relative="$3"
 
 	echoGold "=================================================================="
-	echoGold "USAGE :: SOURCE INSTALL"
+	echoGold "USAGE :: LOCAL INSTALL"
 	echoGold "=================================================================="
     echo
     echoRed "NOTE: YOU ARE GOING TO WANT TO WRITE SOME OF THIS DOWN SOMEWHERE!"
@@ -399,7 +361,7 @@ install::source()
     echo "Include the following code at the top of every file you want to"
     echo "use BB-Import in:"
     echo
-    echoGold "source ~/.bb/bb-import"
+    echoGold "source ${IMPORT_BASE_DIR}/bb-import"
     echo
     echo "And import files like so:"
     echo
@@ -430,8 +392,8 @@ install::menu()
 	echoGold "=================================================================="
 	echo
 	echo "Install Type:"
-	echo "  1) Shebang"
-	echo "  2) Source"
+	echo "  1) Global (/usr/local/bin/bb-import)"
+	echo "  2) Local (${IMPORT_BASE_DIR}/bb-import)"
 	echo "Other Options:"
 	echo "  3) Uninstall"
 	echo "  Q) Quit"
