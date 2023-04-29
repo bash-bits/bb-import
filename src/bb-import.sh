@@ -574,8 +574,11 @@ import::baseDirs()
 	echo "    ${IMPORT_BASE_DIR}"
 	echo "    ${IMPORT_CACHE_DIR}"
 	echo "    ${IMPORT_LOG_DIR}"
+	echo "    ${IMPORT_CACHE_DIR}/data"
+	echo "    ${IMPORT_CACHE_DIR}/links"
+	echo "    ${IMPORT_CACHE_DIR}/locations"
 
-	mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_LOG_DIR}"
+	mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_CACHE_DIR}/data" "${IMPORT_CACHE_DIR}/links" "${IMPORT_CACHE_DIR}/locations" "${IMPORT_LOG_DIR}"
 }
 # ------------------------------------------------------------------
 # import::cachePath

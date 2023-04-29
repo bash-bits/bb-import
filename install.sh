@@ -182,8 +182,11 @@ install::install()
 		echo "Creating Directories:"
 		echo "    ${IMPORT_CACHE_DIR}"
 		echo "    ${IMPORT_LOG_DIR}"
+		echo "    ${IMPORT_CACHE_DIR}/data"
+		echo "    ${IMPORT_CACHE_DIR}/links"
+		echo "    ${IMPORT_CACHE_DIR}/locations"
 
-		mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_LOG_DIR}" || errorReturn "Unable to Create Base Directories!" 2
+		mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_CACHE_DIR}/data" "${IMPORT_CACHE_DIR}/links" "${IMPORT_CACHE_DIR}/locations" "${IMPORT_LOG_DIR}" || errorReturn "Unable to Create Base Directories!" 2
 	fi
 
 	if [[ -f "$cachePath" ]]; then
@@ -200,7 +203,7 @@ install::install()
 
 	# download bb-import
 	echo "Downloading '$location' -> '$tmpFile'"
-	install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; return "$r"; }
+	install::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; echoWarning "Failed to download '$location'" >&2; return "$r"; }
 	# record location in locFile
 	echo "Recording Location in '$locFile'"
 	echo "$location" > "$locFile"
