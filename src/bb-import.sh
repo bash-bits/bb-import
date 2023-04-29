@@ -358,7 +358,7 @@ import::log()
 
 	[[ "$TEST" ]] && return 0
 
-    [[ ! "$(import::log::checkLog)" ]] && errorReturn "Import Log Failed Integrity Check" 2;
+    [[ ! "$(import::log::checkLog)" ]] && errorReturn "Import Log Failed Integrity Check ('$?')" 2;
 
     if [[ ! "$1" =~ $isOPT ]]; then
         msg="$1"
