@@ -50,8 +50,8 @@ declare -gx IMPORT_BUILD_DATE="2023-04-15T16:00:00+10:00"
 # DEFAULT VARIABLES
 #
 [[ -z "${IMPORT_SERVER_DEFAULT}" ]] && declare -gx IMPORT_SERVER_DEFAULT="raw.githubusercontent.com"
-[[ -z "${IMPORT_TEMPLATE_IMPLICIT}" ]] && declare -gx IMPORT_TEMPLATE_IMPLICIT="https://${IMPORT_SERVER_DEFAULT}/bash-bits/<%repo%>/<%tag%>/src/<%repo%>.sh"
-[[ -z "${IMPORT_TEMPLATE_NAMESPACED}" ]] && declare -gx IMPORT_TEMPLATE_NAMESPACED="https://${IMPORT_SERVER_DEFAULT}/<%org%>/<%repo%>/<%tag%>/src/<%repo%>.sh"
+[[ -z "${IMPORT_TEMPLATE_IMPLICIT}" ]] && declare -gx IMPORT_TEMPLATE_IMPLICIT="https://${IMPORT_SERVER_DEFAULT}/bash-bits/<%repo%>/<%tag%>/src/<%file%>"
+[[ -z "${IMPORT_TEMPLATE_NAMESPACED}" ]] && declare -gx IMPORT_TEMPLATE_NAMESPACED="https://${IMPORT_SERVER_DEFAULT}/<%org%>/<%repo%>/<%tag%>/src/<%file%>"
 [[ -z "${IMPORT_LOG_SIZE}" ]] && declare -gx IMPORT_LOG_SIZE=1048576
 [[ -z "${IMPORT_LOG_BACKUPS}" ]] && declare -gx IMPORT_LOG_BACKUPS=5
 [[ -z "${IMPORT_LOG_ARCHIVE}" ]] && declare -gx IMPORT_LOG_ARCHIVE=1
@@ -629,7 +629,7 @@ import::retry()
 import::template()
 {
 	local template="${1:-}"
-	local ext="${2:-}"
+	local file="${2:-}"
 	local repo="${3:-}"
 	local tag="${4:-}"
 	local org="${5:-}"
@@ -639,7 +639,7 @@ import::template()
 	template="${template/<%org%>/${org}}"
 	template="${template/<%repo%>/${repo}}"
 	template="${template/<%tag%>/${tag}}"
-	template="${template/<%ext%>/${ext}}"
+	template="${template/<%file%>/${file}}"
 
 	printf '%s' "$template"
 }
@@ -761,13 +761,11 @@ bb::import()
 			# is it a SPECIAL IMPLICIT?
 			if echo "$url" | grep -q "bb-functions"; then
 				repo="${url%@*}"
-				repo="${repo/bb-functions/bb-functions.d}"
-				file="${repo}.sh"
+				file="${repo/bb-functions/bb-functions.d}.sh"
 				repo="bb-functions"
 			elif echo "$url" | grep -q "bb-regex"; then
 				repo="${url%@*}"
-				repo="${repo/bb-regex/bb-regex.d}"
-				file="${repo}.sh"
+				file="${repo/bb-regex/bb-regex.d}.sh"
 				repo="bb-regex"
 			else
 				repo="${url%@*}"
@@ -776,7 +774,7 @@ bb::import()
 			# check for version tag
 			[[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${url#*@}" || tag="master"
 			# RESOLVE LOCATION
-			location="$(import::template "${IMPORT_TEMPLATE_IMPLICIT}" "$file" "$tag" "$repo")"
+			location="$(import::template "${IMPORT_TEMPLATE_IMPLICIT}" "$file" "$repo" "$tag")"
 		elif ! echo "$url" | grep -q "://" && echo "$url" | grep -q "/" && ! echo "$url" | grep -q "./"; then
 			# NAMESPACED IMPORT
 			importDebug "Processing NAMESPACED IMPORT"
@@ -786,7 +784,7 @@ bb::import()
 			# check for version tag
 			[[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && { tag="${repo#*@}"; repo="${repo%@*}"; } || tag="master"
 			# RESOLVE LOCATION
-			location="$(import::template "${IMPORT_TEMPLATE_NAMESPACED}" "$file" "$tag" "$repo" "$org")"
+			location="$(import::template "${IMPORT_TEMPLATE_NAMESPACED}" "$file" "$repo" "$tag" "$org")"
 		elif echo "$url" | grep -q "://"; then
 			# EXPLICIT IMPORT
 			importDebug "Processing EXPLICIT IMPORT"
