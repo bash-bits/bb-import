@@ -107,15 +107,11 @@ I'll admit, at first glance - especially upon its first release - it might be ha
 
 BB-Import does not use a server to resolve the location of resources.
 
-### 2 - Configuration Layer
-
-BB-Import implements a more robust configuration layer.
-
-### 3 - Integrated Logger
+### 2 - Integrated Logger
 
 BB-Import includes an integrated, but basic logger, to help provide insight into the import process.
 
-### 4 - The Automagic Installer
+### 3 - The Automagic Installer
 
 It is possible to install BB-Import with a single command in your terminal.
  
@@ -138,7 +134,6 @@ If you're contributing code to the project, you'll want 🔴
 
 **Repository Files**
 
-- ✅ [bb-import.ini](src/bb-import.ini)
 - ✅ [bb-import.sh](src/bb-import.sh)
 - ✅ [install.sh](install.sh)
 
