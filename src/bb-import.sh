@@ -601,6 +601,16 @@ import::cachePath()
 # ------------------------------------------------------------------
 import::initCache()
 {
+	if [[ -f "${IMPORT_BASE_DIR}/archive/bb-import.loc" ]]; then
+		importDebug "Reconstituting BB-IMPORT CACHE"
+		echo "Reconstituting BB-IMPORT CACHE"
+		local hash="$(cat "${IMPORT_BASE_DIR}/archive/bb-import.hash")"
+		mv "${IMPORT_BASE_DIR}/archive/bb-import.loc" "${IMPORT_CACHE_DIR}/locations/bb-import"
+		mv "${IMPORT_BASE_DIR}/archive/bb-import.dat" "${IMPORT_CACHE_DIR}/data/$hash"
+		ln -fs "${IMPORT_CACHE_DIR}/data/$hash" "${IMPORT_CACHE_DIR}/links/bb-import"
+		rm -rf "${IMPORT_BASE_DIR}/archive" || errorReturn "FAILED!" 1
+		echo "DONE!"
+	fi
 	importDebug "Initializing Cache"
 	echo "Initializing Cache"
 	mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_CACHE_DIR}/data" "${IMPORT_CACHE_DIR}/links" "${IMPORT_CACHE_DIR}/locations" "${IMPORT_LOG_DIR}" || errorReturn "FAILED!" 1
@@ -612,6 +622,20 @@ import::initCache()
 # ------------------------------------------------------------------
 import::purgeCache()
 {
+	if [[ -f "${IMPORT_CACHE_DIR}/locations/bb-import" ]]; then
+		importDebug "Archiving BB-IMPORT CACHE"
+		local archiveDir="${IMPORT_BASE_DIR}/archive"
+		local importLoc="${IMPORT_CACHE_DIR}/locations/bb-import"
+		local importDat="$(readlink "${IMPORT_CACHE_DIR}/links/bb-import")"
+		local importHsh="${importDat#*/}"
+
+		mkdir -p "$archiveDir"
+
+		mv "$importLoc" "$archiveDir/bb-import.loc"
+		mv "$importDat" "$archiveDir/bb-import.dat"
+		echo "$importHsh" > "$archiveDir/bb-import.hash"
+	fi
+
 	importDebug "Purging Cache"
 	echo "Purging Cache"
 	rm -rf "${IMPORT_CACHE_DIR}" || errorReturn "FAILED!" 1
