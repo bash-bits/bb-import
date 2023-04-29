@@ -774,7 +774,7 @@ bb::import()
 			[[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${url#*@}" || tag="master"
 			# RESOLVE LOCATION
 			location="$(import::template "${IMPORT_TEMPLATE_IMPLICIT}" "$file" "$repo" "$tag")"
-		elif [[ "$url" =~ ^bb-functions\/[a-zA-Z\-]*$ ]]; then
+		elif [[ "$url" =~ ^bb-regex\/[a-zA-Z\-]*$ ]]; then
 			# IMPLICIT BB-REGEX
 			importDebug "Processing IMPLICIT BB-REGEX IMPORT"
 			repo="${url%@*}"
@@ -798,7 +798,7 @@ bb::import()
 			# EXPLICIT IMPORT
 			importDebug "Processing EXPLICIT IMPORT"
 			location="$url"
-		elif [[ "$url" =~ ^[\./.*|\.\./.*|\/.*]$ ]]; then
+		elif echo "$url" | grep -q "./"; then
 			# LOCAL IMPORT
 			importDebug "Processing LOCAL IMPORT"
             case "$url" in
