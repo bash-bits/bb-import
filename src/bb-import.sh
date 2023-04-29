@@ -354,7 +354,7 @@ import::log()
 {
     local msg fileName exitCode color user priority timestamp options
     local tag="" msgLog="" msgOut="" msgErr=""
-    local isError=0 toStdOut=1 toStdErr=1 toFile=1
+    local isError=false toStdOut=true toStdErr=true toFile=true
 
 	[[ "$TEST" ]] && return 0
 
@@ -413,31 +413,31 @@ import::log()
                 shift 2
                 ;;
             1)
-                toStdOut=0
+                toStdOut=false
                 shift
                 ;;
             2)
-                toStdErr=0
+                toStdErr=false
                 shift
                 ;;
             3)
-                toFile=0
+                toFile=false
                 shift
                 ;;
             -e|--error)
-                isError=1
+                isError=true
                 shift
                 ;;
             -w|--warn)
-                isWarning=1
+                isWarning=true
                 shift
                 ;;
             -i|--info)
-                isInfo=1
+                isInfo=true
                 shift
                 ;;
             -s|--success)
-                isSuccess=1
+                isSuccess=true
                 shift
                 ;;
             --)
