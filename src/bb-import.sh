@@ -358,7 +358,7 @@ import::log::rotate()
 import::log()
 {
     local msg fileName exitCode color user priority timestamp options
-    local tag="" msgLog="" msgOut="" msgErr=""
+    local tag msgLog msgOut msgErr
     local isError=false toStdOut=false toStdErr=false toFile=true
 
 	[[ "$TEST" ]] && return 0
@@ -477,7 +477,7 @@ import::log()
 
     if [[ ! "$isError" ]] && [[ ! "$isWarning" ]] && [[ "$toStdOut" ]]; then
         [[ "$priority" == "ROUTINE" ]] && msgOut="${tag}${msg}" || msgOut="${priority} :: ${tag}${msg}"
-    else
+    elif [[ "$isError" ]] || [[ "$isWarning" ]] && [[ "$toStdErr" ]]; then
         msgErr="${priority}($!) :: ${tag}${msg}"
     fi
 
@@ -495,26 +495,26 @@ import::log()
         fi
     fi
 
-    #
-    # WRITE TO STDOUT / STDERR
-    #
-    if [[ "$toStdOut" ]]; then
-        if [[ "$isInfo" ]]; then
-            echoInfo "$msgOut"
-        elif [[ "$isSuccess" ]]; then
-            echoSuccess "$msgOut"
-        elif [[ -n "$color" ]]; then
-            echo "${color}${msgOut}${RESET}"
-        else
-            echo "$msgOut"
-        fi
-    elif [[ "$toStdErr" ]]; then
-        if [[ "$isWarning" ]]; then
-            echoWarning "$msgErr"
-        else
-            echoError "$msgErr"
-        fi
-    fi
+#    #
+#    # WRITE TO STDOUT / STDERR
+#    #
+#    if [[ "$toStdOut" ]]; then
+#        if [[ "$isInfo" ]]; then
+#            echoInfo "$msgOut"
+#        elif [[ "$isSuccess" ]]; then
+#            echoSuccess "$msgOut"
+#        elif [[ -n "$color" ]]; then
+#            echo "${color}${msgOut}${RESET}"
+#        else
+#            echo "$msgOut"
+#        fi
+#    elif [[ "$toStdErr" ]]; then
+#        if [[ "$isWarning" ]]; then
+#            echoWarning "$msgErr"
+#        else
+#            echoError "$msgErr"
+#        fi
+#    fi
 }
 # ------------------------------------------------------------------
 # import::debug
