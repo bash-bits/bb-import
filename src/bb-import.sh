@@ -626,12 +626,28 @@ import::list()
 {
 	local file="${IMPORT_BASE_DIR}/cache-catalogue.csv"
 	local locDir="${IMPORT_CACHE_DIR}/locations/"
+	local links="${IMPORT_CACHE_DIR}/links/"
+	local c=0
+
+	[[ -f "$file" ]] && rm -f "$file"
+
+	echo "${WHITE}NO${RESET},${WHITE}NAME${RESET},${WHITE}ORIGIN${RESET},${WHITE}SHA1SUM${RESET},${WHITE}LAST MODIFIED${RESET}" >> "$file"
 
 	while IFS= read -r line
 	do
-		local name="${line:${#locDir}}"
-		echo "$name"
-	done <<< "$(find "${IMPORT_CACHE_DIR}/locations" -type f -printf "%p\n")"
+		c=$((c+1))
+		local datFile="$(readlink "$links/${line:${#locDir}}")"
+		local modified="$(stat -c '%y' "$line")"
+		echo "$c,${line:${#locDir}},$(cat "$line"),${datFile##*/},${modified:0:${#modified}-16}" >> "$file"
+	done <<< "$(find "${IMPORT_CACHE_DIR}/locations" -type f -printf "%p\n" | sort)"
+
+	echo
+	echoGold "BB-IMPORT FILE CACHE"
+	echo
+	column -s, -t -o " | " "$file"
+	echo
+	echoWhite "$c TOTAL FILES IN CACHE"
+	echo
 }
 # ------------------------------------------------------------------
 # import::purgeCache
@@ -981,57 +997,61 @@ bb::import()
 # MAIN
 # ==================================================================
 
-options=$(getopt -l "force,help,init-cache,list,purge-cache,remove:,version" -o "fhilpr:v" -a -- "$@")
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
-eval set --"$options"
+	options=$(getopt -l "force,help,init-cache,list,purge-cache,remove:,version" -o "fhilpr:v" -a -- "$@")
 
-while true
-do
-	case "$1" in
-		-f|--force)
-			IMPORT_RELOAD=1
-			shift
-			;;
-		-h|--help)
-			import::usage
-			shift
-			exitReturn 0
-			;;
-		-i|--init-cache)
-			import::initCache
-			shift
-			exitReturn 0
-			;;
-		-l|--list)
-			import::list
-			shift
-			exitReturn 0
-			;;
-		-p|--purge-cache)
-			import::purgeCache
-			shift
-			exitReturn 0
-			;;
-		-r|--remove)
-			package="${2}"
-			bb::remove "$package"
-			shift 2
-			exitReturn 0
-			;;
-		-v|--version)
-			import::version
-			shift
-			exitReturn 0
-			;;
-		--)
-			shift
-			break
-			;;
-		*)
-			echoError "Invalid Argument!"
-			exitReturn 2
-			;;
-	esac
-done
+	eval set --"$options"
 
-bb::import "$@"
+	while true
+	do
+		case "$1" in
+			-f|--force)
+				IMPORT_RELOAD=1
+				shift
+				;;
+			-h|--help)
+				import::usage
+				shift
+				exitReturn 0
+				;;
+			-i|--init-cache)
+				import::initCache
+				shift
+				exitReturn 0
+				;;
+			-l|--list)
+				import::list
+				shift
+				exitReturn 0
+				;;
+			-p|--purge-cache)
+				import::purgeCache
+				shift
+				exitReturn 0
+				;;
+			-r|--remove)
+				package="${2}"
+				bb::remove "$package"
+				shift 2
+				exitReturn 0
+				;;
+			-v|--version)
+				import::version
+				shift
+				exitReturn 0
+				;;
+			--)
+				shift
+				break
+				;;
+			*)
+				echoError "Invalid Argument!"
+				exitReturn 2
+				;;
+		esac
+	done
+
+	bb::import "$@"
+
+fi

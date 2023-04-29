@@ -330,11 +330,11 @@ install::global()
     echo
     echo "And import files like so:"
     echo
-    echo "bb::import bb-ansi                      # IMPLICIT IMPORT of Bash-Bits Module"
-    echo "bb::import bb-ansi@1.1.0                # IMPLICIT IMPORT of specific version"
-    echo "bb::import github-org/repo              # NAMESPACED IMPORT of a GitHub Repository"
-    echo "bb::import https://example.com/project  # EXPLICIT IMPORT"
-    echo "bb::import ../../myfile.sh              # RELATIVE IMPORT"
+    echo "bb-import bb-ansi                      # IMPLICIT IMPORT of Bash-Bits Module"
+    echo "bb-import bb-ansi@1.1.0                # IMPLICIT IMPORT of specific version"
+    echo "bb-import github-org/repo              # NAMESPACED IMPORT of a GitHub Repository"
+    echo "bb-import https://example.com/project  # EXPLICIT IMPORT"
+    echo "bb-import ../../myfile.sh              # RELATIVE IMPORT"
     echo
     echo "And that's really all there is to it."
     echo
@@ -368,11 +368,11 @@ install::local()
     echo
     echo "And import files like so:"
     echo
-    echo "bb::import bb-ansi                      # IMPLICIT IMPORT of Bash-Bits Module"
-    echo "bb::import bb-ansi@1.1.0                # IMPLICIT IMPORT of specific version"
-    echo "bb::import github-org/repo              # NAMESPACED IMPORT of a GitHub Repository"
-    echo "bb::import https://example.com/project  # EXPLICIT IMPORT"
-    echo "bb::import ../../myfile.sh              # RELATIVE IMPORT"
+    echo "bb-import bb-ansi                      # IMPLICIT IMPORT of Bash-Bits Module"
+    echo "bb-import bb-ansi@1.1.0                # IMPLICIT IMPORT of specific version"
+    echo "bb-import github-org/repo              # NAMESPACED IMPORT of a GitHub Repository"
+    echo "bb-import https://example.com/project  # EXPLICIT IMPORT"
+    echo "bb-import ../../myfile.sh              # RELATIVE IMPORT"
     echo
     echo "And that's really all there is to it."
     echo
