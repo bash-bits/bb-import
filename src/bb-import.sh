@@ -906,7 +906,7 @@ bb::import()
 			# otherwise delete the tmpFile
 			local hashFile="${IMPORT_CACHE_DIR}/data/$hash"
 			# ==========================================================
-			[[ -f "$hashFile" ]] && { rm -f "$tmpFile"; return 0; } || { mv "$tmpFile" "$hashFile"; return 0; }
+			[[ -f "$hashFile" ]] && { rm -f "$tmpFile"; return 0; } || mv "$tmpFile" "$hashFile"
 			# ==========================================================
 
 			# ==========================================================
