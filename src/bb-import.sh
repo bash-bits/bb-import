@@ -821,7 +821,7 @@ bb::import()
 			# can be computed and the final filename determined
 			local tmpFile="$cachePath.tmp"
 			importDebug "TMPFILE: $tmpFile"
-			local tmpDir="${$tmpFile%/*}"
+			local tmpDir="${tmpFile%/*}"
 			importDebug "TMPDIR: $tmpDir"
 			local locFile="${IMPORT_CACHE_DIR}/locations/$urlPath"
 			importDebug "LOCFILE: $locFile"
