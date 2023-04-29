@@ -619,6 +619,17 @@ import::initCache()
 	echo "DONE!"
 }
 # ------------------------------------------------------------------
+# import::list
+# ------------------------------------------------------------------
+# ------------------------------------------------------------------
+import::list()
+{
+	while IFS= read -r line
+	do
+		echo "$line"
+	done <<< "$(find "${IMPORT_CACHE_DIR}/locations" -type f -printf "%p\n")"
+}
+# ------------------------------------------------------------------
 # import::purgeCache
 # ------------------------------------------------------------------
 # ------------------------------------------------------------------
@@ -739,7 +750,10 @@ import::usage()
 	echo
 	echo "    ${WHITE}-f, --force${RESET}              # Force the resource to be downloaded even if cached"
 	echo "    ${WHITE}-h, --help${RESET}               # Show usage (this) information"
+	echo "    ${WHITE}-i, --init-cache${RESET}         # Initialise Cache (Create Directories)"
 	echo "    ${WHITE}-l, --list${RESET}               # List cached resources"
+	echo "    ${WHITE}-p, --purge-cache${RESET}        # Purge Cache (Delete All)"
+	echo "    ${WHITE}-r, --remove <package>${RESET}   # Delete Package from Cache  "
 	echo "    ${WHITE}-v, --version${RESET}            # Show version information"
 #	echo "    ${WHITE}${RESET}"
 	echo
@@ -761,16 +775,17 @@ import::version()
 
 	echo
 	echo "Bash-Bits Modular Bash Library"
-	echoWhite "BB-Import Module v-${IMPORT_VERSION}"
+	echoWhite "BB-Import Module ${IMPORT_VERSION}"
 	echo "Copyright © 2022-2023 Darren (Ragdata) Poulton"
+	echo "Build: ${IMPORT_BUILD}"
 	echo "Build Date: ${IMPORT_BUILD_DATE}"
 	echo
 }
 # ------------------------------------------------------------------
-# bb::importFile
+# bb-importFile
 # ------------------------------------------------------------------
 # ------------------------------------------------------------------
-bb::importFile()
+bb-importFile()
 {
 	print=1 && bb::import "$@"
 }
