@@ -903,47 +903,4 @@ do
 	esac
 done
 
-## for `#1/usr/bin/env bb-import`
-#if [ -n "${ZSH_EVAL_CONTEXT-}" ]; then
-#    if [ "${ZSH_EVAL_CONTEXT-}" == "toplevel" ]; then
-#        importEntryPoint="1"
-#    fi
-#elif [ "$(echo "$0" | cut -c1)" != "-" ] && [ "$(basename "$0" .sh)" = "bb-import" ]; then
-#    importEntryPoint="1"
-#    echo "ENTRYPOINT: $(basename "$0" .sh)"
-#fi
-#
-#if [ -n "${importEntryPoint-}" ]; then
-#    # parse argv
-#    while [ $# -gt 0 ]
-#    do
-#        case "$1" in
-#            -s=*|--shell=*)
-#                importShell="${1#*=}" && shift
-#                ;;
-#            -s|--shell)
-#                importShell="$2" && shift 2
-#                ;;
-#            -c)
-#                importCommand="$2" && shift 2
-#                ;;
-#            -*)
-#                echoError "bb-import :: Unknown Argument '$1'" >&2 && exit 2
-#                ;;
-#            *)
-#                break
-#                ;;
-#        esac
-#    done
-#
-#    if [ -n "${importShell-}" ]; then
-#        # if a specific shell was requested, then relaunch using it
-#        exec "$importShell" "$0" "$@"
-#    elif [ -n "${importCommand-}" ]; then
-#        eval "$importCommand"
-#    else
-#        importEntryPoint="$1"
-#        shift
-#        source "$importEntryPoint"
-#    fi
-#fi
+bb::import "$@"
