@@ -487,9 +487,11 @@ import::log()
     if [[ "$toFile" ]]; then
         # shellcheck disable=SC2094
         if [[ -w "$IMPORT_LOG" ]]; then
-            echo "$msgLog" | tee -a "$IMPORT_LOG" > /dev/null 2>&1
+            #echo "$msgLog" | tee -a "$IMPORT_LOG" > /dev/null
+            echo "$msgLog" >> "$IMPORT_LOG"
         else
-            echo "$msgLog" | sudo tee -a "$IMPORT_LOG" > /dev/null 2>&1 || { echoError "Log Write Failed!"; return 1; }
+            #echo "$msgLog" | sudo tee -a "$IMPORT_LOG" > /dev/null || { echoError "Log Write Failed!"; return 1; }
+            sudo bash -c 'echo "$msgLog" >> "$IMPORT_LOG"'
         fi
     fi
 
