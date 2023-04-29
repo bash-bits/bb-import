@@ -23,9 +23,9 @@
 # PREFLIGHT
 # ==================================================================
 # set debug mode = false
-declare -gx TEST=false
+declare -gx IMPORT_TEST=false
 # if script is called with 'test' as an argument, then set debug mode
-if [[ "${1,,}" == "test" ]]; then shift; TEST=true; set -- "${@}"; fi
+if [[ "${1,,}" == "test" ]]; then shift; IMPORT_TEST=true; set -- "${@}"; fi
 # set debug mode = false
 declare -gx IMPORT_DEBUG=0
 # if script is called with 'debug' as an argument, then set debug mode
@@ -710,6 +710,14 @@ import::version()
 	echo
 }
 # ------------------------------------------------------------------
+# bb::importFile
+# ------------------------------------------------------------------
+# ------------------------------------------------------------------
+bb::importFile()
+{
+	print=1 && bb::import "$@"
+}
+# ------------------------------------------------------------------
 # bb::import
 # ------------------------------------------------------------------
 # @description Perhaps the most important part of Bash Bits.
@@ -790,63 +798,67 @@ bb::import()
 			# ERROR
 			errorReturn "Unsupported Import Target!" 5
 		fi
+
+		importDebug "URL: '$url'"
+
+		cachePath="$(import::cachePath "$url")"
+
+		if [[ ! -e "$cachePath" ]] || [[ "${IMPORT_RELOAD}" -eq 1 ]]; then
+
+			# download the requested file to a temp directory so that the sha1sum
+			# can be computed and the final filename determined
+			local tmpFile="$cachePath.tmp"
+			local locFile="${IMPORT_CACHE_DIR}/locations/$urlPath"
+
+			# ==========================================================
+			# DOWNLOAD THE FILE
+			# ==========================================================
+			importLog "Downloading '$location'"
+			# download location
+			import::retry curn -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; return "$r"; }
+			# log location resolution
+			importDebug "Resolved Location: '$url' -> '$location'"
+			# record location in locFile
+			echo "$location" > "$locFile"
+			# ==========================================================
+
+			# ==========================================================
+			# CALCULATE FILE HASH
+			# ==========================================================
+			local hash
+			# calculate hash of downloaded file
+			hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return 1
+			# log hash
+			importDebug "Calculated Hash for '$url' -> '$hash'"
+			# if the hashFile doesn't exist, move it into place,
+			# otherwise delete the tmpFile
+			local hashFile="${IMPORT_CACHE_DIR}/data/$hash"
+			# ==========================================================
+			[[ -f "$hashFile" ]] && { rm -f "$tmpFile"; return 0; } || { mv "$tmpFile" "$hashFile"; return 0; }
+			# ==========================================================
+
+			# ==========================================================
+			# CREATE SYMLINK
+			# ==========================================================
+			importDebug "Symlink for '$cachePath' -> '$hashFile'"
+			ln -fs "$hashFile" "$cachePath" || return 1
+			# ==========================================================
+		else
+			# ======================================================
+			importDebug "File Already Cached '$url'"
+			# ======================================================
+		fi
+
+		set --
+
+		if [[ -z "${print-}" ]]; then
+			# at this point, the file has been saved to cache, so source it
+			importDebug "Sourcing: '$cachePath'"
+			source "$cachePath" || errorReturn "File '$cachePath' Not Found!" 6
+		else
+			print '%s' "$(cat "$cachePath")"
+		fi
 	done
-
-	importDebug "URL: '$url'"
-
-	cachePath="$(import::cachePath "$url")"
-
-	if [[ ! -e "$cachePath" ]] || [[ "${IMPORT_RELOAD}" -eq 1 ]]; then
-
-		# download the requested file to a temp directory so that the sha1sum
-		# can be computed and the final filename determined
-		local tmpFile="$cachePath.tmp"
-		local locFile="${IMPORT_CACHE_DIR}/locations/$urlPath"
-
-		# ==========================================================
-		# DOWNLOAD THE FILE
-		# ==========================================================
-		importLog "Downloading '$location'"
-		# download location
-		import::retry curn -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; return "$r"; }
-		# log location resolution
-		importDebug "Resolved Location: '$url' -> '$location'"
-		# record location in locFile
-		echo "$location" > "$locFile"
-		# ==========================================================
-
-		# ==========================================================
-		# CALCULATE FILE HASH
-		# ==========================================================
-		local hash
-		# calculate hash of downloaded file
-		hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return 1
-		# log hash
-		importDebug "Calculated Hash for '$url' -> '$hash'"
-		# if the hashFile doesn't exist, move it into place,
-		# otherwise delete the tmpFile
-		local hashFile="${IMPORT_CACHE_DIR}/data/$hash"
-		# ==========================================================
-		[[ -f "$hashFile" ]] && { rm -f "$tmpFile"; return 0; } || { mv "$tmpFile" "$hashFile"; return 0; }
-		# ==========================================================
-
-		# ==========================================================
-		# CREATE SYMLINK
-		# ==========================================================
-		importDebug "Symlink for '$cachePath' -> '$hashFile'"
-		ln -fs "$hashFile" "$cachePath" || return 1
-		# ==========================================================
-	else
-		# ======================================================
-		importDebug "File Already Cached '$url'"
-		# ======================================================
-	fi
-
-	set --
-
-	# at this point, the file has been saved to cache, so source it
-	importDebug "Sourcing: '$cachePath'"
-	source "$cachePath" || errorReturn "File '$cachePath' Not Found!" 6
 }
 # ==================================================================
 # MAIN
