@@ -775,6 +775,33 @@ bb::importFile()
 	print=1 && bb::import "$@"
 }
 # ------------------------------------------------------------------
+# bb::remove
+# ------------------------------------------------------------------
+# ------------------------------------------------------------------
+bb::remove()
+{
+	local url="${1}"
+	local urlPath cachePath locFile
+
+	[[ -z "$url" ]] && errorReturn "Missing Argument!" 2
+
+	importDebug "Removing Package '$url' from Cache"
+
+	urlPath="$(echo "$url" | sed 's/\:\///')"
+	cachePath="$(import::cachePath "$url")"
+
+	if [[ -e "$cachePath" ]]; then
+		importDebug "Package '$url' Found"
+		locFile="${IMPORT_CACHE_DIR}/locations/$urlPath"
+		rm -f "$locFile" || return 1
+		rm -f "$(readlink "$cachePath")" || return 1
+		rm -f "$cachePath" || return 1
+		importDebug "Package '$url' Removed from Cache!"
+	else
+		importDebug "Package '$url' Not Found in Cache!"
+	fi
+}
+# ------------------------------------------------------------------
 # bb::import
 # ------------------------------------------------------------------
 # @description Perhaps the most important part of Bash Bits.
@@ -935,7 +962,7 @@ bb::import()
 # MAIN
 # ==================================================================
 
-options=$(getopt -l "force,help,init-cache,list,purge-cache,version" -o "fhilpv" -a -- "$@")
+options=$(getopt -l "force,help,init-cache,list,purge-cache,remove:,version" -o "fhilpr:v" -a -- "$@")
 
 eval set --"$options"
 
@@ -964,6 +991,12 @@ do
 		-p|--purge-cache)
 			import::purgeCache
 			shift
+			exitReturn 0
+			;;
+		-r|--remove)
+			package="${2}"
+			bb::remove "$package"
+			shift 2
 			exitReturn 0
 			;;
 		-v|--version)
