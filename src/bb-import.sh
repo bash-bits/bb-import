@@ -803,6 +803,7 @@ bb::import()
 
 		importDebug "URL: '$url'"
 
+		urlPath="$(echo "$1" | sed 's/\:\///')"
 		cachePath="$(import::cachePath "$url")"
 
 		if [[ ! -e "$cachePath" ]] || [[ "${IMPORT_RELOAD}" -eq 1 ]]; then
