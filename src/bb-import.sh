@@ -267,11 +267,11 @@ import::log::checkLog()
 {
     local size
     # initialize logfile if it doesn't exist
-    [[ ! -f "${IMPORT_LOG}" ]] && { import::log::init import || return 0; }
+    [[ ! -f "${IMPORT_LOG}" ]] && { import::log::init import || errorReturn "Import Log Failed Integrity Check ('$?')" 2; }
     # check logfile size
     size=$(wc -c "${IMPORT_LOG}" | awk '{print $1}')
     # rotate logfile if necessary
-    [[ $size -ge $IMPORT_LOG_SIZE ]] && { import::log::rotate || return 0; }
+    [[ $size -ge $IMPORT_LOG_SIZE ]] && { import::log::rotate || errorReturn "Import Log Failed Integrity Check ('$?')" 2; }
     # return success if we got this far
     return 0
 }
@@ -358,7 +358,7 @@ import::log()
 
 	[[ "$TEST" ]] && return 0
 
-    [[ "$(import::log::checkLog)" -ne 0 ]] && errorReturn "Import Log Failed Integrity Check ('$?')" 2;
+	import::log::checkLog
 
     if [[ ! "$1" =~ $isOPT ]]; then
         msg="$1"
