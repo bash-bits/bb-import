@@ -821,10 +821,15 @@ bb::import()
 			# can be computed and the final filename determined
 			local tmpFile="$cachePath.tmp"
 			importDebug "TMPFILE: $tmpFile"
-			local tmpDir=""
+			local tmpDir="${$tmpFile%/*}"
+			importDebug "TMPDIR: $tmpDir"
 			local locFile="${IMPORT_CACHE_DIR}/locations/$urlPath"
 			importDebug "LOCFILE: $locFile"
-			local locDir=""
+			local locDir="${locFile%/*}"
+			importDebug "LOCDIR: $locDir"
+
+			[[ ! -d "$tmpDir" ]] && mkdir -p "$tmpDir"
+			[[ ! -d "$locDir" ]] && mkdir -p "$locDir"
 
 			# ==========================================================
 			# DOWNLOAD THE FILE
