@@ -467,7 +467,8 @@ import::log()
     [[ "$isError" && -z "$priority" ]] && priority="ERROR"
     [[ -z "$priority" ]] && priority="ROUTINE"
 
-    [[ "$toFile" ]] && msgLog="$timestamp [$priority] [$exitCode] ($!) ($user) :: ${tag}${msg}"
+    #[[ "$toFile" ]] && msgLog="$timestamp [$priority] [$exitCode] ($!) ($user) :: ${tag}${msg}"
+    [[ "$toFile" ]] && msgLog="$timestamp [$priority] ($user) :: ${tag}${msg}"
 
     if [[ ! "$isError" ]] && [[ ! "$isWarning" ]] && [[ "$toStdOut" ]]; then
         [[ "$priority" == "ROUTINE" ]] && msgOut="${tag}${msg}" || msgOut="${priority} :: ${tag}${msg}"
@@ -481,9 +482,9 @@ import::log()
     if [[ "$toFile" ]]; then
         # shellcheck disable=SC2094
         if [[ -w "$IMPORT_LOG" ]]; then
-            echo "$msgLog" | tee -a "$IMPORT_LOG"
+            echo "$msgLog" | tee -a "$IMPORT_LOG" 1> /dev/null
         else
-            echo "$msgLog" | sudo tee -a "$IMPORT_LOG" || { echoError "Log Write Failed!"; return 1; }
+            echo "$msgLog" | sudo tee -a "$IMPORT_LOG" 1> /dev/null || { echoError "Log Write Failed!"; return 1; }
         fi
     fi
 
