@@ -613,7 +613,9 @@ import::initCache()
 import::purgeCache()
 {
 	importDebug "Purging Cache"
-	rm -rf "${IMPORT_CACHE_DIR}"
+	echo "Purging Cache"
+	rm -rf "${IMPORT_CACHE_DIR}" || errorReturn "FAILED!" 1
+	echo "DONE!"
 }
 # ------------------------------------------------------------------
 # import::retry
