@@ -487,9 +487,9 @@ import::log()
     if [[ "$toFile" ]]; then
         # shellcheck disable=SC2094
         if [[ -w "$IMPORT_LOG" ]]; then
-            echo "$msgLog" | tee -a "$IMPORT_LOG" 1> /dev/null
+            echo "$msgLog" | tee -a "$IMPORT_LOG" > /dev/null 2>&1
         else
-            echo "$msgLog" | sudo tee -a "$IMPORT_LOG" 1> /dev/null || { echoError "Log Write Failed!"; return 1; }
+            echo "$msgLog" | sudo tee -a "$IMPORT_LOG" > /dev/null 2>&1 || { echoError "Log Write Failed!"; return 1; }
         fi
     fi
 
@@ -654,7 +654,7 @@ import::retry()
 
     while [ "$retryCount" -lt "$numberRetries" ]
     do
-        [[ "$retryCount" -gt 0 ]] && echo "Retry #$retryCount"
+        [[ "$retryCount" -gt 0 ]] && importDebug "Retry #$retryCount"
         exitCode=0
         "$@" || exitCode=$?
         [[ "$exitCode" -eq 0 ]] && break
