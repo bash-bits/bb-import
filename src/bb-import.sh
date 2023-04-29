@@ -189,6 +189,11 @@ echoWarning() { import::echoAlias "$SYMBOL_WARNING $1" -e -c "${GOLD}" "${@:2}";
 echoInfo() { import::echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; }
 echoSuccess() { import::echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; }
 errorReturn() { echoError "$1"; return "${2:-1}"; }
+exitReturn()
+{
+	local r="${1:-0}"
+	[[ "${BASH_SOURCE[0]}" != "${0}" ]] && return "$r" || exit "$r"
+}
 # ------------------------------------------------------------------
 #
 # CONFIGURATION FUNCTIONS
@@ -919,34 +924,35 @@ do
 		-h|--help)
 			import::usage
 			shift
-			return 0
+			exitReturn 0
 			;;
 		-i|--init-cache)
 			import::initCache
 			shift
-			return 0
+			exitReturn 0
 			;;
 		-l|--list)
 			import::list
 			shift
-			return 0
+			exitReturn 0
 			;;
 		-p|--purge-cache)
 			import::purgeCache
 			shift
-			return 0
+			exitReturn 0
 			;;
 		-v|--version)
 			import::version
 			shift
-			return 0
+			exitReturn 0
 			;;
 		--)
 			shift
 			break
 			;;
 		*)
-			errorReturn "Invalid Argument!" 2
+			echoError "Invalid Argument!"
+			exitReturn 2
 			;;
 	esac
 done
