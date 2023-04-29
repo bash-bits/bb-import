@@ -812,7 +812,7 @@ bb::import()
 
 		importDebug "URL: '$url'"
 
-		urlPath="$(echo "$1" | sed 's/\:\///')"
+		urlPath="$(echo "$url" | sed 's/\:\///')"
 		cachePath="$(import::cachePath "$url")"
 
 		if [[ ! -e "$cachePath" ]] || [[ "${IMPORT_RELOAD}" -eq 1 ]]; then
@@ -820,7 +820,9 @@ bb::import()
 			# download the requested file to a temp directory so that the sha1sum
 			# can be computed and the final filename determined
 			local tmpFile="$cachePath.tmp"
+			local tmpDir=""
 			local locFile="${IMPORT_CACHE_DIR}/locations/$urlPath"
+			local locDir=""
 
 			# ==========================================================
 			# DOWNLOAD THE FILE
