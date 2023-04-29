@@ -755,27 +755,36 @@ bb::import()
 			continue
 		fi
 
-		if ! echo "$url" | grep -q "/" || echo "$url" | grep -q "bb-functions|bb-regex"; then
+		if [[ "$url" =~ ^[a-zA-Z\-]*$ ]]; then
 			# IMPLICIT IMPORT
 			importDebug "Processing IMPLICIT IMPORT"
-			# is it a SPECIAL IMPLICIT?
-			if echo "$url" | grep -q "bb-functions"; then
-				repo="${url%@*}"
-				file="${repo/bb-functions/bb-functions.d}.sh"
-				repo="bb-functions"
-			elif echo "$url" | grep -q "bb-regex"; then
-				repo="${url%@*}"
-				file="${repo/bb-regex/bb-regex.d}.sh"
-				repo="bb-regex"
-			else
-				repo="${url%@*}"
-				file="${repo}.sh"
-			fi
+			repo="${url%@*}"
+			file="${repo}.sh"
 			# check for version tag
 			[[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${url#*@}" || tag="master"
 			# RESOLVE LOCATION
 			location="$(import::template "${IMPORT_TEMPLATE_IMPLICIT}" "$file" "$repo" "$tag")"
-		elif ! echo "$url" | grep -q "://" && echo "$url" | grep -q "/" && ! echo "$url" | grep -q "./"; then
+		elif [[ "$url" =~ ^bb-functions\/[a-zA-Z\-]*$ ]]; then
+			# IMPLICIT BB-FUNCTIONS
+			importDebug "Processing IMPLICIT BB-FUNCTIONS IMPORT"
+			repo="${url%@*}"
+			file="${repo/bb-functions/bb-functions.d}.sh"
+			repo="bb-functions"
+			# check for version tag
+			[[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${url#*@}" || tag="master"
+			# RESOLVE LOCATION
+			location="$(import::template "${IMPORT_TEMPLATE_IMPLICIT}" "$file" "$repo" "$tag")"
+		elif [[ "$url" =~ ^bb-functions\/[a-zA-Z\-]*$ ]]; then
+			# IMPLICIT BB-REGEX
+			importDebug "Processing IMPLICIT BB-REGEX IMPORT"
+			repo="${url%@*}"
+			file="${repo/bb-regex/bb-regex.d}.sh"
+			repo="bb-regex"
+			# check for version tag
+			[[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${url#*@}" || tag="master"
+			# RESOLVE LOCATION
+			location="$(import::template "${IMPORT_TEMPLATE_IMPLICIT}" "$file" "$repo" "$tag")"
+		elif [[ "$url" =~ ^[a-zA-Z\-]*\/[a-zA-Z\-]*$ ]]; then
 			# NAMESPACED IMPORT
 			importDebug "Processing NAMESPACED IMPORT"
 			org="${url%/*}"
@@ -785,13 +794,13 @@ bb::import()
 			[[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && { tag="${repo#*@}"; repo="${repo%@*}"; } || tag="master"
 			# RESOLVE LOCATION
 			location="$(import::template "${IMPORT_TEMPLATE_NAMESPACED}" "$file" "$repo" "$tag" "$org")"
-		elif echo "$url" | grep -q "://"; then
+		elif [[ "$url" =~ ^.*\:\/\/.*$ ]]; then
 			# EXPLICIT IMPORT
 			importDebug "Processing EXPLICIT IMPORT"
 			location="$url"
-		elif echo "$url" | grep -q "./"; then
-			# RELATIVE IMPORT
-			importDebug "Processing RELATIVE IMPORT"
+		elif [[ "$url" =~ ^[\./.*|\.\./.*|\/.*]$ ]]; then
+			# LOCAL IMPORT
+			importDebug "Processing LOCAL IMPORT"
             case "$url" in
                 ./*) location="$(dirname "bb::scriptPath")/$url";;
                 ../*) location="$(dirname "bb::scriptPath")/$url";;
