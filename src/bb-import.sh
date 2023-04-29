@@ -587,7 +587,7 @@ import::baseDirs()
 import::cachePath()
 {
 	urlPath="$(echo "$1" | sed 's/\:\///')"
-	print '%s' "${IMPORT_CACHE_DIR}/links/$urlPath"
+	printf '%s' "${IMPORT_CACHE_DIR}/links/$urlPath"
 }
 # ------------------------------------------------------------------
 # import::retry
@@ -859,7 +859,7 @@ bb::import()
 			importDebug "Sourcing: '$cachePath'"
 			source "$cachePath" || errorReturn "File '$cachePath' Not Found!" 6
 		else
-			print '%s' "$(cat "$cachePath")"
+			printf '%s' "$(cat "$cachePath")"
 		fi
 	done
 }
