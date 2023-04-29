@@ -819,7 +819,7 @@ bb::import()
 			# ==========================================================
 			importLog "Downloading '$location'"
 			# download location
-			import::retry curn -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; return "$r"; }
+			import::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; return "$r"; }
 			# log location resolution
 			importDebug "Resolved Location: '$url' -> '$location'"
 			# record location in locFile
