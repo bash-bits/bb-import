@@ -591,6 +591,26 @@ import::cachePath()
 	printf '%s' "${IMPORT_CACHE_DIR}/links/$urlPath"
 }
 # ------------------------------------------------------------------
+# import::initCache
+# ------------------------------------------------------------------
+# ------------------------------------------------------------------
+import::initCache()
+{
+	importDebug "Initializing Cache"
+	echo "Initializing Cache"
+	mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_CACHE_DIR}/data" "${IMPORT_CACHE_DIR}/links" "${IMPORT_CACHE_DIR}/locations" "${IMPORT_LOG_DIR}" || errorReturn "FAILED!" 1
+	echo "DONE!"
+}
+# ------------------------------------------------------------------
+# import::purgeCache
+# ------------------------------------------------------------------
+# ------------------------------------------------------------------
+import::purgeCache()
+{
+	importDebug "Purging Cache"
+	rm -rf "${IMPORT_CACHE_DIR}"
+}
+# ------------------------------------------------------------------
 # import::retry
 # ------------------------------------------------------------------
 # @description Retry downloads in case of failure
@@ -656,7 +676,7 @@ import::usage()
 {
 	echo
 	echoGold "===================================================================="
-	echoWhite "Usage:  bb::import <resource> ... "
+	echoWhite "Usage:  bb-import <resource> ... "
 	echoGold "===================================================================="
 	echo
 	echo "Documentation: https://github.com/bash-bits/bb-import/wiki"
@@ -670,12 +690,12 @@ import::usage()
 	echo
 	echoGold "Example use in Scripts:"
 	echo
-	echo "    ${WHITE}bb::import bb-ansi${RESET}       # import the latest commit of the bb-ansi module"
-	echo "    ${WHITE}bb::import bb-ansi@1.3.1${RESET} # import the tagged version 1.3.1 of the bb-ansi module"
-	echo "    ${WHITE}bb::import org-name/repo${RESET} # import the org-name/repo project from GitHub"
-	echo "    ${WHITE}bb::import https://example.com/project${RESET}  # Import from ANY server in the world"
+	echo "    ${WHITE}bb-import bb-ansi${RESET}       # import the latest commit of the bb-ansi module"
+	echo "    ${WHITE}bb-import bb-ansi@1.3.1${RESET} # import the tagged version 1.3.1 of the bb-ansi module"
+	echo "    ${WHITE}bb-import org-name/repo${RESET} # import the org-name/repo project from GitHub"
+	echo "    ${WHITE}bb-import https://example.com/project${RESET}  # Import from ANY server in the world"
 	echo
-	echo "    ${WHITE}NOTE: You can include as many resource identifiers after a bb::import statement as you like!${RESET}"
+	echo "    ${WHITE}NOTE: You can include as many resource identifiers after a bb-import statement as you like!${RESET}"
 	echo
 	echoGold "Example use on the Command-Line:"
 	echo
@@ -885,7 +905,7 @@ bb::import()
 # MAIN
 # ==================================================================
 
-options=$(getopt -l "force,help,list,version" -o "fhlv" -a -- "$@")
+options=$(getopt -l "force,help,init-cache,list,purge-cache,version" -o "fhilpv" -a -- "$@")
 
 eval set --"$options"
 
@@ -901,8 +921,18 @@ do
 			shift
 			return 0
 			;;
+		-i|--init-cache)
+			import::initCache
+			shift
+			return 0
+			;;
 		-l|--list)
 			import::list
+			shift
+			return 0
+			;;
+		-p|--purge-cache)
+			import::purgeCache
 			shift
 			return 0
 			;;
