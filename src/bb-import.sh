@@ -27,26 +27,35 @@ declare -gx TEST=false
 # if script is called with 'test' as an argument, then set debug mode
 if [[ "${1,,}" == "test" ]]; then shift; TEST=true; set -- "${@}"; fi
 # set debug mode = false
-declare -gx DEBUG=false
+declare -gx IMPORT_DEBUG=0
 # if script is called with 'debug' as an argument, then set debug mode
-if [[ "${1,,}" == "debug" ]]; then shift; DEBUG=true; set -- "${@}"; set -axeET; else set -aeET; fi
+if [[ "${1,,}" == "debug" ]]; then shift; IMPORT_DEBUG=1; set -- "${@}"; set -axeET; else set -aeET; fi
 # ==================================================================
 # VARIABLES
 # ==================================================================
 #
-# DEFAULTS
+# BUILD VARIABLES
 #
-declare -gx IMPORT_CACHE_DIR="$HOME/.bb"
-declare -gx IMPORT_CACHE="${IMPORT_CACHE_DIR}/bb-import.sh"
-declare -gx IMPORT_TRACE_DIR="${IMPORT_CACHE_DIR}/data"
-declare -gx IMPORT_TRACE="${IMPORT_TRACE_DIR}/trace"
-declare -gx IMPORT_LOG_DIR="${IMPORT_CACHE_DIR}/log"
-declare -gx IMPORT_LOG="${IMPORT_LOG_DIR}/import"
-declare -gx IMPORT_CACHE_CFG="${IMPORT_CACHE}/cfg"
-declare -gx IMPORT_ENV="${IMPORT_CACHE_CFG}/bb-import.env"
-declare -gx IMPORT_LOG_SIZE=1048576
-declare -gx IMPORT_LOG_BACKUPS=5
-declare -gx IMPORT_LOG_ARCHIVE=1
+declare -gx IMPORT_VERSION="v-1.0.0"
+declare -gx IMPORT_BUILD="x"
+declare -gx IMPORT_BUILD_DATE="2023-04-15T16:00:00+10:00"
+#
+# DEFAULT PATHS
+#
+[[ -z "${IMPORT_BASE_DIR}" ]] && declare -gx IMPORT_BASE_DIR="$HOME/.bb"
+[[ -z "${IMPORT_CACHE_DIR}" ]] && declare -gx IMPORT_CACHE_DIR="${IMPORT_BASE_DIR}/cache"
+[[ -z "${IMPORT_LOG_DIR}" ]] && declare -gx IMPORT_LOG_DIR="${IMPORT_BASE_DIR}/log"
+[[ -z "${IMPORT_LOG}" ]] && declare -gx IMPORT_LOG="${IMPORT_LOG_DIR}/import"
+#
+# DEFAULT VARIABLES
+#
+[[ -z "${IMPORT_SERVER_DEFAULT}" ]] && declare -gx IMPORT_SERVER_DEFAULT="raw.githubusercontent.com"
+[[ -z "${IMPORT_TEMPLATE_IMPLICIT}" ]] && declare -gx IMPORT_TEMPLATE_IMPLICIT="https://${IMPORT_SERVER_DEFAULT}/bash-bits/<%repo%>/<%tag%>/src/<%repo%>.sh"
+[[ -z "${IMPORT_TEMPLATE_NAMESPACED}" ]] && declare -gx IMPORT_TEMPLATE_NAMESPACED="https://${IMPORT_SERVER_DEFAULT}/<%org%>/<%repo%>/<%tag%>/src/<%repo%>.sh"
+[[ -z "${IMPORT_LOG_SIZE}" ]] && declare -gx IMPORT_LOG_SIZE=1048576
+[[ -z "${IMPORT_LOG_BACKUPS}" ]] && declare -gx IMPORT_LOG_BACKUPS=5
+[[ -z "${IMPORT_LOG_ARCHIVE}" ]] && declare -gx IMPORT_LOG_ARCHIVE=1
+[[ -z "${IMPORT_RELOAD}" ]] && declare -gx IMPORT_RELOAD=0
 #
 # ANSI VARIABLES
 #
@@ -54,6 +63,13 @@ declare -gx IMPORT_LOG_ARCHIVE=1
 [[ -z "$ANSI_CSI" ]] && declare ANSI_CSI="${ANSI_ESC}["
 [[ -z "$ANSI_OSC" ]] && declare ANSI_OSC="${ANSI_ESC}]"
 [[ -z "$ANSI_ST" ]] && declare ANSI_ST="${ANSI_ESC}\\"
+#
+# SYMBOLS
+#
+[[ -z "${SYMBOL_ERROR}" ]] && declare -gx SYMBOL_ERROR="🚫"
+[[ -z "${SYMBOL_WARNING}" ]] && declare -gx SYMBOL_WARNING="⚠️"
+[[ -z "${SYMBOL_INFO}" ]] && declare -gx SYMBOL_INFO="ℹ️"
+[[ -z "${SYMBOL_SUCCESS}" ]] && declare -gx SYMBOL_SUCCESS="✅"
 #
 # COLOR VARIABLES
 #
@@ -68,10 +84,6 @@ declare -gx IMPORT_LOG_ARCHIVE=1
 #
 [[ -z "$isINT" ]] && declare isINT='^[-+]?\d+$'
 [[ -z "$isOPT" ]] && declare isOPT='^(-([A-Za-z]+)[\s]?([A-Za-z0-9_\.]*))$|^(--(([A-Za-z0-9_\.]+)=?([A-Za-z0-9_\.]*)))$'
-#
-# SCRIPT VARIABLES
-#
-declare importEntryPoint=0
 # ==================================================================
 # FUNCTIONS
 # ==================================================================
@@ -236,35 +248,6 @@ import::parseConfig()
 			[[ "$writeEnv" -eq 1 ]] && echo "${key}=${!key}" >> "$envPath"
 		fi
 	done < "$cfgPath"
-}
-# ------------------------------------------------------------------
-# import::template
-# ------------------------------------------------------------------
-# @description Replace placeholders in template strings with known
-# variables.
-#
-# @arg	$1		[mixed]		A template string containing placeholders
-#
-# @exitcode		0		Success
-# @exitcode		1		Failure
-# @exitcode		2		ERROR - Missing Argument
-# ------------------------------------------------------------------
-import::template()
-{
-	local template="${1:-}"
-	local ext="${2:-}"
-	local repo="${3:-}"
-	local tag="${4:-}"
-	local org="${5:-}"
-
-	[[ -n "$1" ]] && shift
-
-	template="${template/<%org%>/${org}}"
-	template="${template/<%repo%>/${repo}}"
-	template="${template/<%tag%>/${tag}}"
-	template="${template/<%ext%>/${ext}}"
-
-	printf '%s' "$template"
 }
 # ------------------------------------------------------------------
 #
@@ -582,70 +565,27 @@ importFatal() { import::fatal "$@"; }
 # IMPORT FUNCTIONS
 #
 # ------------------------------------------------------------------
-# import::getHash
-# ------------------------------------------------------------------
-# ------------------------------------------------------------------
-import::getHash()
-{
-	SHA="$(command -v sha1sum)" || SHA="$(command -v shasum)" || { r=$?; importLog "NO SHASUM OR SHA1SUM COMMAND PRESENT!"; ecit "$r"; }
-	importDebug "Using $SHA for Hashing"
-	printf '%s' $SHA
-}
-# ------------------------------------------------------------------
 # import::baseDirs
 # ------------------------------------------------------------------
 # ------------------------------------------------------------------
 import::baseDirs()
 {
-	[[ -z "${IMPORT_CACHE_DIR}" ]] && declare -gx IMPORT_CACHE_DIR="$(import::cacheDir)"
-	[[ -z "${IMPORT_TRACE_DIR}" ]] && declare -gx IMPORT_TRACE_DIR="${IMPORT_CACHE_DIR}data"
-	[[ -z "${IMPORT_LOG_DIR}" ]] && declare -gx IMPORT_LOG_DIR="${IMPORT_CACHE_DIR}log"
-
-	[[ -z "${IMPORT_CACHE}" ]] && declare -gx IMPORT_CACHE="$(import::cacheDir::import)"
-
-	[[ -z "${cacheConfig}" ]] && cacheConfig="${IMPORT_CACHE}/cfg"
-	[[ -z "${cacheData}" ]] && cacheData="${IMPORT_CACHE}/data"
-	[[ -z "${cacheLinks}" ]] && cacheLinks="${IMPORT_CACHE}/links"
-	[[ -z "${cacheLocations}" ]] && cacheLocations="${IMPORT_CACHE}/locations"
-
 	echo "Creating Directories:"
+	echo "    ${IMPORT_BASE_DIR}"
 	echo "    ${IMPORT_CACHE_DIR}"
-	echo "    ${IMPORT_TRACE_DIR}"
 	echo "    ${IMPORT_LOG_DIR}"
-	echo "    ${IMPORT_CACHE}"
-	echo "    ${cacheConfig}"
-	echo "    ${cacheData}"
-	echo "    ${cacheLinks}"
-	echo "    ${cacheLocations}"
 
-	mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_TRACE_DIR}" "${IMPORT_LOG_DIR}" "${IMPORT_CACHE}" "${cacheConfig}" "${cacheData}" "${cacheLinks}" "${cacheLocations}" || return 1
+	mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_LOG_DIR}"
 }
 # ------------------------------------------------------------------
-# import::cacheDir
+# import::cachePath
 # ------------------------------------------------------------------
-# @description Determine the path to bb-import
-#
-# @noargs
-#
-# @stdout The path to bb-import
 # ------------------------------------------------------------------
-import::cacheDir()
+import::cachePath()
 {
-    local home="${HOME:-"$(printf '%s' ~)"}"
-    local default="$home/.bb"
-    [ "$(uname -s)" = "Darwin" ] && default="$home/Library/Caches"
-    printf '%s' "${XDG_CACHE_HOME:-${LOCALAPPDATA:-$default}}/$1"
+	urlPath="$(echo "$1" | sed 's/\:\///')"
+	print '%s' "${IMPORT_CACHE_DIR}/links/$urlPath"
 }
-# ------------------------------------------------------------------
-# import::cacheDir::import
-# ------------------------------------------------------------------
-# @description Determine the path to bb-import
-#
-# @noargs
-#
-# @stdout The path to bb-import
-# ------------------------------------------------------------------
-import::cacheDir::import() { printf '%s' "${IMPORT_CACHE:-$(import::cacheDir bb-import.sh)}"; }
 # ------------------------------------------------------------------
 # import::retry
 # ------------------------------------------------------------------
@@ -671,11 +611,34 @@ import::retry()
     return "$exitCode"
 }
 # ------------------------------------------------------------------
-# import::file
+# import::template
 # ------------------------------------------------------------------
-# @description
+# @description Replace placeholders in template strings with known
+# variables.
+#
+# @arg	$1		[mixed]		A template string containing placeholders
+#
+# @exitcode		0		Success
+# @exitcode		1		Failure
+# @exitcode		2		ERROR - Missing Argument
 # ------------------------------------------------------------------
-import::file() { print=1 bb::import "$@"; }
+import::template()
+{
+	local template="${1:-}"
+	local ext="${2:-}"
+	local repo="${3:-}"
+	local tag="${4:-}"
+	local org="${5:-}"
+
+	[[ -n "$1" ]] && shift
+
+	template="${template/<%org%>/${org}}"
+	template="${template/<%repo%>/${repo}}"
+	template="${template/<%tag%>/${tag}}"
+	template="${template/<%ext%>/${ext}}"
+
+	printf '%s' "$template"
+}
 # ------------------------------------------------------------------
 # import::usage
 # ------------------------------------------------------------------
@@ -715,7 +678,7 @@ import::usage()
 	echo "    ${WHITE}bb-import -h${RESET}             # Display (this) usage information"
 	echo "    ${WHITE}bb-import -v${RESET}             # Show version information"
 	echo
-	echoGold "Options:"
+	echoGold "Flags:"
 	echo
 	echo "    ${WHITE}-f, --force${RESET}              # Force the resource to be downloaded even if cached"
 	echo "    ${WHITE}-h, --help${RESET}               # Show usage (this) information"
@@ -760,148 +723,131 @@ bb::import()
 	local url cache
 	local -a args
 
-	[[ "$#" -lt 1 ]] && errorReturn "Missing Argument!" 2
+	[[ "$#" -eq 0 ]] && errorReturn "Missing Argument!" 2
 
-	if ! import::baseDirs; then errorReturn "Failed to Create Base Directories!" 3; fi
+	[[ ! -d "${IMPORT_BASE_DIR}" ]] && { import::baseDirs || errorReturn "Failed to Create Base Directories!" 3; }
 
 	args=("$@")
 
 	for url in "${args[@]}"
 	do
-		if ! echo "$url" | grep -q "/" || echo "$url" | grep -q "bb-functions" || echo "$url" | grep -q "bb-regex"; then
+		if [[ "$url" =~ $isOPT ]]; then
+			case "$url" in
+				-f|--force)
+					IMPORT_RELOAD=1
+					;;
+				*)
+					errorReturn "Invalid Argument!" 4
+					;;
+			esac
+			continue
+		fi
+
+		if ! echo "$url" | grep -q "/" || echo "$url" | grep -q "bb-functions|bb-regex"; then
 			# IMPLICIT IMPORT
-			importDebug "Detected Implicit Import"
-			repo="${url%@*}"
-            # check for version tag
-            [[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${url#*@}" || tag="master"
-            # RESOLVE LOCATIONS
-            location="$(import::template "${IMPORT_TEMPLATE_IMPLICIT}" "sh" "$repo" "$tag" "$repo")"
-            cfgLocation="$(import::template "${IMPORT_TEMPLATE_IMPLICIT}" "ini" "$repo" "$tag" "$repo")"
+			importDebug "Processing IMPLICIT IMPORT"
+			# is it a SPECIAL IMPLICIT?
+			if echo "$url" | grep -q "bb-functions"; then
+				repo="${url%@*}"
+				repo="${repo/bb-functions/bb-functions.d}"
+				file="${repo}.sh"
+				repo="bb-functions"
+			elif echo "$url" | grep -q "bb-regex"; then
+				repo="${url%@*}"
+				repo="${repo/bb-regex/bb-regex.d}"
+				file="${repo}.sh"
+				repo="bb-regex"
+			else
+				repo="${url%@*}"
+				file="${repo}.sh"
+			fi
+			# check for version tag
+			[[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && tag="${url#*@}" || tag="master"
+			# RESOLVE LOCATION
+			location="$(import::template "${IMPORT_TEMPLATE_IMPLICIT}" "$file" "$tag" "$repo")"
 		elif ! echo "$url" | grep -q "://" && echo "$url" | grep -q "/" && ! echo "$url" | grep -q "./"; then
 			# NAMESPACED IMPORT
-			importDebug "Detected Namespaced Import"
-            org="${url%/*}"
-            repo="${url#*/}"
-            # check for version tag
-            [[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && { tag="${repo#*@}"; repo="${repo%@*}"; } || tag="master"
-            location="$(import::template "${IMPORT_TEMPLATE_NAMESPACED}" "sh" "$repo" "$tag" "$repo" "$org")"
-            cfgLocation="$(import::template "${IMPORT_TEMPLATE_NAMESPACED}" "ini" "$repo" "$tag" "$repo" "$org")"
+			importDebug "Processing NAMESPACED IMPORT"
+			org="${url%/*}"
+			repo="${url#*/}"
+			file="${repo}.sh"
+			# check for version tag
+			[[ "$(echo "$url" | awk -F@ '{print $1}' > /dev/null)" ]] && { tag="${repo#*@}"; repo="${repo%@*}"; } || tag="master"
+			# RESOLVE LOCATION
+			location="$(import::template "${IMPORT_TEMPLATE_NAMESPACED}" "$file" "$tag" "$repo" "$org")"
 		elif echo "$url" | grep -q "://"; then
 			# EXPLICIT IMPORT
-			importDebug "Detected Explicit Import"
+			importDebug "Processing EXPLICIT IMPORT"
 			location="$url"
 		elif echo "$url" | grep -q "./"; then
 			# RELATIVE IMPORT
-			importDebug "Detected Relative Import"
+			importDebug "Processing RELATIVE IMPORT"
             case "$url" in
                 ./*) location="$(dirname "bb::scriptPath")/$url";;
                 ../*) location="$(dirname "bb::scriptPath")/$url";;
             esac
 		else
 			# ERROR
-			errorReturn "Unsupported Import Target!" 4
+			errorReturn "Unsupported Import Target!" 5
 		fi
+	done
 
-        # record the URL to the trace db if the env var is set
-        [[ -n "$IMPORT_TRACE" ]] && echo "$url" >> "$IMPORT_TRACE"
+	importDebug "URL: '$url'"
 
-		urlPath="$(echo "$url" | sed 's/\:\///')"
-		cache="$(import::cacheDir::import)"
-		cachePath="$cache/links/$urlPath"
+	cachePath="$(import::cachePath "$url")"
 
-		if [[ ! -e "$cachePath" ]] || [[ "${IMPORT_RELOAD}" -eq 1 ]]; then
+	if [[ ! -e "$cachePath" ]] || [[ "${IMPORT_RELOAD}" -eq 1 ]]; then
 
-			# download the requested file to a temp directory so that the sha1sum
-			# can be computed and the final filename determined
-			local tmpFile="$cachePath.tmp"
-			local locFile="$cache/locations/$urlPath"
-			[[ -n "$ini" ]] && local cfgFile="$cache/locations/config"
+		# download the requested file to a temp directory so that the sha1sum
+		# can be computed and the final filename determined
+		local tmpFile="$cachePath.tmp"
+		local locFile="${IMPORT_CACHE_DIR}/locations/$urlPath"
 
-            # ======================================================
-            # DOWNLOAD THE FILE(S)
-            # ======================================================
-            importLog "Downloading '$location'"
-            # download location
-            import::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; rm -f "$tmpFile"; return "$r"; }
-			# log location resolution
-			importDebug "Resolved location '$url' -> '$location'"
-			# record location in locFile
-			echo "$location" > "$locFile"
-			# if config file exists, download that too
-			if [[ -n "$ini" ]]; then
-				# define config directory & filePath
-				cacheConfig="${IMPORT_CACHE}/cfg"
-				cfgPath="$cacheConfig/$ini"
-				# log resolution of configFile to configPath
-				importLog "Downloading '$cfgLocation'"
-				# download the configFile
-				import::retry curl -sfLS --netrc-optional --connect-timeout 5 --output "$cfgPath" "$cfgLocation" || { local r=$?; importWarning "Failed to download '$cfgLocation'" >&2; rm -f "$cfgPath"; return "$r"; }
-				# log cfgLocation resolution
-				importDebug "Download '$ini' -> '$cfgPath'"
-				# record location in configFile
-				echo "$cfgLocation" > "$cfgFile"
-			fi
-            # ======================================================
+		# ==========================================================
+		# DOWNLOAD THE FILE
+		# ==========================================================
+		importLog "Downloading '$location'"
+		# download location
+		import::retry curn -sfLS --netrc-optional --connect-timeout 5 --output "$tmpFile" "$location" || { local r=$?; importWarning "Failed to download '$location'" >&2; return "$r"; }
+		# log location resolution
+		importDebug "Resolved Location: '$url' -> '$location'"
+		# record location in locFile
+		echo "$location" > "$locFile"
+		# ==========================================================
 
-            # ======================================================
-            # CALCULATE THE HASH
-            # ======================================================
-            local hash
-            # calculate hash of downloaded file
-            hash="$("$importSHASum" < "$tmpFile" | { read -r first rest; echo "$first"; })" || return
-            # log hash calculation
-            importDebug "Calculated Hash for '$url' -> '$hash'"
-            local hashFile="$cache/data/$hash"
-            # if the hashed file doesn't exist, move it into place,
-            # otherwise delete the temp file - it's no longer needed
-            # ======================================================
-            [[ -f "$hashFile" ]] && { rm -f "$tmpFile"; return; } || { mv "$tmpFile" "$hashFile"; return; }
-            # ======================================================
+		# ==========================================================
+		# CALCULATE FILE HASH
+		# ==========================================================
+		local hash
+		# calculate hash of downloaded file
+		hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return 1
+		# log hash
+		importDebug "Calculated Hash for '$url' -> '$hash'"
+		# if the hashFile doesn't exist, move it into place,
+		# otherwise delete the tmpFile
+		local hashFile="${IMPORT_CACHE_DIR}/data/$hash"
+		# ==========================================================
+		[[ -f "$hashFile" ]] && { rm -f "$tmpFile"; return 0; } || { mv "$tmpFile" "$hashFile"; return 0; }
+		# ==========================================================
 
-            # ======================================================
-            # create a relative symlink for this import pointing to
-            # the hashed file ...
-            # ======================================================
-            local relative cacheStart
+		# ==========================================================
+		# CREATE SYMLINK
+		# ==========================================================
+		importDebug "Symlink for '$cachePath' -> '$hashFile'"
+		ln -fs "$hashFile" "$cachePath" || return 1
+		# ==========================================================
+	else
+		# ======================================================
+		importDebug "File Already Cached '$url'"
+		# ======================================================
+	fi
 
-            [[ "${linkDir:0-1}" == "." ]] && linkDir="${linkDir:0:${#linkDir}-2}"
+	set --
 
-            cacheStart="$(( "${#cache}" + 1 ))" || return
-            relative="$(echo "$linkDir" | awk '{print substr($0, '"$cacheStart"')}' | sed 's/\/[^/]*/..\//g')data/$hash" || return
-            [ -n "${IMPORT_DEBUG-}" ] && importDebug "import :: Creating symlink"
-            ln -fs${IMPORT_DEBUG:+v} "$relative" "$cachePath" >&2 || return
-
-            importDebug "Successfully downloaded '$url' -> '$hashFile'"
-            # ======================================================
-		else
-            # ======================================================
-			importDebug "File Already Cached '$url'"
-            # ======================================================
-		fi
-
-		set --
-
-		# At this point, the file has been saved to the cache, so either source it or print it
-		if [[ -z "${print-}" ]]; then
-			importDebug "SOURCING: '$cachePath'"
-			local _importParentLocation="${_importLocation-}"
-			_importLocation="$(cat "$cache/locations/$urlPath")" || return
-			source "$cachePath" || return
-			_importLocation="$_importParentLocation"
-		else
-			importDebug "PRINTING: '$cachePath'"
-			echo "$cachePath"
-		fi
-
-    done
+	# at this point, the file has been saved to cache, so source it
+	importDebug "Sourcing: '$cachePath'"
+	source "$cachePath" || errorReturn "File '$cachePath' Not Found!" 6
 }
-# ==================================================================
-# CONFIG
-# ==================================================================
-# if an environment file exists, then source it - otherwise parse the config file and create it
-[[ ! -f "${IMPORT_ENV}" ]] && import::parseConfig bb-import.ini || source "${IMPORT_ENV}"
-# find which hash utility we can use
-[[ -z "$importSHASum" ]] && importSHASum="$(import::getHash)"
 # ==================================================================
 # MAIN
 # ==================================================================
