@@ -624,9 +624,13 @@ import::initCache()
 # ------------------------------------------------------------------
 import::list()
 {
+	local file="${IMPORT_BASE_DIR}/cache-catalogue.csv"
+	local locDir="${IMPORT_CACHE_DIR}/locations/"
+
 	while IFS= read -r line
 	do
-		echo "$line"
+		local name="${line:${#locDir}}"
+		echo "$name"
 	done <<< "$(find "${IMPORT_CACHE_DIR}/locations" -type f -printf "%p\n")"
 }
 # ------------------------------------------------------------------
