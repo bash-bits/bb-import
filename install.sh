@@ -23,9 +23,9 @@ if [[ "${1,,}" == "debug" ]]; then shift; INSTALL_DEBUG=1; set -- "${@}"; set -a
 #
 # BUILD VARIABLES
 #
-declare -gx INSTALL_VERSION="v-1.0.0"
-declare -gx INSTALL_BUILD="x"
-declare -gx INSTALL_BUILD_DATE="2023-04-15T16:00:00+10:00"
+declare INSTALL_VERSION="v-1.0.0"
+declare INSTALL_BUILD="x"
+declare INSTALL_BUILD_DATE="2023-04-15T16:00:00+10:00"
 #
 # DEFAULT PATHS
 #
@@ -384,6 +384,19 @@ install::local()
 	echoGold "=================================================================="
 }
 # ------------------------------------------------------------------
+# install::version
+# ------------------------------------------------------------------
+install::version()
+{
+	echo
+	echo "Bash-Bits Modular Bash Library"
+	echoWhite "BB-Import Module Installer ${INSTALL_VERSION}"
+	echo "Copyright © 2022-2023 Darren (Ragdata) Poulton"
+	echo "Build: ${INSTALL_BUILD}"
+	echo "Build Date: ${INSTALL_BUILD_DATE}"
+	echo
+}
+# ------------------------------------------------------------------
 # install::menu
 # ------------------------------------------------------------------
 install::menu()
@@ -399,6 +412,7 @@ install::menu()
 	echo "  2) Local (${IMPORT_BASE_DIR}/bb-import)"
 	echo "Other Options:"
 	echo "  3) Uninstall"
+	echo "  4) About"
 	echo "  Q) Quit"
 	echo
 	echoSuccess "Type your selection: (${GOLD}1${RESET}/2/3/Q) " -n
@@ -416,6 +430,9 @@ install::menu()
 	    3)
 	        install::uninstall
 	        ;;
+	    4)
+	    	install::version
+	    	;;
 	    q|Q)
 	        install::quit
 	        ;;
