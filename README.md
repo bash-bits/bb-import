@@ -293,9 +293,6 @@ If you like this repo, please give it a ⭐ (it really does help)
 
 </h3>
 
-[`^ Top`](#toc)
-
-
 [advisory]: https://github.com/bash-bits/bb-import/security/advisories/new
 [all-contributors]: https://allcontributors.org
 [contributing]: https://github.com/bash-bits/.github/blob/master/.github/CONTRIBUTING.md

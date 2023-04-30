@@ -2,17 +2,21 @@
 
 ## ✨`Including BB-Import`
 
-There are 2 ways to make use of `BB-Import`;
+There are 3 ways to make use of `BB-Import`;
 
 The first is to install it to a directory that is on your `$PATH` (defaults to `/usr/local/bin/bb-import`) and include it as part of the Shebang at the top of each file:
 
 ```shell
 #!/usr/bin/env bb-import
-
-or 
-
-bb-import <opt>
 ```
+
+This allows you to also use BB-Import from the command-line:
+
+```shell
+bb-import <arg>
+```
+
+(You can find a list of commands you can use [HERE](api-exec.md))
 
 Or, you can install it under your home directory and `source` it wherever you want to use it:
 
@@ -20,11 +24,9 @@ Or, you can install it under your home directory and `source` it wherever you wa
 source /home/user/.bb/bb-import.sh
 ```
 
-Most API functions, therefore, can be called 2 different ways and each is identified hereafter like so:
+### [🔹View the Command-Line / Shebang API](api-exec.md)
 
-🔹= shebanged / executed
-
-🔸= sourced
+### [🔸View the Sourced API](api-sourced.md)
 
 
 ## 🔹 `bb-import '$url'`
