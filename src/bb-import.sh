@@ -98,6 +98,61 @@ declare -gx IMPORT_BUILD_DATE="2023-04-15T16:00:00+10:00"
 # ------------------------------------------------------------------
 bb::scriptPath() { printf '%s' "$(realpath "${BASH_SOURCE[0]}")"; }
 # ------------------------------------------------------------------
+# bb::errorHandler
+# ------------------------------------------------------------------
+# @description Generic Error Handler for use by all elements of BB
+#
+# @arg		$1		[integer]		LineNo
+# @arg		$2		[integer]		BashLineNo
+# @arg		$3		[string]		Last Command
+# @arg		$4		[integer]		Error Code
+#
+# @stderr Error Information
+#
+# @exitcode (as per $4)
+# ------------------------------------------------------------------
+bb::errorHandler()
+{
+	local -n lineNo="${1:-LINENO}"
+	local -n bashLineNo="${2:-BASH_LINENO}"
+	local lastCommand="${3:-BASH_COMMAND}"
+	local code="${4:-0}"
+
+	local lastCommandHeight
+
+	[[ "$code" -eq 0 ]] && return 0
+
+	# workaround for EOF combo tripping traps
+	((code)) || return "${code}"
+
+	lastCommandHeight="$(wc -l <<<"${lastCommand}")"
+
+	local -a outputArray=()
+
+	outputArray+=(
+		'---'
+		"Line History: [${lineNo} ${bashLineNo[*]}]"
+		"Function Trace: [${FUNCNAME[*]}}]"
+		"Exit Code: ${code}"
+	)
+
+	[[ "${#BASH_SOURCE[@]}" -gt 1 ]] && {
+		outputArray+=('source_trace:')
+		for item in "${BASH_SOURCE[@]}"
+		do
+			outputArray+=(" - ${item}")
+		done
+	} || outputArray+=("source_trace: [${BASH_SOURCE[*]}]")
+
+	[[ "${lastCommandHeight}" -gt 1 ]] && {
+		outputArray+=('last_command: ->' "${lastCommand}")
+	} || outputArray+=("last_command: ${lastCommand}")
+
+	outputArray+=('---')
+	printf '%s\n' "${outputArray[@]}" >&2
+	exit "${code}"
+}
+# ------------------------------------------------------------------
 #
 # DISPLAY FUNCTIONS
 #
@@ -193,66 +248,6 @@ exitReturn()
 {
 	local r="${1:-0}"
 	[[ "${BASH_SOURCE[0]}" != "${0}" ]] && return "$r" || exit "$r"
-}
-# ------------------------------------------------------------------
-#
-# CONFIGURATION FUNCTIONS
-#
-# ------------------------------------------------------------------
-# import::parseConfig
-# ------------------------------------------------------------------
-# @description Parse the specified config file to make them available
-# in the environment and to Bash-Bits as a whole.
-#
-# @arg $1	[string]	Name of the configuration file
-#
-# @exitcode		0		Success
-# @exitcode		1		Failure
-# @exitcode		2		ERROR - Config File Not Found
-# ------------------------------------------------------------------
-import::parseConfig()
-{
-	local cfgFile="${1:-}"
-	local myName prefix module section key val line cache
-	local writeEnv=0
-
-	[[ "$TEST" ]] && return 0
-
-	if [[ -z "$cfgFile" ]]; then
-		myName="${BASH_SOURCE[0]}"
-		myExt="${myName#*.}"
-		myName="${myName%.*}"
-		cfgFile="$myName.ini"
-		envFile="$myName.env"
-	fi
-
-	cachePath="$(import::cacheDir::import)"
-	cfgDir="$cachePath/cfg"
-	cfgPath="$cfgDir/$cfgFile"
-	envPath="$cfgDir/$envFile"
-
-	[[ ! -f "$cfgPath" ]] && errorReturn "Config File Not Found!" 2
-
-	[[ ! -f "$envPath" ]] && writeEnv=1 && touch "$envPath"
-
-	while IFS= read -r line
-	do
-
-		if [[ "${line:0:1}" == "[" && "${line:0-1}" == "]" ]]; then
-			section="${line:1:${#line}-2}"
-			[[ "${section^^}" == "MODULE" ]] && section="${myName:3}" && section="${section^^}" && module="$section"
-		else
-			key="${line%=*}"
-			key="${key^^}"
-			val="${line#*=}"
-			key="${section}_${key}"
-			[[ "${val}" == *"$"* ]] && eval "val=\$$val"
-			[[ "${val}" == *"{"*"}"* ]] && val="$(import::template "${val}")"
-			declare -gx "${key}"="${val}"
-#			echo "${key}=${!key}"
-			[[ "$writeEnv" -eq 1 ]] && echo "${key}=${!key}" >> "$envPath"
-		fi
-	done < "$cfgPath"
 }
 # ------------------------------------------------------------------
 #
@@ -575,6 +570,11 @@ importFatal() { import::fatal "$@"; }
 # ------------------------------------------------------------------
 # import::baseDirs
 # ------------------------------------------------------------------
+# @description Create critical cache directories
+#
+# @noargs
+#
+# @stdout List of directories being created
 # ------------------------------------------------------------------
 import::baseDirs()
 {
@@ -591,6 +591,12 @@ import::baseDirs()
 # ------------------------------------------------------------------
 # import::cachePath
 # ------------------------------------------------------------------
+# @description Uses the requested package name / url to create a
+# unique path upon which to cache the resource
+#
+# @arg		$1		[string]		The package name / url
+#
+# @stdout A unique path upon which the resource will be cached
 # ------------------------------------------------------------------
 import::cachePath()
 {
@@ -600,6 +606,12 @@ import::cachePath()
 # ------------------------------------------------------------------
 # import::initCache
 # ------------------------------------------------------------------
+# @description Initializes the cache - creates all required directories
+# and if a copy of BB-Import was previously archived, it will be
+# reconstituted by this command
+#
+# @stdout Status Output
+# @stderr Error Output (if triggered)
 # ------------------------------------------------------------------
 import::initCache()
 {
@@ -621,6 +633,13 @@ import::initCache()
 # ------------------------------------------------------------------
 # import::list
 # ------------------------------------------------------------------
+# @description Output a list of all cached resources to stdout showing
+# the name of the resource, its origin URL, sha1sum, and date last
+# modified
+#
+# @noargs
+#
+# @stdout List of cached resources
 # ------------------------------------------------------------------
 import::list()
 {
@@ -652,6 +671,14 @@ import::list()
 # ------------------------------------------------------------------
 # import::purgeCache
 # ------------------------------------------------------------------
+# @description Purge (delete) everything from cache.  BB-Import's
+# cache records will be archived so that it can be reconstituted
+# without having to go through the entire install process
+#
+# @noargs
+#
+# @stdout Status Output
+# @stderr Error Output (if triggered)
 # ------------------------------------------------------------------
 import::purgeCache()
 {
@@ -678,6 +705,10 @@ import::purgeCache()
 # import::retry
 # ------------------------------------------------------------------
 # @description Retry downloads in case of failure
+#
+# @arg	$1		[binary]	A curl command to be retried on failure
+#
+# @exitcode Per command result
 # ------------------------------------------------------------------
 import::retry()
 {
@@ -791,8 +822,6 @@ import::usage()
 # ------------------------------------------------------------------
 import::version()
 {
-	local ver buildDate
-
 	echo
 	echo "Bash-Bits Modular Bash Library"
 	echoWhite "BB-Import Module ${IMPORT_VERSION}"
@@ -804,14 +833,25 @@ import::version()
 # ------------------------------------------------------------------
 # bb-importFile
 # ------------------------------------------------------------------
+# @description Wrapper to execute the bb::import function, except
+# that the file retrieved will be echoed to stdout rather than
+# sourced
+#
+# @arg		$@		[mixed]		Arguments for bb::import
 # ------------------------------------------------------------------
-bb-importFile()
+bb::importFile()
 {
 	print=1 && bb::import "$@"
 }
 # ------------------------------------------------------------------
 # bb::remove
 # ------------------------------------------------------------------
+# @description Remove a resource from the cache.
+#
+# @arg		$1		[string]		The name of the package to remove
+#
+# @stdout Status Output
+# @stderr Error Output (if triggered)
 # ------------------------------------------------------------------
 bb::remove()
 {
@@ -849,6 +889,8 @@ bb::import()
 {
 	local url cache
 	local -a args
+
+	trap 'bb::errorHandler "LINENO" "BASH_LINENO" "${BASH_COMMAND}" "${?}"' ERR
 
 	[[ "$#" -eq 0 ]] && errorReturn "Missing Argument!" 2
 
@@ -992,13 +1034,15 @@ bb::import()
 			printf '%s' "$(cat "$cachePath")"
 		fi
 	done
+
+	trap - 0 ERR
 }
 # ==================================================================
 # MAIN
 # ==================================================================
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-
+	trap 'bb::errorHandler "LINENO" "BASH_LINENO" "${BASH_COMMAND}" "${?}"' ERR
 	options=$(getopt -l "force,help,init-cache,list,purge-cache,remove:,version" -o "fhilpr:v" -a -- "$@")
 
 	eval set --"$options"
@@ -1051,6 +1095,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 				;;
 		esac
 	done
+
+	trap - 0 ERR
 
 	bb::import "$@"
 
