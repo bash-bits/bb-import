@@ -42,19 +42,19 @@ declare -gx IMPORT_BUILD_DATE="2023-04-15T16:00:00+10:00"
 #
 # DEFAULT PATHS
 #
-[[ -z "${IMPORT_BASE_DIR}" ]] && declare -gx IMPORT_BASE_DIR="$HOME/.bb"
-[[ -z "${IMPORT_CACHE_DIR}" ]] && declare -gx IMPORT_CACHE_DIR="${IMPORT_BASE_DIR}/cache"
-[[ -z "${IMPORT_LOG_DIR}" ]] && declare -gx IMPORT_LOG_DIR="${IMPORT_BASE_DIR}/log"
-[[ -z "${IMPORT_LOG}" ]] && declare -gx IMPORT_LOG="${IMPORT_LOG_DIR}/import"
+[[ -z "${BB_BASE_DIR}" ]] && declare -gx BB_BASE_DIR="$HOME/.bb"
+[[ -z "${BB_CACHE_DIR}" ]] && declare -gx BB_CACHE_DIR="${BB_BASE_DIR}/cache"
+[[ -z "${BB_LOG_DIR}" ]] && declare -gx BB_LOG_DIR="${BB_BASE_DIR}/log"
+[[ -z "${BB_LOG}" ]] && declare -gx BB_LOG="${BB_LOG_DIR}/import"
 #
 # DEFAULT VARIABLES
 #
 [[ -z "${IMPORT_SERVER_DEFAULT}" ]] && declare -gx IMPORT_SERVER_DEFAULT="raw.githubusercontent.com"
 [[ -z "${IMPORT_TEMPLATE_IMPLICIT}" ]] && declare -gx IMPORT_TEMPLATE_IMPLICIT="https://${IMPORT_SERVER_DEFAULT}/bash-bits/<%repo%>/<%tag%>/src/<%file%>"
 [[ -z "${IMPORT_TEMPLATE_NAMESPACED}" ]] && declare -gx IMPORT_TEMPLATE_NAMESPACED="https://${IMPORT_SERVER_DEFAULT}/<%org%>/<%repo%>/<%tag%>/src/<%file%>"
-[[ -z "${IMPORT_LOG_SIZE}" ]] && declare -gx IMPORT_LOG_SIZE=1048576
-[[ -z "${IMPORT_LOG_BACKUPS}" ]] && declare -gx IMPORT_LOG_BACKUPS=5
-[[ -z "${IMPORT_LOG_ARCHIVE}" ]] && declare -gx IMPORT_LOG_ARCHIVE=1
+[[ -z "${BB_LOG_SIZE}" ]] && declare -gx BB_LOG_SIZE=1048576
+[[ -z "${BB_LOG_BACKUPS}" ]] && declare -gx BB_LOG_BACKUPS=5
+[[ -z "${BB_LOG_ARCHIVE}" ]] && declare -gx BB_LOG_ARCHIVE=1
 [[ -z "${IMPORT_RELOAD}" ]] && declare -gx IMPORT_RELOAD=0
 #
 # ANSI VARIABLES
@@ -267,11 +267,11 @@ import::log::checkLog()
 {
     local size
     # initialize logfile if it doesn't exist
-    [[ ! -f "${IMPORT_LOG}" ]] && { import::log::init import || errorReturn "Import Log Failed Integrity Check ('$?')" 2; }
+    [[ ! -f "${BB_LOG}" ]] && { import::log::init import || errorReturn "Import Log Failed Integrity Check ('$?')" 2; }
     # check logfile size
-    size=$(wc -c "${IMPORT_LOG}" | awk '{print $1}')
+    size=$(wc -c "${BB_LOG}" | awk '{print $1}')
     # rotate logfile if necessary
-    [[ $size -ge $IMPORT_LOG_SIZE ]] && { import::log::rotate || errorReturn "Import Log Failed Integrity Check ('$?')" 2; }
+    [[ $size -ge $BB_LOG_SIZE ]] && { import::log::rotate || errorReturn "Import Log Failed Integrity Check ('$?')" 2; }
     # return success if we got this far
     return 0
 }
@@ -286,8 +286,8 @@ import::log::init()
 {
     local fileName="${1:-"debug"}"
 
-    [[ ! -d "$IMPORT_LOG_DIR" ]] && { mkdir -p "$IMPORT_LOG_DIR" || return 1; }
-    [[ ! -f "$IMPORT_LOG_DIR/$fileName" ]] && { touch "$IMPORT_LOG_DIR/$fileName" || return 1; }
+    [[ ! -d "$BB_LOG_DIR" ]] && { mkdir -p "$BB_LOG_DIR" || return 1; }
+    [[ ! -f "$BB_LOG_DIR/$fileName" ]] && { touch "$BB_LOG_DIR/$fileName" || return 1; }
 
     return 0
 }
@@ -303,29 +303,29 @@ import::log::init()
 # ------------------------------------------------------------------
 import::log::rotate()
 {
-    local filePath="${IMPORT_LOG}"
+    local filePath="${BB_LOG}"
     local fileName="${filePath##*/}"
     local timestamp="$(date +%s)"
-    local archive="${IMPORT_LOG_ARCHIVE}"
+    local archive="${BB_LOG_ARCHIVE}"
     local files diff c
     # archive file if configured to do so
     [[ "$archive" ]] && tar -czf "$filePath" "$filePath.tar.gz" && filePath="$filePath.tar.gz"
     # timestamp the current logfile
     mv "$filePath" "$filePath.$timestamp"
     # cull excess backups
-    files="$(find "$IMPORT_LOG_DIR" -name "$fileName*"  | wc -l )"
-    diff=$(( "$files" - "$IMPORT_LOG_BACKUPS" ))
+    files="$(find "$BB_LOG_DIR" -name "$fileName*"  | wc -l )"
+    diff=$(( "$files" - "$BB_LOG_BACKUPS" ))
     diff=$diff++
     if [[ "$diff" -gt 0 ]]; then
         c=1
-        for file in "$IMPORT_LOG_DIR"/"$fileName"*
+        for file in "$BB_LOG_DIR"/"$fileName"*
         do
             rm -f "$file"
             [[ $c -eq $diff ]] && break || $c++
         done
     fi
     # open a fresh logfile
-    touch "$IMPORT_LOG"
+    touch "$BB_LOG"
 }
 # ------------------------------------------------------------------
 # import::log
@@ -481,12 +481,12 @@ import::log()
     #
     if [[ "$toFile" ]]; then
         # shellcheck disable=SC2094
-        if [[ -w "$IMPORT_LOG" ]]; then
-            #echo "$msgLog" | tee -a "$IMPORT_LOG" > /dev/null
-            echo "$msgLog" >> "$IMPORT_LOG"
+        if [[ -w "$BB_LOG" ]]; then
+            #echo "$msgLog" | tee -a "$BB_LOG" > /dev/null
+            echo "$msgLog" >> "$BB_LOG"
         else
-            #echo "$msgLog" | sudo tee -a "$IMPORT_LOG" > /dev/null || { echoError "Log Write Failed!"; return 1; }
-            sudo bash -c 'echo "$msgLog" >> "$IMPORT_LOG"'
+            #echo "$msgLog" | sudo tee -a "$BB_LOG" > /dev/null || { echoError "Log Write Failed!"; return 1; }
+            sudo bash -c 'echo "$msgLog" >> "$BB_LOG"'
         fi
     fi
 
@@ -579,14 +579,14 @@ importFatal() { import::fatal "$@"; }
 import::baseDirs()
 {
 	echo "Creating Directories:"
-	echo "    ${IMPORT_BASE_DIR}"
-	echo "    ${IMPORT_CACHE_DIR}"
-	echo "    ${IMPORT_LOG_DIR}"
-	echo "    ${IMPORT_CACHE_DIR}/data"
-	echo "    ${IMPORT_CACHE_DIR}/links"
-	echo "    ${IMPORT_CACHE_DIR}/locations"
+	echo "    ${BB_BASE_DIR}"
+	echo "    ${BB_CACHE_DIR}"
+	echo "    ${BB_LOG_DIR}"
+	echo "    ${BB_CACHE_DIR}/data"
+	echo "    ${BB_CACHE_DIR}/links"
+	echo "    ${BB_CACHE_DIR}/locations"
 
-	mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_CACHE_DIR}/data" "${IMPORT_CACHE_DIR}/links" "${IMPORT_CACHE_DIR}/locations" "${IMPORT_LOG_DIR}"
+	mkdir -p "${BB_CACHE_DIR}" "${BB_CACHE_DIR}/data" "${BB_CACHE_DIR}/links" "${BB_CACHE_DIR}/locations" "${BB_LOG_DIR}"
 }
 # ------------------------------------------------------------------
 # import::cachePath
@@ -601,7 +601,7 @@ import::baseDirs()
 import::cachePath()
 {
 	urlPath="$(echo "$1" | sed 's/\:\///')"
-	printf '%s' "${IMPORT_CACHE_DIR}/links/$urlPath"
+	printf '%s' "${BB_CACHE_DIR}/links/$urlPath"
 }
 # ------------------------------------------------------------------
 # import::initCache
@@ -615,19 +615,19 @@ import::cachePath()
 # ------------------------------------------------------------------
 import::initCache()
 {
-	if [[ -f "${IMPORT_BASE_DIR}/archive/bb-import.loc" ]]; then
+	if [[ -f "${BB_BASE_DIR}/archive/bb-import.loc" ]]; then
 		importDebug "Reconstituting BB-IMPORT CACHE"
 		echo "Reconstituting BB-IMPORT CACHE"
-		local hash="$(cat "${IMPORT_BASE_DIR}/archive/bb-import.hash")"
-		mv "${IMPORT_BASE_DIR}/archive/bb-import.loc" "${IMPORT_CACHE_DIR}/locations/bb-import"
-		mv "${IMPORT_BASE_DIR}/archive/bb-import.dat" "${IMPORT_CACHE_DIR}/data/$hash"
-		ln -fs "${IMPORT_CACHE_DIR}/data/$hash" "${IMPORT_CACHE_DIR}/links/bb-import"
-		rm -rf "${IMPORT_BASE_DIR}/archive" || errorReturn "FAILED!" 1
+		local hash="$(cat "${BB_BASE_DIR}/archive/bb-import.hash")"
+		mv "${BB_BASE_DIR}/archive/bb-import.loc" "${BB_CACHE_DIR}/locations/bb-import"
+		mv "${BB_BASE_DIR}/archive/bb-import.dat" "${BB_CACHE_DIR}/data/$hash"
+		ln -fs "${BB_CACHE_DIR}/data/$hash" "${BB_CACHE_DIR}/links/bb-import"
+		rm -rf "${BB_BASE_DIR}/archive" || errorReturn "FAILED!" 1
 		echo "DONE!"
 	fi
 	importDebug "Initializing Cache"
 	echo "Initializing Cache"
-	mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_CACHE_DIR}/data" "${IMPORT_CACHE_DIR}/links" "${IMPORT_CACHE_DIR}/locations" "${IMPORT_LOG_DIR}" || errorReturn "FAILED!" 1
+	mkdir -p "${BB_CACHE_DIR}" "${BB_CACHE_DIR}/data" "${BB_CACHE_DIR}/links" "${BB_CACHE_DIR}/locations" "${BB_LOG_DIR}" || errorReturn "FAILED!" 1
 	echo "DONE!"
 }
 # ------------------------------------------------------------------
@@ -643,9 +643,9 @@ import::initCache()
 # ------------------------------------------------------------------
 import::list()
 {
-	local file="${IMPORT_BASE_DIR}/cache-catalogue.csv"
-	local locDir="${IMPORT_CACHE_DIR}/locations/"
-	local links="${IMPORT_CACHE_DIR}/links/"
+	local file="${BB_BASE_DIR}/cache-catalogue.csv"
+	local locDir="${BB_CACHE_DIR}/locations/"
+	local links="${BB_CACHE_DIR}/links/"
 	local c=0
 
 	[[ -f "$file" ]] && rm -f "$file"
@@ -658,7 +658,7 @@ import::list()
 		local datFile="$(readlink "$links/${line:${#locDir}}")"
 		local modified="$(stat -c '%y' "$line")"
 		echo "$c,${line:${#locDir}},$(cat "$line"),${datFile##*/},${modified:0:${#modified}-16}" >> "$file"
-	done <<< "$(find "${IMPORT_CACHE_DIR}/locations" -type f -printf "%p\n" | sort)"
+	done <<< "$(find "${BB_CACHE_DIR}/locations" -type f -printf "%p\n" | sort)"
 
 	echo
 	echoGold "BB-IMPORT FILE CACHE"
@@ -682,11 +682,11 @@ import::list()
 # ------------------------------------------------------------------
 import::purgeCache()
 {
-	if [[ -f "${IMPORT_CACHE_DIR}/locations/bb-import" ]]; then
+	if [[ -f "${BB_CACHE_DIR}/locations/bb-import" ]]; then
 		importDebug "Archiving BB-IMPORT CACHE"
-		local archiveDir="${IMPORT_BASE_DIR}/archive"
-		local importLoc="${IMPORT_CACHE_DIR}/locations/bb-import"
-		local importDat="$(readlink "${IMPORT_CACHE_DIR}/links/bb-import")"
+		local archiveDir="${BB_BASE_DIR}/archive"
+		local importLoc="${BB_CACHE_DIR}/locations/bb-import"
+		local importDat="$(readlink "${BB_CACHE_DIR}/links/bb-import")"
 		local importHsh="${importDat#*/}"
 
 		mkdir -p "$archiveDir"
@@ -698,7 +698,7 @@ import::purgeCache()
 
 	importDebug "Purging Cache"
 	echo "Purging Cache"
-	rm -rf "${IMPORT_CACHE_DIR}" || errorReturn "FAILED!" 1
+	rm -rf "${BB_CACHE_DIR}" || errorReturn "FAILED!" 1
 	echo "DONE!"
 }
 # ------------------------------------------------------------------
@@ -867,7 +867,7 @@ bb::remove()
 
 	if [[ -e "$cachePath" ]]; then
 		importDebug "Package '$url' Found"
-		locFile="${IMPORT_CACHE_DIR}/locations/$urlPath"
+		locFile="${BB_CACHE_DIR}/locations/$urlPath"
 		rm -f "$locFile" || return 1
 		rm -f "$(readlink "$cachePath")" || return 1
 		rm -f "$cachePath" || return 1
@@ -894,7 +894,7 @@ bb::import()
 
 	[[ "$#" -eq 0 ]] && errorReturn "Missing Argument!" 2
 
-	[[ ! -d "${IMPORT_BASE_DIR}" ]] && { import::baseDirs || errorReturn "Failed to Create Base Directories!" 3; }
+	[[ ! -d "${BB_BASE_DIR}" ]] && { import::baseDirs || errorReturn "Failed to Create Base Directories!" 3; }
 
 	args=("$@")
 
@@ -978,7 +978,7 @@ bb::import()
 			# can be computed and the final filename determined
 			local tmpFile="$cachePath.tmp"
 			local tmpDir="${tmpFile%/*}"
-			local locFile="${IMPORT_CACHE_DIR}/locations/$urlPath"
+			local locFile="${BB_CACHE_DIR}/locations/$urlPath"
 			local locDir="${locFile%/*}"
 
 			[[ ! -d "$tmpDir" ]] && mkdir -p "$tmpDir"
@@ -1006,7 +1006,7 @@ bb::import()
 			importDebug "Calculated Hash for '$url' -> '$hash'"
 			# if the hashFile doesn't exist, move it into place,
 			# otherwise delete the tmpFile
-			local hashFile="${IMPORT_CACHE_DIR}/data/$hash"
+			local hashFile="${BB_CACHE_DIR}/data/$hash"
 			# ==========================================================
 			[[ -f "$hashFile" ]] && { rm -f "$tmpFile"; return 0; } || mv "$tmpFile" "$hashFile"
 			# ==========================================================

@@ -29,10 +29,10 @@ declare INSTALL_BUILD_DATE="2023-04-15T16:00:00+10:00"
 #
 # DEFAULT PATHS
 #
-[[ -z "${IMPORT_BASE_DIR}" ]] && declare -gx IMPORT_BASE_DIR="$HOME/.bb"
-[[ -z "${IMPORT_CACHE_DIR}" ]] && declare -gx IMPORT_CACHE_DIR="${IMPORT_BASE_DIR}/cache"
-[[ -z "${IMPORT_LOG_DIR}" ]] && declare -gx IMPORT_LOG_DIR="${IMPORT_BASE_DIR}/log"
-[[ -z "${IMPORT_LOG}" ]] && declare -gx IMPORT_LOG="${IMPORT_LOG_DIR}/import"
+[[ -z "${BB_BASE_DIR}" ]] && declare -gx BB_BASE_DIR="$HOME/.bb"
+[[ -z "${BB_CACHE_DIR}" ]] && declare -gx BB_CACHE_DIR="${BB_BASE_DIR}/cache"
+[[ -z "${BB_LOG_DIR}" ]] && declare -gx BB_LOG_DIR="${BB_BASE_DIR}/log"
+[[ -z "${BB_LOG}" ]] && declare -gx BB_LOG="${BB_LOG_DIR}/import"
 #
 # ANSI VARIABLES
 #
@@ -173,20 +173,20 @@ install::install()
 
 	local url="bb-import"
 	local location="https://raw.githubusercontent.com/bash-bits/bb-import/master/src/bb-import.sh"
-	[[ "$1" -eq 1 ]] && installPath="/usr/local/bin/bb-import" || installPath="${IMPORT_BASE_DIR}/bb-import"
-	local cachePath="${IMPORT_CACHE_DIR}/links/bb-import"
+	[[ "$1" -eq 1 ]] && installPath="/usr/local/bin/bb-import" || installPath="${BB_BASE_DIR}/bb-import"
+	local cachePath="${BB_CACHE_DIR}/links/bb-import"
 	local tmpFile="$cachePath.tmp"
-	local locFile="${IMPORT_CACHE_DIR}/locations/bb-import"
+	local locFile="${BB_CACHE_DIR}/locations/bb-import"
 
-	if [[ ! -d "${IMPORT_CACHE_DIR}" ]]; then
+	if [[ ! -d "${BB_CACHE_DIR}" ]]; then
 		echo "Creating Directories:"
-		echo "    ${IMPORT_CACHE_DIR}"
-		echo "    ${IMPORT_LOG_DIR}"
-		echo "    ${IMPORT_CACHE_DIR}/data"
-		echo "    ${IMPORT_CACHE_DIR}/links"
-		echo "    ${IMPORT_CACHE_DIR}/locations"
+		echo "    ${BB_CACHE_DIR}"
+		echo "    ${BB_LOG_DIR}"
+		echo "    ${BB_CACHE_DIR}/data"
+		echo "    ${BB_CACHE_DIR}/links"
+		echo "    ${BB_CACHE_DIR}/locations"
 
-		mkdir -p "${IMPORT_CACHE_DIR}" "${IMPORT_CACHE_DIR}/data" "${IMPORT_CACHE_DIR}/links" "${IMPORT_CACHE_DIR}/locations" "${IMPORT_LOG_DIR}" || errorReturn "Unable to Create Base Directories!" 2
+		mkdir -p "${BB_CACHE_DIR}" "${BB_CACHE_DIR}/data" "${BB_CACHE_DIR}/links" "${BB_CACHE_DIR}/locations" "${BB_LOG_DIR}" || errorReturn "Unable to Create Base Directories!" 2
 	fi
 
 	if [[ -f "$cachePath" ]]; then
@@ -196,8 +196,8 @@ install::install()
 		rm -f "$locFile"
 		if [[ -f /usr/local/bin/bb-import ]]; then
 			sudo mv /usr/local/bin/bb-import /usr/local/bin/bb-import~ || errorReturn "Unable to Remove Previous Version!" 3
-		elif [[ -f "${IMPORT_BASE_DIR}/bb-import" ]]; then
-			mv "${IMPORT_BASE_DIR}/bb-import" "${IMPORT_BASE_DIR}/bb-import~" || errorReturn "Unable to Remove Previous Version!" 3
+		elif [[ -f "${BB_BASE_DIR}/bb-import" ]]; then
+			mv "${BB_BASE_DIR}/bb-import" "${BB_BASE_DIR}/bb-import~" || errorReturn "Unable to Remove Previous Version!" 3
 		fi
 	fi
 
@@ -220,7 +220,7 @@ install::install()
 	echo "Calculating File Hash"
 	hash="$(sha1sum < "$tmpFile" | { read -r first rest; echo "$first"; })" || return 1
 	echo "Calculated hash '$url' -> '$hash'"
-	hashFile="${IMPORT_CACHE_DIR}/data/$hash"
+	hashFile="${BB_CACHE_DIR}/data/$hash"
 	mv "$tmpFile" "$hashFile" || return 1
 
 	# create symlink
@@ -233,8 +233,8 @@ install::install()
 	echo
 
     case "$1" in
-        1) install::global "${IMPORT_CACHE_DIR}" "$cachePath" "$hashFile";;
-        2) install::local "${IMPORT_CACHE_DIR}" "$cachePath" "$hashFile";;
+        1) install::global "${BB_CACHE_DIR}" "$cachePath" "$hashFile";;
+        2) install::local "${BB_CACHE_DIR}" "$cachePath" "$hashFile";;
     esac
 }
 # ------------------------------------------------------------------
@@ -244,7 +244,7 @@ install::uninstall()
 {
     echo
     echoSuccess "Uninstalling ... " -n
-    rm -Rf "${IMPORT_BASE_DIR}"
+    rm -Rf "${BB_BASE_DIR}"
     sudo rm -f /usr/local/bin/bb-import
     echoSuccess "DONE!"
     echo
@@ -364,7 +364,7 @@ install::local()
     echo "Include the following code at the top of every file you want to"
     echo "use BB-Import in:"
     echo
-    echoGold "source ${IMPORT_BASE_DIR}/bb-import"
+    echoGold "source ${BB_BASE_DIR}/bb-import"
     echo
     echo "And import files like so:"
     echo
@@ -409,7 +409,7 @@ install::menu()
 	echo
 	echo "Install Type:"
 	echo "  1) Global (/usr/local/bin/bb-import)"
-	echo "  2) Local (${IMPORT_BASE_DIR}/bb-import)"
+	echo "  2) Local (${BB_BASE_DIR}/bb-import)"
 	echo "Other Options:"
 	echo "  3) Uninstall"
 	echo "  4) About"
