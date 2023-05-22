@@ -180,7 +180,7 @@ Run the code snippet below in your terminal to setup and install everything auto
 bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/install.sh)
 ```
 
-<a href="docs/install.md"><h3 align="center">VIEW THE REST OF THE INSTALLATION DOCUMENTATION HERE</h3></a>
+<h3 align="center"><a href="docs/install.md">VIEW THE REST OF THE INSTALLATION DOCUMENTATION HERE</a></h3>
 
 [`^ Top`](#toc)
 
