@@ -19,8 +19,6 @@ The Bash Bits Import Module<br /><br />
 <a href="https://github.com/bash-bits/bb-import/releases" target="_blank">Releases</a>
 </h3>
 
-<br />
-
 <div align="center">
 
 ![Check Status](https://img.shields.io/github/checks-status/bash-bits/bb-import/master?logo=github&style=for-the-badge)
@@ -123,19 +121,19 @@ bb-import https://myserver.com/project@1.2.3
 
 I'll admit, at first glance - especially upon its first release - it might be hard to spot the differences between `BB-Import` and the project that I based it on, `import` by Nathan Rajlich.  So, I'd like to take a moment to draw your attention to the main points of difference.  I'd like to add, the fact that I've done things this way is not at all intended to say that Nathan's solution is _wrong_ or inferior in **ANY** way - I just saw a way it might be done _differently_.
 
-### 1 - No Server
+#### <u>_1 - No Server_</u>
 
-BB-Import does not use a server to resolve the location of resources.
+`BB-Import` does not use a server to resolve the location of resources.
 
-### 2 - Integrated Logger
+#### <u>_2 - Integrated Logger_</u>
 
-BB-Import includes an integrated, but basic logger, to help provide insight into the import process.
+`BB-Import` includes an integrated, but basic logger, to help provide insight into the import process.
 
-### 3 - The Automagic Installer
+#### <u>_3 - The Automagic Installer_</u>
 
-It is possible to install BB-Import with a single command in your terminal.
+It is possible to install `BB-Import` with a single command in your terminal.
  
-### [Branch Reliability](#toc)
+#### [Branch Reliability](#toc)
 
 The Branch Reliability Table is a way for you to determine how close to the bleeding edge you're comfortable getting.
 
@@ -453,8 +451,6 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 [//]: # ()
 [//]: # ([`^ Top`]&#40;#toc&#41;)
 
-<br />
-
 ## 💪 [Available Support](#toc)
 
 ### Project Resources
@@ -479,8 +475,6 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 </details>
 
 [`^ Top`](#toc)
-
-<br />
 
 ## ❤️ [Project Supporters](#toc)
 
@@ -509,8 +503,6 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 
 [`^ Top`](#toc)
 
-<br />
-
 ## 🚧 [Author / Maintainer](#toc)
 
 <div align="center">
@@ -530,8 +522,6 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 </div>
 
 [`^ Top`](#toc)
-
-<br />
 
 ## 🔐 [Security](#toc)
 
@@ -590,8 +580,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 [`^ Top`](#toc)
 
-<br />
-
 ## 📖 [Resources](#toc)
 
 ### Attributed Projects
@@ -599,15 +587,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 [`^ Top`](#toc)
 
-<br />
-
 <h3 align="center">
 
 If you like this repo, please give it a ⭐ (it really does help)
 
 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/bash-bits/bb-import?style=social">
 
-[![By Ragdata](https://img.shields.io/badge/Made_With_☕_By_Ragdata-D20000?style=for-the-badge)](https://github.com/Ragdata)
+<br />
+
+<a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fbash-bits%2Fbb-import" target="_blank"><img alt="Visitors" src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fgithub.com%2Fbash-bits%2Fbb-import&countColor=%23d20000" /></a>
+<a href="https://github.com/ragdata" target="_blank"><img alt="Ragdata" src="https://img.shields.io/badge/-Made_With_☕_By_Ragdata-D20000?style=for-the-badge" /></a>
 
 </h3>
 
