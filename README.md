@@ -53,12 +53,12 @@ If you like this repo, please give it a ⭐ (it really does help)
 - [What's Included?](#-whats-included)
 - [Installation](#-installation)
   - [INSTALLATION DOCUMENTATION](docs/install.md)
+- [Available Support](#-available-support)
 - [Badges](#-badges)
+- [Project Supporters](#-project-supporters)
 - [Author/Maintainer](#-author--maintainer)
 - [Security](#-security)
-- [Available Support](#-available-support)
 - [Contributors](#-contributors)
-- [Supporting the Project](#-supporting-the-project)
 - [Copyright & Attributions](#-copyright--attributions)
 - [License](#-license)
 - [Resources](#-resources)
@@ -76,6 +76,7 @@ If you like this repo, please give it a ⭐ (it really does help)
     - [Explicit Imports](docs/explicit.md)
     - [Relative Imports](docs/relative.md)
   - [Installation](docs/install.md)
+  - [BB-Badges](docs/badges.md)
 
 </details>
 
@@ -167,7 +168,7 @@ If you're contributing code to the project, you'll want 🔴
 		- [Explicit Imports](docs/explicit.md)
 		- [Relative Imports](docs/relative.md)
 	- [Installation](docs/install.md)
-    - [BB-Badges](badges.md)
+    - [BB-Badges](docs/badges.md)
 
 </details>
 
@@ -460,12 +461,12 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 
 
 - [**Community Support Document**](https://github.com/bash-bits/bb-import/blob/master/.github/SUPPORT.md)
-- [**Community Standards**](https://github.com/labhackers/docker/community)
-- [**Community Code of Conduct**](https://github.com/labhackers/.github/blob/master/.github/CODE_OF_CONDUCT.md)
-- [**Security Policy**](https://github.com/labhackers/jekyll/security/policy)
-	- [Security Overview](https://github.com/labhackers/jekyll/security)
-	- [Security Advisories](https://github.com/labhackers/docker/security/advisories)
-	- [Dependabot Alerts](https://github.com/labhackers/docker/security/dependabot)
+- [**Community Standards**](https://github.com/bash-bits/bb-import/community)
+- [**Community Code of Conduct**](https://github.com/bash-bits/.github/blob/master/.github/CODE_OF_CONDUCT.md)
+- [**Security Policy**](https://github.com/bash-bits/bb-import/security/policy)
+	- [Security Overview](https://github.com/bash-bits/bb-import/security)
+	- [Security Advisories](https://github.com/bash-bits/bb-import/security/advisories)
+	- [Dependabot Alerts](https://github.com/bash-bits/bb-import/security/dependabot)
 
 </details>
 
