@@ -593,12 +593,10 @@ If you like this repo, please give it a ⭐ (it really does help)
 
 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/bash-bits/bb-import?style=social">
 
-<br />
+</h3>
 
 <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fbash-bits%2Fbb-import" target="_blank"><img alt="Visitors" src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fgithub.com%2Fbash-bits%2Fbb-import&countColor=%23d20000" /></a>
 <a href="https://github.com/ragdata" target="_blank"><img alt="Ragdata" src="https://img.shields.io/badge/-Made_With_☕_By_Ragdata-D20000?style=for-the-badge" /></a>
-
-</h3>
 
 [advisory]: https://github.com/bash-bits/bb-import/security/advisories/new
 [all-contributors]: https://allcontributors.org
