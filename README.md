@@ -167,6 +167,7 @@ If you're contributing code to the project, you'll want 🔴
 		- [Explicit Imports](docs/explicit.md)
 		- [Relative Imports](docs/relative.md)
 	- [Installation](docs/install.md)
+    - [BB-Badges](badges.md)
 
 </details>
 
