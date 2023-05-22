@@ -80,6 +80,8 @@ If you like this repo, please give it a ⭐ (it really does help)
 
 </details>
 
+<br />
+
 ## ⭐ [Project Overview](#toc)
 
 **The Bash Bits Import Module - The most important and magical part of `Bash-Bits`!**
@@ -148,6 +150,8 @@ If you're contributing code to the project, you'll want 🔴
 
 [`^ Top`](#toc)
 
+<br />
+
 ## ❓ [What's Included?](#toc)
 
 **Repository Files**
@@ -173,6 +177,8 @@ If you're contributing code to the project, you'll want 🔴
 </details>
 
 [`^ Top`](#toc)
+
+<br />
 
 ## 📂 [Installation](#toc)
 
@@ -447,6 +453,8 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 [//]: # ()
 [//]: # ([`^ Top`]&#40;#toc&#41;)
 
+<br />
+
 ## 💪 [Available Support](#toc)
 
 ### Project Resources
@@ -471,6 +479,8 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 </details>
 
 [`^ Top`](#toc)
+
+<br />
 
 ## ❤️ [Project Supporters](#toc)
 
@@ -499,6 +509,7 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 
 [`^ Top`](#toc)
 
+<br />
 
 ## 🚧 [Author / Maintainer](#toc)
 
@@ -520,6 +531,8 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 
 [`^ Top`](#toc)
 
+<br />
+
 ## 🔐 [Security](#toc)
 
 While the `Bash Bits` project follows good security practices, 100% security can never be guaranteed in any software package.  The `Bash Bits Dependency Manager` is provided AS IS, and without warranty.  You can find more details in the [LICENSE](LICENSE) file included with this repository.
@@ -527,6 +540,8 @@ While the `Bash Bits` project follows good security practices, 100% security can
 If you discover any issue regarding the security of this project, please disclose that information responsibly by sending a [security advisory][advisory].  **PLEASE DO NOT CREATE AN ISSUE OR DISCUSSION TOPIC.**  You can read more about this project's security policies [HERE][security]
 
 [`^ Top`](#toc)
+
+<br />
 
 ## 💎 [Contributors](#toc)
 
@@ -541,6 +556,8 @@ It's not just contributions of code that I'm looking for.  If you have any ideas
 [**VIEW PROJECT CONTRIBUTORS**](CONTRIBUTORS.md)
 
 [`^ Top`](#toc)
+
+<br />
 
 ## ©️ [Copyright & Attributions](#toc)
 
@@ -557,6 +574,8 @@ This project incorporates ideas and / or code crafted by the following talented 
 
 [`^ Top`](#toc)
 
+<br />
+
 ## ⚖️ [License](#toc)
 
 ![MIT](https://img.shields.io/badge/License-MIT-gold?style=for-the-badge)
@@ -571,12 +590,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 [`^ Top`](#toc)
 
+<br />
+
 ## 📖 [Resources](#toc)
 
 ### Attributed Projects
 - [**importpw/import**](https://github.com/importpw/import) by Nathan Rajlich
 
 [`^ Top`](#toc)
+
+<br />
 
 <h3 align="center">
 
