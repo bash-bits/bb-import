@@ -4,14 +4,14 @@
 
 |             Name             | Description                                                                                                 |
 |:----------------------------:|-------------------------------------------------------------------------------------------------------------|
-|      `IMPORT_BASE_DIR`       |                                                                                                             |
-|      `IMPORT_CACHE_DIR`      |                                                                                                             |
-|       `IMPORT_LOG_DIR`       |                                                                                                             |
+|      `BB_BASE_DIR`       |                                                                                                             |
+|      `BB_CACHE_DIR`      |                                                                                                             |
+|       `BB_LOG_DIR`       |                                                                                                             |
 |              ``              |                                                                                                             |
-|         `IMPORT_LOG`         |                                                                                                             |
-|      `IMPORT_LOG_SIZE`       |                                                                                                             |
-|     `IMPORT_LOG_BACKUPS`     |                                                                                                             |
-|     `IMPORT_LOG_ARCHIVE`     |                                                                                                             |
+|         `BB_LOG`         |                                                                                                             |
+|      `BB_LOG_SIZE`       |                                                                                                             |
+|     `BB_LOG_BACKUPS`     |                                                                                                             |
+|     `BB_LOG_ARCHIVE`     |                                                                                                             |
 |              ``              |                                                                                                             |
 |   `IMPORT_SERVER_DEFAULT`    |                                                                                                             |
 |  `IMPORT_TEMPLATE_IMPLICIT`  |                                                                                                             |

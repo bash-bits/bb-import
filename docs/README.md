@@ -26,3 +26,4 @@
   - [Explicit Imports](explicit.md)
   - [Relative Imports](relative.md)
 - [Installation](install.md)
+- [BB-Badges](badges.md)

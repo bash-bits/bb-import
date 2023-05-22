@@ -6,7 +6,7 @@ Caching is a core concept in `import`.  Scripts are downloaded _exactly once_, a
 #!/usr/bin/env bb-import
 
 # Import script files to the `/tmp` directory
-IMPORT_BASE_DIR=/tmp
+BB_BASE_DIR=/tmp
 
 # Force a fresh download of the script files (like shift+F5 in a browser)
 IMPORT_RELOAD=1
@@ -28,7 +28,7 @@ $ tree /tmp
 		└── bb-import
 ```
 
-`bb-import` generates three subdirectories under the `IMPORT_CACHE_DIR` directory:
+`bb-import` generates three subdirectories under the `BB_CACHE_DIR` directory:
 
   - `data` - The raw shell scripts, named after the sha1sum of the file contents
   - `links` - Symbolic links that are named according to the import URL
@@ -36,6 +36,6 @@ $ tree /tmp
 
 ## ⚙️ [Cache Location](#-caching)
 
-If the `IMPORT_BASE_DIR` or `IMPORT_CACHE_DIR` environment variables are not set, the cache location defaults to the directory `$HOME/.bb/cache`.
+If the `BB_BASE_DIR` or `BB_CACHE_DIR` environment variables are not set, the cache location defaults to the directory `$HOME/.bb/cache`.
 
 [`^ Top`](#-caching)
