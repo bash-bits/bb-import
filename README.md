@@ -1,37 +1,41 @@
 <h1 align="center">
 
-<img src="https://user-images.githubusercontent.com/6827931/226166354-a7cfea07-00c0-4167-bf0a-adf323d9d125.png" alt="Bash Bits Modular Bash Library" />
-<br />
-<img src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/bash_logo-128x128.png" alt="Bourne Again Shell" />
-<picture>
-<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.svg" />
-<source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.svg" />
-<img alt="Bash-Bits" height="128" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.svg" />
-</picture>
+<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash-Bits" height="128" src="https://raw.githubusercontent.com/Ragdata/media/master/project/bash-bits/logo/BB-Logo-64-Full.svg" /></a>
 
 [BB-Import v-1.0.0](https://github.com/bash-bits/bb-import/releases/tag/v-1.0.0)
 
 </h1>
 
-<h3 align="center"><em>
-The Bash Bits Import Module<br />
-The Most Important and Magical Part of Bash Bits!
-</em></h3>
-
+<h3 align="center">
+The Bash Bits Import Module<br /><br />
+<em>The Most Important and Magical Part of Bash Bits!</em>
+</h3>
 
 <h3 align="center">
 <a href="https://github.com/bash-bits/bb-import/issues" target="_blank">Issues</a>
 🔸
-<a href="https://github.com/bash-bits/bb-import/wiki" target="_blank">Documentation Wiki</a>
+<a href="docs/README.md" target="_blank">Documentation</a>
 🔸
 <a href="https://github.com/bash-bits/bb-import/releases" target="_blank">Releases</a>
 </h3>
 
+<br />
+
 <div align="center">
 
+![Check Status](https://img.shields.io/github/checks-status/bash-bits/bb-import/master?logo=github&style=for-the-badge)
+![Open Bug Issues](https://img.shields.io/github/issues/bash-bits/bb-import/bug?logo=github&style=for-the-badge)
+![Last Commit](https://img.shields.io/github/last-commit/bash-bits/bb-import/master?logo=github&style=for-the-badge)
+![Code Size](https://img.shields.io/github/size/bash-bits/bb-import/src/bb-import.sh?logo=github&style=for-the-badge)
 ![MIT](https://img.shields.io/badge/License-MIT-gold?style=for-the-badge)
 
+#### _Elapsed Project Time_
+
+[![wakatime](https://wakatime.com/badge/user/7e04d9d4-3a44-495e-b622-69fdbafd036c/project/003c6945-ca03-4146-b723-f57d9656da98.svg?style=for-the-badge)](https://wakatime.com/badge/user/7e04d9d4-3a44-495e-b622-69fdbafd036c/project/003c6945-ca03-4146-b723-f57d9656da98)
+
 </div>
+
+<br />
 
 <h4 align="center">
 
@@ -41,8 +45,7 @@ If you like this repo, please give it a ⭐ (it really does help)
 
 </h4>
 
-<details>
-<summary><h2><a name="toc">📖 Table of Contents</a></h2></summary>
+<details><summary><h2><a name="toc">📖 Table of Contents</a></h2></summary>
 
 - [Project Overview](#-project-overview)
   - [Significant Differences from `import`](#significant-differences-between-bb-import--import-by-nathan-rajlich)
@@ -50,6 +53,7 @@ If you like this repo, please give it a ⭐ (it really does help)
 - [What's Included?](#-whats-included)
 - [Installation](#-installation)
   - [INSTALLATION DOCUMENTATION](docs/install.md)
+- [Badges](#-badges)
 - [Author/Maintainer](#-author--maintainer)
 - [Security](#-security)
 - [Available Support](#-available-support)
@@ -150,19 +154,21 @@ If you're contributing code to the project, you'll want 🔴
 - ✅ [bb-import.sh](src/bb-import.sh)
 - ✅ [install.sh](install.sh)
 
-**Repository Documentation**
+<details><summary><strong>Repository Documetation</strong></summary>
 
-  - [Table of Contents](docs/README.md)
-    - [API](docs/api.md)
-    - [Authentication](docs/authentication.md)
-    - [Caching](docs/caching.md)
-    - [Config](docs/config.md)
-    - [Imports](docs/imports.md)
-      - [Implicit Imports](docs/implicit.md)
-      - [Namespaced Imports](docs/namespaced.md)
-      - [Explicit Imports](docs/explicit.md)
-      - [Relative Imports](docs/relative.md)
-    - [Installation](docs/install.md)
+- [Table of Contents](docs/README.md)
+	- [API](docs/api.md)
+	- [Authentication](docs/authentication.md)
+	- [Caching](docs/caching.md)
+	- [Config](docs/config.md)
+	- [Imports](docs/imports.md)
+		- [Implicit Imports](docs/implicit.md)
+		- [Namespaced Imports](docs/namespaced.md)
+		- [Explicit Imports](docs/explicit.md)
+		- [Relative Imports](docs/relative.md)
+	- [Installation](docs/install.md)
+
+</details>
 
 [`^ Top`](#toc)
 
@@ -174,118 +180,291 @@ Run the code snippet below in your terminal to setup and install everything auto
 bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/install.sh)
 ```
 
-<h3 align="center"><a href="docs/install.md" target="_blank">SEE THE REST OF THE INSTALLATION DOCUMENTATION HERE</a></h3>
-
+<a href="docs/install.md"><h3 align="center">VIEW THE REST OF THE INSTALLATION DOCUMENTATION HERE</h3></a>
 
 [`^ Top`](#toc)
 
-## 📛 [Badges](#toc)
+[//]: # (## 📛 [Badges]&#40;#toc&#41;)
 
-[![Bash-Bits](https://img.shields.io/badge/-Bash%20Bits-094909?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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)](https://github.com/bash-bits) 
+[//]: # ()
+[//]: # (If you're using `Bash-Bits` in your project, I'd appreciate it if you'd let people know by displaying a `BB-Badge` on your README and Websites.)
 
-> #### If you're using Bash-Bits in your project, I'd appreciate it if you'd let people know by displaying one of these badges on your README and Websites:
+[//]: # ()
+[//]: # (The full compliment of badge styles is available, and you are able to colour your badges any way you like.  The `Bash-Bits` logo can also be rendered in 4 different styles:)
 
-<details><summary><strong>View / Hide Bash-Bits Badges</strong></summary>
+[//]: # ()
+[//]: # (<table>)
 
-[![Bash-Bits](https://img.shields.io/badge/-Bash%20Bits-094909?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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)](https://github.com/bash-bits)
+[//]: # (<tr>)
 
-> This green badge is closest to the official colour scheme of `Bash-Bits`
+[//]: # (<th>Full</th>)
 
-```markdown
-[![Bash-Bits (Green Badge)](https://img.shields.io/badge/-Bash%20Bits-094909?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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)](https://github.com/bash-bits)
-```
+[//]: # (<th>Cutout</th>)
 
-<br />
+[//]: # (<th>Black</th>)
 
-[![Bash-Bits](https://img.shields.io/badge/-Bash%20Bits-555555?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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)](https://github.com/bash-bits)
+[//]: # (<th>White</th>)
 
-> The green / grey badge still displays the official colours, and ensures the project's name is its most readable
+[//]: # (</tr>)
 
-```markdown
-[![Bash-Bits (Green / Grey Badge)](https://img.shields.io/badge/-Bash%20Bits-555555?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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)](https://github.com/bash-bits)
-```
+[//]: # (<tr>)
 
-<br />
+[//]: # (<td><img alt="Full" src="https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh%3Flogo%3Dfull" /></td>)
 
-[![Bash-Bits](https://img.shields.io/badge/-Bash%20Bits-555555?style=for-the-badge&labelColor=d20000&logo=data:image/png;base64,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)](https://github.com/bash-bits)
+[//]: # (<td><img alt="Cutout" src="https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh" /></td>)
 
-> And the red / grey badge is for everyone who can't stand the colour green!
+[//]: # (<td><img alt="Black" src="https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh%3Flogo%3Dblack" /></td>)
 
-```markdown
-[![Bash-Bits (Red / Grey Badge)](https://img.shields.io/badge/-Bash%20Bits-555555?style=for-the-badge&labelColor=d20000&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAYAAAD6+a2dAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAACGQAAAhkBwacpqAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAm0SURBVHic7V1daBxVFP7OzCZpstbaxiT+tNI0KLaKttkiVdBCfVHRikIEn/qkIgiCWqlPpSCi1YpPIvSxPghFC1LwQfEHWwLBTSRIFaU/+Fdr2roxP3U3u3N8OL07u9vdzcyde2ey6X6w3PnZe+bO3DPnnHvuuWeImZkZTbBvH5HjADt3Ar29gOcB3d1S1qvpOACRv1/7P3VeHa/db0RvMTpB26FLr1CQ852d4e4n6v2GbdfCApDPA/fdB0xNAUCzHqYrGeDwYSLXBTZsAHbvlmOvvCJlb28jQm0sRZw/L0zx9tvA6dPAgQPAyAhzqaT+UcEAlR3/8cdy+vHHk2l4G3Zw5Ahw6hQwMqIYwfFPVr7x7Y5fnnjiCWBoCHjpJXWE5P0nArJZpTPaon65Y2oKyGSAgQFiHh8H+vrEyPj776Sb1kZccBygv/+yCujpSbYxbSSDnp7LQ4zK4VIbVwek31PAf//JgY6O5Brz1ltAqQR89ZWIpn/+kdIfrgiuv16GNU8/Lfu7dvnnmIEPP5Qb++GHxa9JBKxdK/VeeCF8m5nl2REBk5Ny7NdfpSwU5PzsrNwHICoWkP1CQe4tl5P9XE7+r+47lwOKRWBuDnBd4LbbpO7evVKasNGk34l5YgJYv14adPp0dMJh8O23QCbD/MADwetks0TDw2pbyvl5YeD+fuCuu5jn5hanMzlJtHatOE5++y1cuy9dknJoSNp/9my4+jrIZonee0+2X3wxOj3XBQYHncX/aBMnT4avwyxvbiWOHQve8Qr5PHDjjeGvrxBXx1eiq8scLZEAjq8CkkDYN09h3brq/WPHwtMgAm66Se/63d3yRsapNomA664zR2/FCgBw1Eb8IAJ+/z18PccBbrnF32f2dXDY6998c/h6CqUScO21+vV1sHq1OVrMAHOCKsDz9BgAqO64Ugk4cUKPThQV4DjAqlX69cOC2ez18nmAKEEV4Dh6DOB51SpAl5GiqAAASKXilwDLSgXk8/oSQDFALgfcey+zssrDIooEWFiIXwKYZACBo3SBacLNMTcnHXfxYphaEpfgOL4KCGP110MUG8B145UARGZtgPIoIAlPoI71n80CAwPCrJ2d0dvMHE0FAPEwwOgoUXe3bJscBgoSMAKZ9UQ/c7Xu15VaJ04QdXbKdhSPmmmjrBFSKTvXKdsAcRuBusaf6145/tdBoeC/+VGlSBwSwHFs6H7V7ynfCKz1u+uCGTh0SB7uG2+IuD53zj8/O6v34JlluEcEPPectFfXBsjlpHzqKf+Y4/ixjgcPyjElKRohLiPQngSwMBmUSgEffABs3sz8009maALA8DDzjz/Ktip1sHkzs2KAw4evPJ/NEr32mmzffntzWnFIAOUBNG2ol41A08PAYlF+rYzz54P9Lw4JUCrZUQECCzYAUWszAHMwdUgUnw1gcvin0NV12RVsWgLUm8dfjvC81rYByq5g01gOKiAI4pIAQIupgFaXAE7Al4J5OTBASukCP2QpKopFswyQzRK9845sb9wobT17VjrqwgUJb96zRxZAmbKUFxv+ASIB4lABtkYB5WGg6AKzw8BHHpGOe/99iZxZWIhG8+GHpdy0yfchqAcyPg4oBlHrGupBBXB4HnDHHULn33+rjawHHxS6W7cGa1dcNoA9CWA5JlAtOlHBjxs2VI/Dm2Fykiidllm36Wk55rrV/5mfFwlwzTVytWZvydgY0eCg0Dh1SveO6iOdFkafnzdLFxDGHR2V7W3bzNFdWIghJpBImGD1annwYTyAngfcfbds13a8gjBsMNHvONEnfxrBtiSwRz/GySD1FgdFsQhs2dL4PFE4iRU1AKQR4jAGW2oU0AhhuZioOQN4XniVZYMB4ogMsuEIKhuBJiaDZmakww4ckI75+ecrPYKuG27yhllUQDO1EZYB1DqCPXv8Y0TSiczA66+HowfIcxMbxCw++4yoq0vWOtiI2pJAoJQZQl9+KUbQvn3R6SkQARMT/nYtXDdcNHAmw6zCxyvDyM+cIVqxQoaUOgwA2FlVtW6diP583jxtwODSMCI7jcxkmJ991jzdWpw5I+XKlXr1TYdqKXieTd1fMRsYFSadSElg/fpo9ZmBO+800pQqFIsi/m1BHIAGbACVwOhqBTPwzDPAxATR11/Lvlrc2dkpw890Wkpla1RKG8+Tt1ENdZklWJUIeP55e+0WB6AhG6CVff8mVMDAgHTkF1/4x2t9F418FWruofZ8PJHaBlRAq0uAqCqgtWGIAcyHK8cHJQGuThgYBTCLj3+pQoWBl0qiiwsFkViZDPP0tDiolAi/+mDIEXTPPcD4uG8E/fKLlDMzMrP28stAUJ+9wvg40ZNPCp2dO6U8eBDYupX5+PHgdObmJD2a4wAffeQfz2bNLYc5elTKoEvUOjpEctY6kFat8hesEMnSNZUt1DSMRwUzA9u3y/b27XIDEg7O7OelC4eHHpJy1y4xqg4dCk/Ddf0HaRJEoj6Gh5kfe8wsbUBGFX190u5vvpFjGzeao28tKrgSf/wRrf7AgL/teXr0mIEbbojWjnrwPL28BEGxZQuzim8wPX3tw/JkkEqapIPajuvu1l9NHGUVcCM4TvDw8aULixKA2ZwEmJ4GNm1inp3Va4cNBgAkoqi1YVECEEVngL4+Kf/8M1o7bKS+ZW5tBrCeIEJ3FfDx40TKK9fTI3SiMABgLwdiKzOA9Sxhukmg0ulq3e840RkgnY5WvxFSBlzpycKiBEil9FRA7SwYc/Xq4rCwuY7fRiBIXCirAFsoFvXTwNX65//6KzydyUmi/n57NgCgP4G0FFBOE2djcWgupx8mzQwMDlYf08nIWSgA998fvl4YtLIEkIggCxJAZbMaGyMK1wFESqc++mj1mR07qnPlNMP33xPdeqvc4Jtvhrl+eGzbJu1as8YczbExot5eKdVzUOHxJhFLsuhz54QhVFIotUAE8L+CReSHjKso4KGh+vQKBSnVDN7MjJQdHUJrzZrqDKBxJL8iAr77Tu6n8v4UKrOE10L5/leulFKpLJMM1QiSLJqYR0eFATo64s8W3kZyKK8MSipRZBvJojwKSCJRZBvJozwKuHQp+Dx2G8sL8/MO8Pnn/qxW689utREEU1PAp58CFy44wN69zJ4n1uf+/Uk3rY04sH+/6veKocnJk8C778r2kSPJNKwNe2AGPvlE8imofq5yBauPCqtvyxIBr74q55pl3mhj6UL12+7dEps5MgIAIvEFdb4eXgv1+fgdO8Sn3tNT/fl43c+/B/2f6c+tL1Zf9zPxpu8rKJ3a84BkTjl6FLh40Vfx9fE/hRJHs4AKZq0AAAAASUVORK5CYII=)](https://github.com/bash-bits)
-```
+[//]: # (<td><img alt="White" src="https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh%3Flogo%3Dwhite" /></td>)
 
-</details>
+[//]: # (</tr>)
 
-<br />
+[//]: # (</table>)
 
-[![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.png)](https://github.com/bash-bits)
+[//]: # ()
+[//]: # (<details><summary><strong>GET THE CODE HERE</strong></summary>)
 
-> #### Or if you prefer, you may choose to display the Bash-Bits Logo instead:
+[//]: # ()
+[//]: # (![Full]&#40;https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh%3Flogo%3Dfull&#41;)
 
-<details><summary><strong>View / Hide Bash-Bits Logos</strong></summary>
+[//]: # ()
+[//]: # (```markdown)
 
-[![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.png)](https://github.com/bash-bits)
+[//]: # (![Full]&#40;https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh%3Flogo%3Dfull&#41;)
 
-> The "Full" `Bash-Bits` Logo is Yellow with a black shebang and black border ...
+[//]: # (```)
 
-```markdown
-[![Bash-Bits (PNG Logo)](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.png)](https://github.com/bash-bits)
-```
+[//]: # ()
+[//]: # (![Cutout]&#40;https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh&#41;)
 
-#### SVG Version:
+[//]: # ()
+[//]: # (```markdown)
 
-```html
-<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.svg" /></a>
-```
+[//]: # (![Cutout]&#40;https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh&#41;)
 
-<br />
+[//]: # (```)
 
-[![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Cutout.png)](https://github.com/bash-bits)
+[//]: # ()
+[//]: # (![Black]&#40;https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh%3Flogo%3Dblack&#41;)
 
-> The `Shebang` is transparent in this version of the logo ...
+[//]: # ()
+[//]: # (```markdown)
 
-```markdown
-[![Bash-Bits (Cutout)](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Cutout.png)](https://github.com/bash-bits)
-```
+[//]: # (![Black]&#40;https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh%3Flogo%3Dblack&#41;)
 
-#### SVG Version:
+[//]: # (```)
 
-```html
-<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Cutout.svg" /></a>
-```
+[//]: # ()
+[//]: # (![White]&#40;https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh%3Flogo%3Dwhite&#41;)
 
-<br />
+[//]: # ()
+[//]: # (```markdown)
 
-[![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Outline.png)](https://github.com/bash-bits)
+[//]: # (![White]&#40;https://img.shields.io/endpoint?color=555555&style=for-the-badge&url=https%3A%2F%2Fbb-badge-1tdliyg15kb1.runkit.sh%3Flogo%3Dwhite&#41;)
 
-> The "Outline" logo consists of a black shebang and border with transparent body ...
+[//]: # (```)
 
-```markdown
-[![Bash-Bits (Outline)](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Outline.png)](https://github.com/bash-bits)
-```
+[//]: # ()
+[//]: # (</details>)
 
-#### SVG Version:
+[//]: # ()
+[//]: # (These are the official versions:)
 
-```html
-<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Outline.svg" /></a>
-```
+[//]: # ([![Bash-Bits]&#40;https://img.shields.io/badge/-Bash%20Bits-094909?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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&#41;]&#40;https://github.com/bash-bits&#41; )
 
-<br />
+[//]: # ()
+[//]: # (> #### If you're using Bash-Bits in your project, I'd appreciate it if you'd let people know by displaying one of these badges on your README and Websites:)
 
-[![Bash-Bits](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.png)](https://github.com/bash-bits)
+[//]: # ()
+[//]: # (<details><summary><strong>View / Hide Bash-Bits Badges</strong></summary>)
 
-> And the "White" logo is ... well ... WHITE!
+[//]: # ()
+[//]: # ([![Bash-Bits]&#40;https://img.shields.io/badge/-Bash%20Bits-094909?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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&#41;]&#40;https://github.com/bash-bits&#41;)
 
-```markdown
-[![Bash-Bits (Outline)](https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.png)](https://github.com/bash-bits)
-```
+[//]: # ()
+[//]: # (> This green badge is closest to the official colour scheme of `Bash-Bits`)
 
-#### SVG Version:
+[//]: # ()
+[//]: # (```markdown)
 
-```html
-<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.svg" /></a>
-```
+[//]: # ([![Bash-Bits &#40;Green Badge&#41;]&#40;https://img.shields.io/badge/-Bash%20Bits-094909?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (<br />)
+
+[//]: # ()
+[//]: # ([![Bash-Bits]&#40;https://img.shields.io/badge/-Bash%20Bits-555555?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # ()
+[//]: # (> The green / grey badge still displays the official colours, and ensures the project's name is its most readable)
+
+[//]: # ()
+[//]: # (```markdown)
+
+[//]: # ([![Bash-Bits &#40;Green / Grey Badge&#41;]&#40;https://img.shields.io/badge/-Bash%20Bits-555555?style=for-the-badge&labelColor=094909&logo=data:image/png;base64,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&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (<br />)
+
+[//]: # ()
+[//]: # ([![Bash-Bits]&#40;https://img.shields.io/badge/-Bash%20Bits-555555?style=for-the-badge&labelColor=d20000&logo=data:image/png;base64,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&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # ()
+[//]: # (> And the red / grey badge is for everyone who can't stand the colour green!)
+
+[//]: # ()
+[//]: # (```markdown)
+
+[//]: # ([![Bash-Bits &#40;Red / Grey Badge&#41;]&#40;https://img.shields.io/badge/-Bash%20Bits-555555?style=for-the-badge&labelColor=d20000&logo=data:image/png;base64,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&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (</details>)
+
+[//]: # ()
+[//]: # (<br />)
+
+[//]: # ()
+[//]: # ([![Bash-Bits]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.png&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # ()
+[//]: # (> #### Or if you prefer, you may choose to display the Bash-Bits Logo instead:)
+
+[//]: # ()
+[//]: # (<details><summary><strong>View / Hide Bash-Bits Logos</strong></summary>)
+
+[//]: # ()
+[//]: # ([![Bash-Bits]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.png&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # ()
+[//]: # (> The "Full" `Bash-Bits` Logo is Yellow with a black shebang and black border ...)
+
+[//]: # ()
+[//]: # (```markdown)
+
+[//]: # ([![Bash-Bits &#40;PNG Logo&#41;]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.png&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (#### SVG Version:)
+
+[//]: # ()
+[//]: # (```html)
+
+[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.svg" /></a>)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (<br />)
+
+[//]: # ()
+[//]: # ([![Bash-Bits]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Cutout.png&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # ()
+[//]: # (> The `Shebang` is transparent in this version of the logo ...)
+
+[//]: # ()
+[//]: # (```markdown)
+
+[//]: # ([![Bash-Bits &#40;Cutout&#41;]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Cutout.png&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (#### SVG Version:)
+
+[//]: # ()
+[//]: # (```html)
+
+[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Cutout.svg" /></a>)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (<br />)
+
+[//]: # ()
+[//]: # ([![Bash-Bits]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Outline.png&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # ()
+[//]: # (> The "Outline" logo consists of a black shebang and border with transparent body ...)
+
+[//]: # ()
+[//]: # (```markdown)
+
+[//]: # ([![Bash-Bits &#40;Outline&#41;]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Outline.png&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (#### SVG Version:)
+
+[//]: # ()
+[//]: # (```html)
+
+[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Outline.svg" /></a>)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (<br />)
+
+[//]: # ()
+[//]: # ([![Bash-Bits]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.png&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # ()
+[//]: # (> And the "White" logo is ... well ... WHITE!)
+
+[//]: # ()
+[//]: # (```markdown)
+
+[//]: # ([![Bash-Bits &#40;Outline&#41;]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.png&#41;]&#40;https://github.com/bash-bits&#41;)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (#### SVG Version:)
+
+[//]: # ()
+[//]: # (```html)
+
+[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.svg" /></a>)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (</details>)
+
+[//]: # ()
+[//]: # ([`^ Top`]&#40;#toc&#41;)
+
+## 💪 [Available Support](#toc)
+
+### Project Resources
+
+- ✅ [Issues Register](https://github.com/bash-bits/bb-import/issues)
+- ✅ [Repository Documentation](docs/README.md)
+- ✅ [Project Website](https://bash-bits.github.io/bb-import)
+
+<details><summary><h3>Community Resources</h3></summary>
+
+- [**The RedEyed Community Discord Server**](https://discord.gg/54PkrM7TKq)
+
+
+- [**Community Support Document**](https://github.com/bash-bits/bb-import/blob/master/.github/SUPPORT.md)
+- [**Community Standards**](https://github.com/labhackers/docker/community)
+- [**Community Code of Conduct**](https://github.com/labhackers/.github/blob/master/.github/CODE_OF_CONDUCT.md)
+- [**Security Policy**](https://github.com/labhackers/jekyll/security/policy)
+	- [Security Overview](https://github.com/labhackers/jekyll/security)
+	- [Security Advisories](https://github.com/labhackers/docker/security/advisories)
+	- [Dependabot Alerts](https://github.com/labhackers/docker/security/dependabot)
 
 </details>
 
@@ -297,7 +476,7 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 
 <table>
 <tr>
-<td width="94"><a href="https://jetbrains.com" target="_blank"><img src="https://raw.githubusercontent.com/Ragdata/Ragdata/master/.github/media/brands/jetbrains.svg" alt="JetBrains" height="94" ></a></td>
+<td width="94"><a href="https://jetbrains.com" target="_blank"><img src="https://raw.githubusercontent.com/Ragdata/media/master/brand/jetbrains.svg" alt="JetBrains" height="94" ></a></td>
 <td>
 
 **JetBrains very generously provide me with a free license for their products every month, and you can get one too if you're working on a public, open-source project!**  I've used JetBrains' IDEs for many years now, and was more than happy to pay for a license every year back when I was working in the corporate sector.  **Absolutely my first choice in IDEs!**
@@ -321,54 +500,29 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 
 ## 🚧 [Author / Maintainer](#toc)
 
-<h3 align="center">
+<div align="center">
 
-<a href="https://github.com/ragdata" target="_blank"><img src="https://user-images.githubusercontent.com/6827931/226143394-2003d556-9dc9-46a6-b4be-565b60546609.png" alt="Ragdata's RedEyed Software"></a>
+[![Ragdata](https://img.shields.io/badge/-Darren_"Ragdata"_Poulton-d20000?style=for-the-badge&labelColor=555555&logo=data:image/png;base64,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)](https://github.com/Ragdata)
 
-<a href="https://github.com/ragdata" target="_blank">Created with ☕ by Ragdata</a>
+### [Join me & the RedEyed Community!](https://discord.gg/54PkrM7TKq)
 
-</h3>
+<a href="https://twitter.com/intent/follow?screen_name=RagdataAU" target="_blank"><img alt="Twitter" src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=Twitter&logoColor=white" /></a>
+<a href="https://www.reddit.com/r/RedeyedSoftware/" target="_blank"><img alt="Reddit" src="https://img.shields.io/badge/Reddit-FF4500?style=for-the-badge&logo=Reddit&logoColor=white" /></a>
+<a href="https://dev.to/ragdata" target="_blank"><img alt="Dev.to" src="https://img.shields.io/badge/dev.to-373737?style=for-the-badge&logo=dev.to&logoColor=white" /></a>
+<a href="https://ragdata.substack.com/" target="_blank"><img alt="SubStack" src="https://img.shields.io/badge/Substack-FF6719?style=for-the-badge&logo=Substack&logoColor=white" /></a>
+<a href="https://www.facebook.com/RedEyedSoftware/" target="_blank"><img alt="Facebook" src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=Facebook&logoColor=white" /></a>
+
+[![Discord](https://img.shields.io/discord/1067204348251230298?labelColor=5865F2&label=RedEyed%20Software%20&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/54PkrM7TKq)
+
+</div>
 
 [`^ Top`](#toc)
 
 ## 🔐 [Security](#toc)
 
-While the `Bash Bits` project follows good security practices, 100% security can never be guaranteed in any software package.  The `Bash Bits Import Module` is provided AS IS, and without warranty.  You can find more details in the [LICENSE](LICENSE) file included with this repository.
+While the `Bash Bits` project follows good security practices, 100% security can never be guaranteed in any software package.  The `Bash Bits Dependency Manager` is provided AS IS, and without warranty.  You can find more details in the [LICENSE](LICENSE) file included with this repository.
 
 If you discover any issue regarding the security of this project, please disclose that information responsibly by sending a [security advisory][advisory].  **PLEASE DO NOT CREATE AN ISSUE OR DISCUSSION TOPIC.**  You can read more about this project's security policies [HERE][security]
-
-[`^ Top`](#toc)
-
-## 💪 [Available Support](#toc)
-
-<div align="center">
-
-<h3>
-
-<a href="https://github.com/bash-bits/.github/blob/master/.github/SUPPORT.md" target="_blank">Read the Community Support Document</a>
-
-<a href="https://github.com/bash-bits/bb-import/issues" target="_blank">Issues Register</a>
-🔸
-<a href="docs/README.md" target="_blank">Documentation</a>
-
-<a href="https://discord.gg/54PkrM7TKq" target="_blank">Join the Discord Server</a>
-
-🔹
-
-Connect with my Social Channels
-
-</h3>
-
-<a href="https://twitter.com/RedEyedSoftware" target="_blank"><img src="https://img.shields.io/badge/Twitter-55ACEE?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter"></a>
-<a href="https://reddit.com/r/RedeyedSoftware" target="_blank"><img src="https://img.shields.io/badge/Reddit-FF4500?style=for-the-badge&logo=reddit&logoColor=white" alt="Reddit"></a>
-<a href="https://facebook.com/redeyedsoftware" target="_blank"><img src="https://img.shields.io/badge/Facebook-3B5998?style=for-the-badge&logo=facebook&logoColor=white" alt="Facebook"></a>
-<a href="https://discord.gg/54PkrM7TKq" target="_blank"><img src="https://img.shields.io/badge/Discord-7289da?style=for-the-badge&logo=discord&logoColor=white" alt="Substack"></a>
-
-<a href="https://github.com/sponsors/Ragdata" target="_blank"><img src="https://img.shields.io/badge/Sponsor_Ragdata-30363D?style=for-the-badge&logo=github-sponsors&logoColor=EA4AAA" alt="GitHub Sponsors"></a>
-<a href="https://ko-fi.com/ragdata" target="_blank"><img src="https://img.shields.io/badge/Support_Ragdata-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" alt="GitHub Sponsors"></a>
-
-
-</div>
 
 [`^ Top`](#toc)
 
@@ -403,7 +557,7 @@ This project incorporates ideas and / or code crafted by the following talented 
 
 ## ⚖️ [License](#toc)
 
-![MIT](https://img.shields.io/badge/License-MIT-gold)
+![MIT](https://img.shields.io/badge/License-MIT-gold?style=for-the-badge)
 
 Copyright © 2022-2023 Darren (Ragdata) Poulton
 
@@ -427,6 +581,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 If you like this repo, please give it a ⭐ (it really does help)
 
 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/bash-bits/bb-import?style=social">
+
+[![By Ragdata](https://img.shields.io/badge/Made_With_☕_By_Ragdata-D20000?style=for-the-badge)](https://github.com/Ragdata)
 
 </h3>
 
