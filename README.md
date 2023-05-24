@@ -33,8 +33,6 @@ The Bash Bits Import Module<br /><br />
 
 </div>
 
-<br />
-
 <h4 align="center">
 
 If you like this repo, please give it a ⭐ (it really does help)
@@ -60,6 +58,7 @@ If you like this repo, please give it a ⭐ (it really does help)
 - [Copyright & Attributions](#-copyright--attributions)
 - [License](#-license)
 - [Resources](#-resources)
+- [Community](#-community)
 
 **REPOSITORY DOCUMENTATION**
 
@@ -77,8 +76,6 @@ If you like this repo, please give it a ⭐ (it really does help)
   - [BB-Badges](docs/badges.md)
 
 </details>
-
-<br />
 
 ## ⭐ [Project Overview](#toc)
 
@@ -148,8 +145,6 @@ If you're contributing code to the project, you'll want 🔴
 
 [`^ Top`](#toc)
 
-<br />
-
 ## ❓ [What's Included?](#toc)
 
 **Repository Files**
@@ -175,8 +170,6 @@ If you're contributing code to the project, you'll want 🔴
 </details>
 
 [`^ Top`](#toc)
-
-<br />
 
 ## 📂 [Installation](#toc)
 
@@ -586,6 +579,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - [**importpw/import**](https://github.com/importpw/import) by Nathan Rajlich
 
 [`^ Top`](#toc)
+
+[//]: # (<div align="center">)
+
+[//]: # ()
+[//]: # (## [💞 The RedEyed Community 💞]&#40;#toc&#41;)
+
+[//]: # ()
+[//]: # ([![Discord]&#40;https://img.shields.io/discord/1067204348251230298?labelColor=d20000&label=RedEyed%20Software%20&logo=discord&logoColor=white&style=for-the-badge&#41;]&#40;https://discord.gg/54PkrM7TKq&#41;)
+
+[//]: # ()
+[//]: # (### Hang out with like-minded geeks)
+
+[//]: # ()
+[//]: # (### Learn new skills and level up old ones)
+
+[//]: # ()
+[//]: # (### Learn about FUNDING your Open Source exploits!)
+
+[//]: # ()
+[//]: # (## [MEET US HERE]&#40;&#41;)
+
+[//]: # ()
+[//]: # ()
+[//]: # ()
+[//]: # (</div>)
+
+[//]: # ()
+[//]: # (<br />)
 
 <h3 align="center">
 
