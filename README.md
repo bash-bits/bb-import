@@ -24,7 +24,6 @@ The Bash Bits Import Module<br /><br />
 ![Check Status](https://img.shields.io/github/checks-status/bash-bits/bb-import/master?logo=github&style=for-the-badge)
 ![Open Bug Issues](https://img.shields.io/github/issues/bash-bits/bb-import/bug?logo=github&style=for-the-badge)
 ![Last Commit](https://img.shields.io/github/last-commit/bash-bits/bb-import/master?logo=github&style=for-the-badge)
-![Code Size](https://img.shields.io/github/size/bash-bits/bb-import/src/bb-import.sh?logo=github&style=for-the-badge)
 ![MIT](https://img.shields.io/badge/License-MIT-gold?style=for-the-badge)
 
 #### _Elapsed Project Time_
