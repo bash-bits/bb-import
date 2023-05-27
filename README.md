@@ -29,6 +29,7 @@ The Bash Bits Import Module<br /><br />
 #### _Elapsed Project Time_
 
 [![wakatime](https://wakatime.com/badge/user/7e04d9d4-3a44-495e-b622-69fdbafd036c/project/003c6945-ca03-4146-b723-f57d9656da98.svg?style=for-the-badge)](https://wakatime.com/badge/user/7e04d9d4-3a44-495e-b622-69fdbafd036c/project/003c6945-ca03-4146-b723-f57d9656da98)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbash-bits%2Fbb-import.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbash-bits%2Fbb-import?ref=badge_shield)
 
 </div>
 
@@ -557,6 +558,9 @@ This project incorporates ideas and / or code crafted by the following talented 
 [`^ Top`](#toc)
 
 <br />
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbash-bits%2Fbb-import.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbash-bits%2Fbb-import?ref=badge_large)
 
 ## ⚖️ [License](#toc)
 
