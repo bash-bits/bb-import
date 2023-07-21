@@ -251,6 +251,7 @@ echoError() { import::echoAlias "$SYMBOL_ERROR $1" -e -c "${RED}" "${@:2}"; }
 echoWarning() { import::echoAlias "$SYMBOL_WARNING $1" -e -c "${GOLD}" "${@:2}"; }
 echoInfo() { import::echoAlias "$SYMBOL_INFO $1" -c "${BLUE}" "${@:2}"; }
 echoSuccess() { import::echoAlias "$SYMBOL_SUCCESS $1" -c "${GREEN}" "${@:2}"; }
+errorExit() { echoError "$1"; exit "${2:-1}"; }
 errorReturn() { echoError "$1"; return "${2:-1}"; }
 exitReturn()
 {
@@ -830,13 +831,19 @@ import::usage()
 # ------------------------------------------------------------------
 import::version()
 {
-	echo
-	echo "Bash-Bits Modular Bash Library"
-	echoWhite "BB-Import Module ${IMPORT_VERSION}"
-	echo "Copyright © 2022-2023 Darren (Ragdata) Poulton"
-	echo "Build: ${IMPORT_BUILD}"
-	echo "Build Date: ${IMPORT_BUILD_DATE}"
-	echo
+	local verbosity="${1:-}"
+
+	if [[ -z "$verbosity" ]]; then
+		echo "${IMPORT_VERSION}"
+	else
+		echo
+		echo "Bash-Bits Modular Bash Library"
+		echoWhite "BB-Import Module ${IMPORT_VERSION}"
+		echo "Copyright © 2022-2023 Darren (Ragdata) Poulton"
+		echo "Build: ${IMPORT_BUILD}"
+		echo "Build Date: ${IMPORT_BUILD_DATE}"
+		echo
+	fi
 }
 # ------------------------------------------------------------------
 # bb-importFile
@@ -1051,7 +1058,7 @@ bb::import()
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	trap 'bb::errorHandler "LINENO" "BASH_LINENO" "${BASH_COMMAND}" "${?}"' ERR
-	options=$(getopt -l "force,help,init-cache,list,purge-cache,remove:,version" -o "fhilpr:v" -a -- "$@")
+	options=$(getopt -l "force,help,init-cache,list,purge-cache,remove:,version::" -o "fhilpr:v::" -a -- "$@")
 
 	eval set --"$options"
 
@@ -1089,8 +1096,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 				exitReturn 0
 				;;
 			-v|--version)
-				import::version
-				shift
+				[[ -n "${2}" ]] && { import::version "${2}"; shift 2; } || { import::version; shift; }
 				exitReturn 0
 				;;
 			--)
