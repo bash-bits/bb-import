@@ -21,12 +21,6 @@ if [[ "${1,,}" == "debug" ]]; then shift; INSTALL_DEBUG=1; set -- "${@}"; set -a
 # VARIABLES
 # ==================================================================
 #
-# BUILD VARIABLES
-#
-declare INSTALL_VERSION="v-1.0.0"
-declare INSTALL_BUILD="x"
-declare INSTALL_BUILD_DATE="2023-04-15T16:00:00+10:00"
-#
 # DEFAULT PATHS
 #
 [[ -z "${BB_BASE_DIR}" ]] && declare -gx BB_BASE_DIR="$HOME/.bb"
