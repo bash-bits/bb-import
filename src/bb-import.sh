@@ -1096,7 +1096,13 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 				exitReturn 0
 				;;
 			-v|--version)
-				[[ -n "${2}" ]] && { import::version "${2}"; shift 2; } || { import::version; shift; }
+				if [[ -n "${2}" ]]; then
+					import::version "${2}"
+					shift 2
+				else
+					import::version
+					shift
+				fi
 				exitReturn 0
 				;;
 			--)
