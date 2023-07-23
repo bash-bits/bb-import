@@ -258,6 +258,7 @@ exitReturn()
 	local r="${1:-0}"
 	[[ "${BASH_SOURCE[0]}" != "${0}" ]] && return "$r" || exit "$r"
 }
+errorExitReturn() { echoError "$1"; exitReturn "${2:-1}"; }
 # ------------------------------------------------------------------
 #
 # LOGGING FUNCTIONS
