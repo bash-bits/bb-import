@@ -1059,6 +1059,7 @@ bb::import()
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	trap 'bb::errorHandler "LINENO" "BASH_LINENO" "${BASH_COMMAND}" "${?}"' ERR
+
 	options=$(getopt -l "force,help,init-cache,list,purge-cache,remove:,version::" -o "fhilpr:v::" -a -- "$@")
 
 	eval set --"$options"
