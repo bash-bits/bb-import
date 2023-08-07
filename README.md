@@ -9,8 +9,8 @@
 </h1>
 
 <h3 align="center">
-The Bash Bits Import Module<br /><br />
-<em>The Most Important and Magical Part of Bash Bits!</em>
+The Bash-Bits Import Module<br /><br />
+<em>The Most Important and Magical Part of Bash-Bits!</em>
 </h3>
 
 <h3 align="center">
@@ -80,7 +80,7 @@ If you like this repo, please give it a ⭐ (it really does help)
 
 ## ⭐ [Project Overview](#toc)
 
-**The Bash Bits Import Module - The most important and magical part of `Bash-Bits`!**
+**The Bash-Bits Import Module - The most important and magical part of `Bash-Bits`!**
 
 _**`BB-Import` is THE library you are going to end up using in EVERY Bash script you write from now on!**_
 
@@ -252,7 +252,7 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 [//]: # (```)
 [//]: # (#### SVG Version:)
 [//]: # (```html)
-[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.svg" /></a>)
+[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash-Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Full.svg" /></a>)
 [//]: # (```)
 [//]: # (<br />)
 [//]: # ([![Bash-Bits]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Cutout.png&#41;]&#40;https://github.com/bash-bits&#41;)
@@ -262,7 +262,7 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 [//]: # (```)
 [//]: # (#### SVG Version:)
 [//]: # (```html)
-[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Cutout.svg" /></a>)
+[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash-Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Cutout.svg" /></a>)
 [//]: # (```)
 [//]: # (<br />)
 [//]: # ([![Bash-Bits]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Outline.png&#41;]&#40;https://github.com/bash-bits&#41;)
@@ -272,7 +272,7 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 [//]: # (```)
 [//]: # (#### SVG Version:)
 [//]: # (```html)
-[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Outline.svg" /></a>)
+[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash-Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-Outline.svg" /></a>)
 [//]: # (```)
 [//]: # (<br />)
 [//]: # ([![Bash-Bits]&#40;https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.png&#41;]&#40;https://github.com/bash-bits&#41;)
@@ -283,7 +283,7 @@ bash <(curl -sfLS https://raw.githubusercontent.com/bash-bits/bb-import/master/i
 [//]: # ()
 [//]: # (#### SVG Version:)
 [//]: # (```html)
-[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.svg" /></a>)
+[//]: # (<a href="https://github.com/bash-bits" target="_blank"><img alt="Bash-Bits" height="64" src="https://raw.githubusercontent.com/bash-bits/.github/master/.github/media/Logo/BB-Logo-64-White.svg" /></a>)
 [//]: # (```)
 [//]: # (</details>)
 [//]: # ([`^ Top`]&#40;#toc&#41;)
@@ -375,7 +375,7 @@ If you discover any issue regarding the security of this project, please disclos
 [![All Contributors](https://img.shields.io/github/all-contributors/bash-bits/bb-import?color=ee8449&style=for-the-badge)](CONTRIBUTORS.md)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-If you'd like to make a contribution, then please see the [**Bash Bits Contributor's Guide**][contributing]
+If you'd like to make a contribution, then please see the [**Bash-Bits Contributor's Guide**][contributing]
 
 It's not just contributions of code that I'm looking for.  If you have any ideas or suggestions about how this project may be improved, don't hesitate to [open an issue][issues] and let me know!  Contributions of ALL kinds will be recognised here if they are made part of this project - thanks to the [All-Contributors][all-contributors] bot.
 

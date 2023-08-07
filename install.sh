@@ -3,7 +3,7 @@
 # ==================================================================
 # install.sh
 # ==================================================================
-# Bash Bits Importer Install File
+# Bash-Bits Importer Install File
 #
 # File:         install.sh
 # Author:       Ragdata
