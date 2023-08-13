@@ -3,7 +3,7 @@
 # ==================================================================
 # bb-import
 # ==================================================================
-# Bash Bits Importer
+# Bash-Bits Importer
 #
 # File:         bb-import
 # Author:       Ragdata
@@ -13,7 +13,7 @@
 # ==================================================================
 # @name BB-Import
 # @file bb-import
-# @brief Bash Bits Importer - HEAVILY inspired by Nathan Railich's `import`
+# @brief Bash-Bits Importer - HEAVILY inspired by Nathan Railich's `import`
 # ==================================================================
 # ATTRIBUTION:	This script has been HEAVILY influenced & guided by
 #               Nathan Rajlich's brilliant `import` script. (see
@@ -895,8 +895,8 @@ bb::remove()
 # ------------------------------------------------------------------
 # bb::import
 # ------------------------------------------------------------------
-# @description Perhaps the most important part of Bash Bits.
-# BB-Import allows you to include ANY Bash Bits compatible package
+# @description Perhaps the most important part of Bash-Bits.
+# BB-Import allows you to include ANY Bash-Bits compatible package
 # in your own scripts with a simple `import` command
 #
 # @arg  $1          [string]    File / Package to Import (required)
