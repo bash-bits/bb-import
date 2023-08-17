@@ -708,7 +708,7 @@ import::purgeCache()
 	[[ -f "${BB_BASE_DIR}/cache-catalogue.csv" ]] && rm -f "${BB_BASE_DIR}/cache-catalogue.csv"
 	if [[ -f "${BB_BASE_DIR}/archive/bb-import.loc" ]]; then
 		local archiveDir="${BB_BASE_DIR}/archive"
-		local bbImportHash="$(cat "$archiveDir/bb-import.hash")"
+		local bbImportHash="/$(cat "$archiveDir/bb-import.hash")"
 
 		mkdir -p "${BB_CACHE_DIR}/data"
 		mkdir -p "${BB_CACHE_DIR}/links"
