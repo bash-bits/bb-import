@@ -652,7 +652,7 @@ import::list()
 	local links="${BB_CACHE_DIR}/links/"
 	local c=0
 
-	[[ ! -f "${BB_CACHE_DIR}/locations" ]] && errorReturn "Empty Cache!";
+	[[ ! -d "${BB_CACHE_DIR}/locations" ]] && errorReturn "Empty Cache!";
 
 	[[ -f "$file" ]] && rm -f "$file"
 
