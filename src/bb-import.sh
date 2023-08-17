@@ -714,8 +714,8 @@ import::purgeCache()
 		mkdir -p "${BB_CACHE_DIR}/links"
 		mkdir -p "${BB_CACHE_DIR}/locations"
 
-		mv "${archiveDir}/bb-import.dat" "$bbImportHash"
-		mv "${archiveDir}/bb-import.loc" "${BB_CACHE_DIR}/locations/bb-import"
+		cp "${archiveDir}/bb-import.dat" "$bbImportHash"
+		cp "${archiveDir}/bb-import.loc" "${BB_CACHE_DIR}/locations/bb-import"
 		ln -s "$bbImportHash" "${BB_CACHE_DIR}/links/bb-import"
 
 		rm -rf "$archiveDir"
