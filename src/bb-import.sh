@@ -34,12 +34,6 @@ if [[ "${1,,}" == "debug" ]]; then shift; IMPORT_DEBUG=1; set -- "${@}"; set -ax
 # VARIABLES
 # ==================================================================
 #
-# BUILD VARIABLES
-#
-declare -gx IMPORT_VERSION="v-1.0.0"
-declare -gx IMPORT_BUILD="x"
-declare -gx IMPORT_BUILD_DATE="2023-04-15T16:00:00+10:00"
-#
 # DEFAULT PATHS
 #
 [[ -z "${BB_BASE_DIR}" ]] && declare -gx BB_BASE_DIR="$HOME/.bb"
@@ -837,14 +831,14 @@ import::version()
 	local verbosity="${1:-}"
 
 	if [[ -z "$verbosity" ]]; then
-		echo "${IMPORT_VERSION}"
+		echo "${PKG_VERSION}"
 	else
 		echo
 		echo "Bash-Bits Modular Bash Library"
-		echoWhite "BB-Import Module ${IMPORT_VERSION}"
+		echoWhite "BB-Import Module ${PKG_VERSION}"
 		echo "Copyright © 2022-2023 Darren (Ragdata) Poulton"
-		echo "Build: ${IMPORT_BUILD}"
-		echo "Build Date: ${IMPORT_BUILD_DATE}"
+		echo "Build: ${PKG_BUILD}"
+		echo "Build Date: ${PKG_BUILD_DATE}"
 		echo
 	fi
 }
