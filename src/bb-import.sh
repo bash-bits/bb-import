@@ -710,7 +710,7 @@ import::purgeCache()
 		local archiveDir="${BB_BASE_DIR}/archive"
 		local bbImportHash="$(cat "$archiveDir/bb-import.hash")"
 
-		mkfir -p "${BB_CACHE_DIR}"
+		mkdir -p "${BB_CACHE_DIR}"
 		mkdir -p "${BB_CACHE_DIR}/data"
 		mkdir -p "${BB_CACHE_DIR}/links"
 		mkdir -p "${BB_CACHE_DIR}/locations"
