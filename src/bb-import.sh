@@ -34,6 +34,12 @@ if [[ "${1,,}" == "debug" ]]; then shift; IMPORT_DEBUG=1; set -- "${@}"; set -ax
 # VARIABLES
 # ==================================================================
 #
+# VERSION
+#
+PKG_VERSION="0.1.0"
+PKG_BUILD="1001"
+PKG_BUILD_DATE="20230813:1940"
+#
 # DEFAULT PATHS
 #
 [[ -z "${BB_BASE_DIR}" ]] && declare -gx BB_BASE_DIR="$HOME/.bb"
