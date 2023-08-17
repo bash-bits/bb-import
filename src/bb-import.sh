@@ -658,6 +658,8 @@ import::list()
 	local links="${BB_CACHE_DIR}/links/"
 	local c=0
 
+	[[ ! -f "${BB_CACHE_DIR}/locations" ]] && errorReturn "Empty Cache!";
+
 	[[ -f "$file" ]] && rm -f "$file"
 
 	echo "${WHITE}NO${RESET},${WHITE}NAME${RESET},${WHITE}ORIGIN${RESET},${WHITE}SHA1SUM${RESET},${WHITE}LAST MODIFIED${RESET}" >> "$file"
