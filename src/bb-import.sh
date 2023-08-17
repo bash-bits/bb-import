@@ -708,15 +708,15 @@ import::purgeCache()
 	[[ -f "${BB_BASE_DIR}/cache-catalogue.csv" ]] && rm -f "${BB_BASE_DIR}/cache-catalogue.csv"
 	if [[ -f "${BB_BASE_DIR}/archive/bb-import.loc" ]]; then
 		local archiveDir="${BB_BASE_DIR}/archive"
-		local bbImportHash="/$(cat "$archiveDir/bb-import.hash")"
+		local bbImportHash="$(cat "$archiveDir/bb-import.hash")"
 
 		mkdir -p "${BB_CACHE_DIR}/data"
 		mkdir -p "${BB_CACHE_DIR}/links"
 		mkdir -p "${BB_CACHE_DIR}/locations"
 
-		cp "${archiveDir}/bb-import.dat" "$bbImportHash"
+		cp "${archiveDir}/bb-import.dat" "/$bbImportHash"
 		cp "${archiveDir}/bb-import.loc" "${BB_CACHE_DIR}/locations/bb-import"
-		ln -s "$bbImportHash" "${BB_CACHE_DIR}/links/bb-import"
+		ln -s "/$bbImportHash" "${BB_CACHE_DIR}/links/bb-import"
 
 		rm -rf "$archiveDir"
 	fi
