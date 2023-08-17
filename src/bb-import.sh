@@ -705,6 +705,21 @@ import::purgeCache()
 	importDebug "Purging Cache"
 	echo "Purging Cache"
 	rm -rf "${BB_CACHE_DIR}" || errorReturn "FAILED!" 1
+	[[ -f "${BB_BASE_DIR}/cache-catalogue.csv" ]] && rm -f "${BB_BASE_DIR}/cache-catalogue.csv"
+	if [[ -f "${BB_BASE_DIR}/archive/bb-import.loc" ]]; then
+		local archiveDir="${BB_BASE_DIR}/archive"
+		local bbImportHash="$(cat "$archiveDir/bb-import.hash")"
+
+		mkdir -p "${BB_BASE_DIR}/cache/data"
+		mkdir -p "${BB_BASE_DIR}/cache/links"
+		mkdir -p "${BB_BASE_DIR}/cache/locations"
+
+		mv "${archiveDir}/bb-import.dat" "${BB_BASE_DIR}/cache/data/$bbImportHash"
+		mv "${archiveDir}/bb-import.loc" "${BB_BASE_DIR}/cache/locations/bb-import"
+		ln -s "${BB_BASE_DIR}/cache/data/$bbImportHash" "${BB_BASE_DIR}/cache/links/bb-import"
+
+		rm -rf "$archiveDir"
+	fi
 	echo "DONE!"
 }
 # ------------------------------------------------------------------
